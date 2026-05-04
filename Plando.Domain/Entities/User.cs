@@ -37,4 +37,6 @@ public sealed class User
     public required string Email { get; init; }
     public required string PasswordHash { get; init; }
     public DateTime CreatedAt { get; init; }
+    public ICollection<TaskItem> TaskItems { get; init; } = [];
+    public ICollection<TaskList> TaskLists { get; init; } = []; 
 }

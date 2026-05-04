@@ -1,4 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <ItemGroup>
+    <Compile Remove="Class1.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Plando.Application\Plando.Application.csproj" />
@@ -10,10 +14,18 @@
     <Folder Include="Middleware\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>360adb1c-4e1b-4405-8564-548e636a0182</UserSecretsId>
   </PropertyGroup>
 
 </Project>
