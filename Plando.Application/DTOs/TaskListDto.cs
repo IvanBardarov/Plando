@@ -15,7 +15,9 @@ public class TaskListDto
         this.Color = taskList.Color;
         this.CreatedAt = taskList.CreatedAt;
         this.UserId = taskList.UserId;
-        this.TaskItems = taskList.TaskItems.Select(TaskItemDto.FromEntity).ToList();
+        this.TaskItems = taskList.TaskItems?
+            .Select(TaskItemDto.FromEntity)
+            .ToList() ?? new List<TaskItemDto>();
     }
 
     public static TaskListDto FromEntity(TaskList taskList)

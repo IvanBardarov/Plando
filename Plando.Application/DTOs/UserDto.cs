@@ -12,8 +12,12 @@ public class UserDto
         this.Id = user.Id;
         this.Email = user.Email;
         this.CreatedAt = user.CreatedAt;
-        this.TaskItems = user.TaskItems.Select(TaskItemDto.FromEntity).ToList();
-        this.TaskLists = user.TaskLists.Select(TaskListDto.FromEntity).ToList();
+        this.TaskItems = user.TaskItems?
+            .Select(TaskItemDto.FromEntity)
+            .ToList() ?? new List<TaskItemDto>();
+        this.TaskLists = user.TaskLists?
+            .Select(TaskListDto.FromEntity)
+            .ToList() ?? new List<TaskListDto>();
     }
 
     public static UserDto FromEntity(User user)
