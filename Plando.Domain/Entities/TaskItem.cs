@@ -50,11 +50,16 @@ public sealed class TaskItem
         };
     }
 
+    public void Complete()
+    {
+        IsCompleted = true;
+    }
+
     public Guid Id { get; init; }
     public required string Title { get; init; }
     public required string Description { get; init; }
     public DateTime DueDate { get; init; }
-    public bool IsCompleted { get; init; }
+    public bool IsCompleted { get; private set; }
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
     public required User User { get; init; }
