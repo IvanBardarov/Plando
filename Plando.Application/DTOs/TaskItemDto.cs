@@ -31,6 +31,6 @@ namespace Plando.Application.DTOs
         public bool IsCompleted { get; init; }
         public DateTime CreatedAt { get; init; }
         public Guid UserId { get; init; }
-        public Guid TaskListId { get; init; }
+        public Guid? TaskListId { get; init; }
     }
 }

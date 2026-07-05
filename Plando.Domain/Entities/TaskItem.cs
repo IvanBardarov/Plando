@@ -45,7 +45,7 @@ public sealed class TaskItem
             CreatedAt = DateTime.UtcNow,
             UserId = user.Id,
             User = user,
-            TaskListId = taskList?.Id ?? Guid.Empty,
+            TaskListId = taskList?.Id,
             TaskList = taskList
         };
     }
@@ -63,6 +63,6 @@ public sealed class TaskItem
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
     public required User User { get; init; }
-    public Guid TaskListId { get; init; }    
+    public Guid? TaskListId { get; init; }    
     public TaskList? TaskList { get; init; }
 }
