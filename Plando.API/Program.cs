@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Plando.API.Middleware;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Commands.Users;
@@ -10,6 +11,8 @@ using Plando.Infrastructure.Persistence;
 using Plando.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+
+#region Services Pipeline
 
 builder.Services.AddDbContext<PlandoDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PlandoDb")));
@@ -39,11 +42,21 @@ builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
+#endregion
+
 var app = builder.Build();
+
+#region Middlewares Pipeline
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+#endregion
 
 app.Run();
