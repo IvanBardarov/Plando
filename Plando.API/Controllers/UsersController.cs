@@ -28,7 +28,7 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("login")]
-    public async Task<ActionResult<UserDto>> Login([FromBody] LoginUserCommand command) =>
+    public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command) =>
         await _loginHandler.HandleAsync(command);
 
     [HttpGet]

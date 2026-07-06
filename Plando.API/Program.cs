@@ -9,6 +9,7 @@ using Plando.Application.Queries.TaskLists;
 using Plando.Application.Queries.Users;
 using Plando.Infrastructure.Persistence;
 using Plando.Infrastructure.Repositories;
+using Plando.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<PlandoDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddControllers();
 

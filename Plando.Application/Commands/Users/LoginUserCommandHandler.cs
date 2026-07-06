@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Plando.Application.DTOs;
 using Plando.Application.Interfaces;
 using Plando.Domain.Exceptions;
 
@@ -8,13 +7,16 @@ namespace Plando.Application.Commands.Users;
 public class LoginUserCommandHandler
 {
     private readonly IUserRepository _userRepository;
+    private readonly IJwtTokenService _jwtTokenService;
 
-    public LoginUserCommandHandler(IUserRepository userRepository)
+    public LoginUserCommandHandler(IUserRepository userRepository,
+        IJwtTokenService jwtTokenService)
     {
         _userRepository = userRepository;
+        _jwtTokenService = jwtTokenService;
     }
 
-    public async Task<UserDto> HandleAsync(LoginUserCommand command)
+    public async Task<string> HandleAsync(LoginUserCommand command)
     {
         var user = await _userRepository.GetByEmailAsync(command.Email);
 
@@ -32,6 +34,6 @@ public class LoginUserCommandHandler
         // todo: rehash needed - update password hash in database
         // when checkHashedPassword == PasswordVerificationResult.SuccessRehashNeeded
 
-        return UserDto.FromEntity(user);
+        return _jwtTokenService.GenerateToken(user);
     }
 }
