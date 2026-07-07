@@ -91,6 +91,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+// CORS Configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PlandoPolicy", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // React default port
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 #endregion
 
 var app = builder.Build();
@@ -100,6 +111,7 @@ var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseAuthentication();
+app.UseCors("PlandoPolicy");
 app.UseAuthorization();
 
 app.MapControllers();
