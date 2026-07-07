@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.Users;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.Users;
@@ -7,6 +8,7 @@ namespace Plando.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class UsersController : ControllerBase
 {
     private readonly RegisterUserCommandHandler _registerHandler;
@@ -23,11 +25,13 @@ public class UsersController : ControllerBase
 
     [HttpPost]
     [Route("register")]
+    [AllowAnonymous]
     public async Task<ActionResult<UserDto>> Register([FromBody] RegisterUserCommand command) =>
         await _registerHandler.HandleAsync(command);
 
     [HttpPost]
     [Route("login")]
+    [AllowAnonymous]
     public async Task<ActionResult<string>> Login([FromBody] LoginUserCommand command) =>
         await _loginHandler.HandleAsync(command);
 

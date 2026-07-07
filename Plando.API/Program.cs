@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Plando.API.Middleware;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.Commands.TaskLists;
@@ -10,6 +13,7 @@ using Plando.Application.Queries.Users;
 using Plando.Infrastructure.Persistence;
 using Plando.Infrastructure.Repositories;
 using Plando.Infrastructure.Services;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,9 +46,50 @@ builder.Services.AddScoped<DeleteTaskListCommandHandler>();
 builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
+// Jwt Authentication Configuration
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+            ValidAudience = builder.Configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:SecretKey"]!))
+        };
+    });
 
 #endregion
 
@@ -53,6 +98,9 @@ var app = builder.Build();
 #region Middlewares Pipeline
 
 app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

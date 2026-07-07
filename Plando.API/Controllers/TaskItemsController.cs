@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.TaskItems;
@@ -7,6 +8,7 @@ namespace Plando.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class TaskItemsController : ControllerBase
 {
     private readonly GetTaskItemsByUserIdQueryHandler _getQuery;
