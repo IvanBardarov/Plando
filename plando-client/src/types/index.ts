@@ -1,7 +1,7 @@
 export type Guid = string;
 export type TaskListColor = number;
 
-interface User{
+export interface User{
   id: Guid;
   email: string;
   createdAt: Date;
@@ -9,7 +9,7 @@ interface User{
   taskLists: TaskList[]
 }
 
-interface TaskItem{
+export interface TaskItem{
   id: Guid;
   title: string;
   description: string;
@@ -20,7 +20,7 @@ interface TaskItem{
   taskListId: Guid;
 }
 
-interface TaskList{
+export interface TaskList{
   id: Guid;
   name: string;
   color: TaskListColor;
