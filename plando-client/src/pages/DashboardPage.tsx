@@ -43,7 +43,7 @@ export const DashboardPage = () => {
     return (
         <section className="p-8">
             <form onSubmit={handleSubmit}
-                className="flex flex-col items-center gap-2 mb-8">
+                className="flex items-center gap-2 mb-8">
                 <label>Title</label>
                 <input 
                     className="border rounded p-2 w-full"
@@ -54,17 +54,26 @@ export const DashboardPage = () => {
                     type="text" onChange={e => setDescription(e.target.value)}/>
                 <label>Due Date</label>
                 <input 
-                    className="border rounded p-2 w-full"
+                    className="border rounded p-2 w-56 shrink-0"
                     type="date" onChange={e => setDueDate(e.target.value)}/>
                 <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
             </form>  
             <div className="flex flex-col gap-4">
+                <div 
+                    className="flex gap-4 items-center border-b pb-2
+                     font-bold justify-center text-center">
+                    <div className="flex-1 justify-center text-center">Title</div>
+                    <div className="flex-1 justify-center text-center">Description</div>
+                    <div className="flex-1 justify-center text-center">Due Date</div>
+                    <div className="flex-1 justify-center text-center">Completed</div>
+                    <div className="flex-1 justify-center text-center">Actions</div>
+                </div>
                 {taskItems.map(item => (
                     <div key={item.id} className="flex gap-4 items-center border p-4 rounded">
-                        <div>{item.title}</div>
-                        <div>{item.description}</div>
-                        <div>{new Date(item.dueDate).toLocaleDateString()}</div>
-                        <div>{item.isCompleted ? 'Yes' : 'No'}</div>
+                        <div className="flex-1">{item.title}</div>
+                        <div className="flex-1">{item.description}</div>
+                        <div className="flex-1">{new Date(item.dueDate).toLocaleDateString()}</div>
+                        <div className="flex-1">{item.isCompleted ? 'Yes' : 'No'}</div>
                         <div className="flex gap-2">
                             <button 
                                 className="bg-blue-500 text-white px-4 py-2 rounded"
