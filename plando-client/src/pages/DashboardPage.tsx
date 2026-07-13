@@ -41,26 +41,42 @@ export const DashboardPage = () => {
     };
 
     return (
-        <section>
-            <form onSubmit={handleSubmit}>
+        <section className="p-8">
+            <form onSubmit={handleSubmit}
+                className="flex flex-col items-center gap-2 mb-8">
                 <label>Title</label>
-                <input type="text" onChange={e => setTitle(e.target.value)}/>
+                <input 
+                    className="border rounded p-2 w-full"
+                    type="text" onChange={e => setTitle(e.target.value)}/>
                 <label>Description</label>
-                <input type="text" onChange={e => setDescription(e.target.value)}/>
+                <input 
+                    className="border rounded p-2 w-full"
+                    type="text" onChange={e => setDescription(e.target.value)}/>
                 <label>Due Date</label>
-                <input type="date" onChange={e => setDueDate(e.target.value)}/>
-                <button>Create</button>
-            </form>            
-            {taskItems.map(item => (
-                <div key={item.id}>
-                    <div>{item.title}</div>
-                    <div>{item.description}</div>
-                    <div>{new Date(item.dueDate).toLocaleDateString()}</div>
-                    <div>{item.isCompleted ? 'Yes' : 'No'}</div>
-                    <button onClick={() => handleComplete(item.id)}>Complete</button>
-                    <button onClick={() => handleDelete(item.id)}>Delete</button>
-                </div>                
-            ))}
+                <input 
+                    className="border rounded p-2 w-full"
+                    type="date" onChange={e => setDueDate(e.target.value)}/>
+                <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
+            </form>  
+            <div className="flex flex-col gap-4">
+                {taskItems.map(item => (
+                    <div key={item.id} className="flex gap-4 items-center border p-4 rounded">
+                        <div>{item.title}</div>
+                        <div>{item.description}</div>
+                        <div>{new Date(item.dueDate).toLocaleDateString()}</div>
+                        <div>{item.isCompleted ? 'Yes' : 'No'}</div>
+                        <div className="flex gap-2">
+                            <button 
+                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                onClick={() => handleComplete(item.id)}>Complete</button>
+                            <button 
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                onClick={() => handleDelete(item.id)}>Delete</button>
+                        </div>
+                    </div>                
+                ))}
+            </div>          
+
         </section>
     );
 }
