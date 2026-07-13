@@ -53,6 +53,7 @@ public sealed class TaskItem
     public void Complete()
     {
         IsCompleted = true;
+        CompletedAt = DateTime.UtcNow;
     }
 
     public Guid Id { get; init; }
@@ -65,4 +66,5 @@ public sealed class TaskItem
     public required User User { get; init; }
     public Guid? TaskListId { get; init; }    
     public TaskList? TaskList { get; init; }
+    public DateTime? CompletedAt { get; private set; }
 }
