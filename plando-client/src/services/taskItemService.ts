@@ -7,7 +7,7 @@ export const getTaskItemByUserId = async (userId: Guid) : Promise<TaskItem[]> =>
 };
 
 export const createTaskItem = async (title: string, description: string, userId: Guid,
-     dueDate: Date, taskListId: Guid) : Promise<TaskItem> => {
+     dueDate: Date, taskListId: Guid | null) : Promise<TaskItem> => {
     const response = await instance.post('/TaskItems',
          { title, description, userId, dueDate, taskListId });
     return response.data;
