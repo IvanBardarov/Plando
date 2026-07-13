@@ -1,13 +1,27 @@
 import { useState } from 'react';
 import { login } from '../services/userService';
+import { jwtDecode } from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+
+interface DecodedToken{
+    "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier": string;
+};
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword]= useState('');
 
+    const navigate = useNavigate();
+
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        login(email, password);
+        const token = await login(email, password);
+        const decoded = jwtDecode<DecodedToken>(token);
+        const userId = decoded["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+
+        localStorage.setItem('userId', userId);
+        
+        navigate('/dashboard');
     };
 
     return (
