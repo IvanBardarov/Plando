@@ -43,15 +43,16 @@ export const DashboardPage = () => {
     return (
         <section className="p-8">
             <form onSubmit={handleSubmit}
-                className="flex items-center gap-2 mb-8">
+                className="flex flex-col md:flex-row items-center gap-2 mb-8 w-full">
                 <label>Title</label>
                 <input 
-                    className="border rounded p-2 w-full"
+                    className="border rounded p-2 w-full md:flex-1"
                     type="text" onChange={e => setTitle(e.target.value)}/>
                 <label>Description</label>
-                <input 
-                    className="border rounded p-2 w-full"
-                    type="text" onChange={e => setDescription(e.target.value)}/>
+                <textarea 
+                    rows={1}
+                    className="border rounded p-2 w-full md:flex-1"
+                    onChange={e => setDescription(e.target.value)}></textarea>
                 <label>Due Date</label>
                 <input 
                     className="border rounded p-2 w-56 shrink-0"
@@ -60,8 +61,7 @@ export const DashboardPage = () => {
             </form>  
             <div className="flex flex-col gap-4">
                 <div 
-                    className="flex gap-4 items-center border-b pb-2
-                     font-bold justify-center text-center">
+                    className="hidden md:flex gap-4 items-center border-b pb-2 font-bold text-center">
                     <div className="flex-1 justify-center text-center">Title</div>
                     <div className="flex-1 justify-center text-center">Description</div>
                     <div className="flex-1 justify-center text-center">Due Date</div>
@@ -69,7 +69,9 @@ export const DashboardPage = () => {
                     <div className="flex-1 justify-center text-center">Actions</div>
                 </div>
                 {taskItems.map(item => (
-                    <div key={item.id} className="flex gap-4 items-center border p-4 rounded">
+                    <div key={item.id} 
+                        className="flex flex-col md:flex-row gap-4 
+                            items-start md:items-center border p-4 rounded">
                         <div className="flex-1">{item.title}</div>
                         <div className="flex-1">{item.description}</div>
                         <div className="flex-1">{new Date(item.dueDate).toLocaleDateString()}</div>
