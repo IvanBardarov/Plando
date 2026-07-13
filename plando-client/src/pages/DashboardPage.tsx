@@ -32,7 +32,8 @@ export const DashboardPage = () => {
     const handleComplete = async (id: string) => {
         await completeTaskItem(id);
         setTaskItems(taskItems
-            .map(item => item.id === id ? { ...item, isCompleted: true } : item));
+            .map(item => item.id === id ? 
+                { ...item, isCompleted: true, completedAt: new Date() } : item));
     };
 
     const handleDelete = async (id: string) => {
@@ -66,16 +67,21 @@ export const DashboardPage = () => {
                     <div className="flex-1 justify-center text-center">Description</div>
                     <div className="flex-1 justify-center text-center">Due Date</div>
                     <div className="flex-1 justify-center text-center">Completed</div>
+                    <div className="flex-1 justify-center text-center">Date of Complition</div>
                     <div className="flex-1 justify-center text-center">Actions</div>
                 </div>
                 {taskItems.map(item => (
                     <div key={item.id} 
                         className="flex flex-col md:flex-row gap-4 
                             items-start md:items-center border p-4 rounded">
-                        <div className="flex-1">{item.title}</div>
-                        <div className="flex-1">{item.description}</div>
-                        <div className="flex-1">{new Date(item.dueDate).toLocaleDateString()}</div>
-                        <div className="flex-1">{item.isCompleted ? 'Yes' : 'No'}</div>
+                        <div className="flex-1 justify-center text-center">{item.title}</div>
+                        <div className="flex-1 justify-center text-center">{item.description}</div>
+                        <div className="flex-1 justify-center text-center">
+                            {new Date(item.dueDate).toLocaleDateString()}</div>
+                        <div className="flex-1 justify-center text-center">{item.isCompleted ? 'Yes' : 'No'}</div>
+                        <div className="flex-1 justify-center text-center">
+                            {item.completedAt ? new Date(item.completedAt).toLocaleDateString() : '-'}
+                            </div>
                         <div className="flex gap-2">
                             <button 
                                 className="bg-blue-500 text-white px-4 py-2 rounded"

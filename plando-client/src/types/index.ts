@@ -18,6 +18,7 @@ export interface TaskItem{
   createdAt: Date;
   userId: Guid;
   taskListId: Guid;
+  completedAt: Date | null;
 }
 
 export interface TaskList{
