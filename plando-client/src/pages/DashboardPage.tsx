@@ -41,6 +41,19 @@ export const DashboardPage = () => {
         setTaskItems(taskItems.filter(item => item.id !== id));
     };
 
+    const getItemClassName = (item: TaskItem) : string => {
+        const now = new Date();
+        const due = new Date(item.dueDate);
+
+        if(item.isCompleted && item.completedAt && new Date(item.completedAt) <= due)
+            return "border p-4 rounded bg-green-100";
+        if(item.isCompleted && item.completedAt && new Date(item.completedAt) > due)
+            return "border p-4 rounded bg-gray-100";
+        if(!item.isCompleted && now > due)
+            return "border p-4 rounded bg-red-100";
+        return "border p-4 rounded bg-yellow-100";
+    };
+
     return (
         <section className="p-8">
             <form onSubmit={handleSubmit}
@@ -67,13 +80,13 @@ export const DashboardPage = () => {
                     <div className="flex-1 justify-center text-center">Description</div>
                     <div className="flex-1 justify-center text-center">Due Date</div>
                     <div className="flex-1 justify-center text-center">Completed</div>
-                    <div className="flex-1 justify-center text-center">Date of Complition</div>
+                    <div className="flex-1 justify-center text-center">Date of Completion</div>
                     <div className="flex-1 justify-center text-center">Actions</div>
                 </div>
                 {taskItems.map(item => (
                     <div key={item.id} 
-                        className="flex flex-col md:flex-row gap-4 
-                            items-start md:items-center border p-4 rounded">
+                        className={`flex flex-col md:flex-row gap-4 
+                            items-start md:items-center ${getItemClassName(item)}`}>
                         <div className="flex-1 justify-center text-center">{item.title}</div>
                         <div className="flex-1 justify-center text-center">{item.description}</div>
                         <div className="flex-1 justify-center text-center">
