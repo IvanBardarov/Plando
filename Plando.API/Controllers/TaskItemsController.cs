@@ -29,8 +29,29 @@ public class TaskItemsController : ControllerBase
 
     [HttpGet]
     [Route("{userId}")]
-    public async Task<ActionResult<IEnumerable<TaskItemDto>>> GetByUserId(Guid userId) =>
-        Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(userId)));
+    public async Task<ActionResult<IEnumerable<TaskItemDto>>> GetByUserId(
+        Guid userId,
+        string? title,
+        string? description,
+        DateTime? createdAtFrom,
+        DateTime? createdAtTo,
+        DateTime? dueDateFrom,
+        DateTime? dueDateTo,
+        DateTime? completedAtFrom,
+        DateTime? completedAtTo,
+        bool? IsCompleted) =>
+        Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
+            userId,
+            title,
+            description,
+            createdAtFrom,
+            createdAtTo,
+            dueDateFrom,
+            dueDateTo,
+            completedAtFrom,
+            completedAtTo,
+            IsCompleted
+            )));
 
     [HttpPost]
     [Route("")]
