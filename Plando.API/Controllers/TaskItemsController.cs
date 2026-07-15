@@ -39,7 +39,7 @@ public class TaskItemsController : ControllerBase
         DateTime? dueDateTo,
         DateTime? completedAtFrom,
         DateTime? completedAtTo,
-        bool? IsCompleted) =>
+        bool? isCompleted) =>
         Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
             userId,
             title,
@@ -50,7 +50,7 @@ public class TaskItemsController : ControllerBase
             dueDateTo,
             completedAtFrom,
             completedAtTo,
-            IsCompleted
+            isCompleted
             )));
 
     [HttpPost]
