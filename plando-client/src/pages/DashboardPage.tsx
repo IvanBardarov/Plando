@@ -13,7 +13,18 @@ export const DashboardPage = () => {
 
     useEffect(() => {        
         const fetchData = async () => {
-            const items = await getTaskItemByUserId(userId!);
+            const items = await getTaskItemByUserId(
+                userId!,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            );
             setTaskItems(items);
         };
         fetchData();
@@ -54,57 +65,224 @@ export const DashboardPage = () => {
         return "border p-4 rounded bg-yellow-100";
     };
 
+    const [createdAtFrom, setCreatedAtFrom] = useState<Date | null>(null);
+    const [createdAtTo, setCreatedAtTo] = useState<Date | null>(null);
+    const [dueDateFrom, setDueDateFrom] = useState<Date | null>(null);
+    const [dueDateTo, setDueDateTo] = useState<Date | null>(null);
+    const [completedAtFrom, setCompletedAtFrom] = useState<Date | null>(null);
+    const [completedAtTo, setCompletedAtTo] = useState<Date | null>(null);
+    const [isCompleted, setIsCompleted] = useState<boolean | null>(null);
+
+    const handleFilter = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+            const items = await getTaskItemByUserId(
+                userId!,
+                title,
+                description,
+                createdAtFrom,
+                createdAtTo,
+                dueDateFrom,
+                dueDateTo,
+                completedAtFrom,
+                completedAtTo,
+                isCompleted
+            );
+            setTaskItems(items);
+    };
+
     return (
         <section className="p-8">
+
             <form onSubmit={handleSubmit}
                 className="flex flex-col md:flex-row items-center gap-2 mb-8 w-full">
+
                 <label>Title</label>
                 <input 
                     className="border rounded p-2 w-full md:flex-1"
                     type="text" onChange={e => setTitle(e.target.value)}/>
+
                 <label>Description</label>
                 <textarea 
                     rows={1}
                     className="border rounded p-2 w-full md:flex-1"
                     onChange={e => setDescription(e.target.value)}></textarea>
+
                 <label>Due Date</label>
                 <input 
                     className="border rounded p-2 w-56 shrink-0"
                     type="date" onChange={e => setDueDate(e.target.value)}/>
+
                 <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
+
             </form>  
+
+            <form onSubmit={handleFilter}
+                className="flex flex-col gap-4 mb-8 w-full border p-2">
+                
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+                    <div className="flex flex-col gap-1 md:col-span-2">
+
+                        <label>Title</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="text" onChange={e => setTitle(e.target.value)}/>
+
+                    </div>
+
+                    <div className="flex flex-col gap-1 md:col-span-2">
+
+                        <label>Description</label>
+                        <textarea 
+                            rows={1}
+                            className="border rounded p-2"
+                            onChange={e => setDescription(e.target.value)}></textarea>
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>From Date of Creation</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e => 
+                                setCreatedAtFrom(e.target.value ? new Date(e.target.value) : null)}/>
+                        
+                    </div>     
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>To Date of Creation</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e =>
+                                setCreatedAtTo(e.target.value ? new Date(e.target.value) : null)}/>
+
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>From Due Date</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e =>
+                                setDueDateFrom(e.target.value ? new Date(e.target.value) : null)}/>
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>To Due Date</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e =>
+                                setDueDateTo(e.target.value ? new Date(e.target.value) : null)}/>
+                        
+                    </div>  
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>From Date of Completion</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e =>
+                                setCompletedAtFrom(e.target.value ? new Date(e.target.value)
+                                 : null)}/>
+
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>To Date of Completion</label>
+                        <input 
+                            className="border rounded p-2"
+                            type="date" onChange={e =>
+                                setCompletedAtTo(e.target.value ? new Date(e.target.value) : null)}/>
+                        
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+
+                        <label>Is Task Competed</label>
+                        <select className="border rounded p-2"
+                             onChange={e =>
+                                setIsCompleted(e.target.value === '' 
+                                    ? null : e.target.value === 'true')}>
+                            <option value="">All</option>
+                            <option value="true">Yes</option>
+                            <option value="false">No</option>
+                        </select>
+                        
+                    </div>    
+
+                    <div className="flex flex-col gap-1">
+
+                        <button 
+                            className="bg-blue-500 text-white px-4 py-2 rounded mt-7">
+                            Filter
+                        </button>
+
+                    </div>                                     
+
+                </div>
+
+                
+
+            </form>
+
             <div className="flex flex-col gap-4">
+
                 <div 
                     className="hidden md:flex gap-4 items-center border-b pb-2 font-bold text-center">
+
                     <div className="flex-1 justify-center text-center">Title</div>
                     <div className="flex-1 justify-center text-center">Description</div>
                     <div className="flex-1 justify-center text-center">Due Date</div>
                     <div className="flex-1 justify-center text-center">Completed</div>
                     <div className="flex-1 justify-center text-center">Date of Completion</div>
                     <div className="flex-1 justify-center text-center">Actions</div>
+                    
                 </div>
+
                 {taskItems.map(item => (
                     <div key={item.id} 
                         className={`flex flex-col md:flex-row gap-4 
                             items-start md:items-center ${getItemClassName(item)}`}>
-                        <div className="flex-1 justify-center text-center">{item.title}</div>
-                        <div className="flex-1 justify-center text-center">{item.description}</div>
+
                         <div className="flex-1 justify-center text-center">
-                            {new Date(item.dueDate).toLocaleDateString()}</div>
-                        <div className="flex-1 justify-center text-center">{item.isCompleted ? 'Yes' : 'No'}</div>
+                            {item.title}
+                        </div>
+
+                        <div className="flex-1 justify-center text-center">
+                            {item.description}
+                        </div>
+
+                        <div className="flex-1 justify-center text-center">
+                            {new Date(item.dueDate).toLocaleDateString()}
+                        </div>
+
+                        <div className="flex-1 justify-center text-center">
+                            {item.isCompleted ? 'Yes' : 'No'}
+                        </div>
+                        
                         <div className="flex-1 justify-center text-center">
                             {item.completedAt ? new Date(item.completedAt).toLocaleDateString() : '-'}
-                            </div>
+                        </div>
+
                         <div className="flex gap-2">
+
                             <button 
                                 className="bg-blue-500 text-white px-4 py-2 rounded"
                                 onClick={() => handleComplete(item.id)}>Complete</button>
+
                             <button 
                                 className="bg-red-500 text-white px-4 py-2 rounded"
                                 onClick={() => handleDelete(item.id)}>Delete</button>
+
                         </div>
                     </div>                
                 ))}
+
             </div>          
 
         </section>

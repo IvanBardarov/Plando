@@ -1,8 +1,26 @@
 import instance from "./api";
 import { TaskItem, Guid } from "../types";
 
-export const getTaskItemByUserId = async (userId: Guid) : Promise<TaskItem[]> => {
-    const response = await instance.get(`/TaskItems/${userId}`);
+export const getTaskItemByUserId = async (
+    userId: Guid, title: string | null, description: string | null,
+    createdAtFrom: Date | null, createdAtTo: Date | null, 
+    dueDateFrom: Date | null, dueDateTo: Date | null,
+    completedAtFrom: Date | null, completedAtTo: Date | null,
+    isCompleted: boolean | null)
+ : Promise<TaskItem[]> => {
+    const response = await instance.get(`/TaskItems/${userId}`, {
+        params: {
+            title, 
+            description, 
+            createdAtFrom, 
+            createdAtTo, 
+            dueDateFrom, 
+            dueDateTo,
+            completedAtFrom, 
+            completedAtTo, 
+            isCompleted
+        }
+    });
     return response.data;
 };
 
