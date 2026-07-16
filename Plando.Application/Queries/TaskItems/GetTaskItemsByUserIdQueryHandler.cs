@@ -12,7 +12,7 @@ public class GetTaskItemsByUserIdQueryHandler
         _taskRepository = taskRepository;
     }
 
-    public async Task<IEnumerable<TaskItemDto>> HandleAsync(GetTaskItemsByUserIdQuery query)
+    public async Task<PagedResultDto<TaskItemDto>> HandleAsync(GetTaskItemsByUserIdQuery query)
     {
         var taskItems = await _taskRepository.GetAllByUserIdAsync(query.UserId);
 
@@ -49,15 +49,35 @@ public class GetTaskItemsByUserIdQueryHandler
         if (query.IsCompleted is true)
             taskItems = taskItems
                 .Where(t => t.IsCompleted == true);
-        else if(query.IsCompleted is false)
+        else if (query.IsCompleted is false)
             taskItems = taskItems
-                .Where(t => t.IsCompleted == false);
+                .Where(t => t.IsCompleted == false);        
 
         if (taskItems is null || !taskItems.Any())
-            return new List<TaskItemDto>();
+            return PagedResultDto<TaskItemDto>
+                .FromEntities(
+                    new List<TaskItemDto>().AsEnumerable(),
+                    null,
+                    null,
+                    null);
 
         var taskItemDTOs = taskItems.Select(TaskItemDto.FromEntity);
 
-        return taskItemDTOs;
+        var totalCount = taskItemDTOs.Count();
+        var page = query.Page ?? PagedResultDto<TaskItemDto>.DefaultPage;
+        var pageSize = query.PageSize ??
+            PagedResultDto<TaskItemDto>.DefaultPageSize;
+        var pagedItems = taskItemDTOs
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize);
+
+        var ret = PagedResultDto<TaskItemDto>
+            .FromEntities(
+                pagedItems,
+                taskItemDTOs.Count(),
+                page,
+                pageSize);
+
+        return ret;
     }
 }

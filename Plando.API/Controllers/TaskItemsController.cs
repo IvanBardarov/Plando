@@ -29,7 +29,7 @@ public class TaskItemsController : ControllerBase
 
     [HttpGet]
     [Route("{userId}")]
-    public async Task<ActionResult<IEnumerable<TaskItemDto>>> GetByUserId(
+    public async Task<ActionResult<PagedResultDto<TaskItemDto>>> GetByUserId(
         Guid userId,
         string? title,
         string? description,
@@ -39,7 +39,9 @@ public class TaskItemsController : ControllerBase
         DateTime? dueDateTo,
         DateTime? completedAtFrom,
         DateTime? completedAtTo,
-        bool? isCompleted) =>
+        bool? isCompleted,
+        int? page,
+        int? pageSize) =>
         Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
             userId,
             title,
@@ -50,7 +52,9 @@ public class TaskItemsController : ControllerBase
             dueDateTo,
             completedAtFrom,
             completedAtTo,
-            isCompleted
+            isCompleted,
+            page,
+            pageSize
             )));
 
     [HttpPost]

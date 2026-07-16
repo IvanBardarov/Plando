@@ -10,4 +10,6 @@ public record GetTaskItemsByUserIdQuery(
     DateTime? DueDateTo,
     DateTime? CompletedAtFrom,
     DateTime? CompletedAtTo,
-    bool? IsCompleted);
+    bool? IsCompleted,
+    int? Page,
+    int? PageSize);
