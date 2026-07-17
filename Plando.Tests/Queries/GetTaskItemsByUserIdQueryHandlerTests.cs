@@ -51,15 +51,15 @@ public class GetTaskItemsByUserIdQueryHandlerTests
 
         var query = new GetTaskItemsByUserIdQuery(
             user.Id, null, null, null, null, null,
-            null, null, null, null);
+            null, null, null, null, null, null);
 
         var result = await _handler.HandleAsync(query);
 
-        Assert.Equal(taskItemDTOsList.Count, result.Count());
+        Assert.Equal(taskItemDTOsList.Count, result.Items.Count());
         Assert.Equal(taskItemDTOsList.Select(t => t.Title),
-            result.Select(t => t.Title));
+            result.Items.Select(t => t.Title));
         Assert.Equal(taskItemDTOsList.Select(t => t.Description),
-            result.Select(t => t.Description));
+            result.Items.Select(t => t.Description));
     }
 
     [Fact]
@@ -97,13 +97,13 @@ public class GetTaskItemsByUserIdQueryHandlerTests
 
         var query = new GetTaskItemsByUserIdQuery(
             user.Id, "Title", null, null, null, null,
-            null, null, null, null);
+            null, null, null, null, null, null);
 
         var result = await _handler.HandleAsync(query);
 
-        Assert.Equal(taskItemDTOsList.Count, result.Count());
+        Assert.Equal(taskItemDTOsList.Count, result.Items.Count());
         Assert.Equal(taskItemDTOsList.Select(t => t.Title),
-            result.Select(t => t.Title));
+            result.Items.Select(t => t.Title));
     }
 
     [Fact]
@@ -142,15 +142,15 @@ public class GetTaskItemsByUserIdQueryHandlerTests
 
         var query = new GetTaskItemsByUserIdQuery(
             user.Id, null, null, null, null, null,
-            null, null, null, true);
+            null, null, null, true, null, null);
 
         var result = await _handler.HandleAsync(query);
 
-        Assert.Equal(taskItemDTOsList.Count, result.Count());
+        Assert.Equal(taskItemDTOsList.Count, result.Items.Count());
         Assert.Equal(taskItemDTOsList.Select(t => t.Title),
-            result.Select(t => t.Title));
+            result.Items.Select(t => t.Title));
         Assert.Equal(taskItemDTOsList.Select(t => t.IsCompleted),
-            result.Select(t => t.IsCompleted));
+            result.Items.Select(t => t.IsCompleted));
     }
 
     [Fact]
@@ -162,10 +162,10 @@ public class GetTaskItemsByUserIdQueryHandlerTests
 
         var query = new GetTaskItemsByUserIdQuery(
             Guid.NewGuid(), null, null, null, null, null,
-            null, null, null, true);
+            null, null, null, true, null, null);
 
         var result = await _handler.HandleAsync(query);
 
-        Assert.Empty(result);
+        Assert.Empty(result.Items);
     }
 }
