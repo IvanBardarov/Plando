@@ -14,13 +14,13 @@ export const DashboardPage = () => {
 
     const [taskItems, setTaskItems] = useState<PagedResultDto<TaskItem> | null>(null);
     const userId = localStorage.getItem('userId');
-    const [page, setPage] = useState(1);
-    const [pageSize] = useState(10);
+    const [page, setPage] = useState<number | null>(null);
+    const [pageSize] = useState<number | null>(null);
 
     useEffect(() => {        
         const fetchData = async () => {
             const items = await getTaskItemByUserId(
-                userId!, null, null, null, null, null, null, null, null, null, 1, pageSize
+                userId!, null, null, null, null, null, null, null, null, null, null, pageSize
             );
             setTaskItems(items);
         };
@@ -40,7 +40,7 @@ export const DashboardPage = () => {
         e.preventDefault();
         await createTaskItem(createTitle, createDescription, userId!, new Date(createDueDate), null);
         const items = await getTaskItemByUserId(
-            userId!, null, null, null, null, null, null, null, null, null, 1, pageSize
+            userId!, null, null, null, null, null, null, null, null, null, null, pageSize
         );
         setTaskItems(items);
     };
