@@ -5,10 +5,10 @@ import {
     completeTaskItem, 
     deleteTaskItem
  } from '../services/taskItemService';
-import { TaskItem } from '../types';
+import { TaskItem, PagedResultDto } from '../types';
 
 export const DashboardPage = () => {
-    const [taskItems, setTaskItems] = useState<TaskItem[]>([]);
+    const [taskItems, setTaskItems] = useState<PagedResultDto<TaskItem> | null>(null);
     const userId = localStorage.getItem('userId');
 
     useEffect(() => {        
@@ -37,19 +37,32 @@ export const DashboardPage = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         const newItem = await createTaskItem(title,description, userId!, new Date(dueDate), null);
-        setTaskItems([...taskItems, newItem]);
+        setTaskItems(
+            prev => prev ? {
+            ...prev,
+            items: [...prev.items, newItem],
+            totalCount: prev.totalCount + 1
+        } : null);
     };
 
     const handleComplete = async (id: string) => {
         await completeTaskItem(id);
-        setTaskItems(taskItems
-            .map(item => item.id === id ? 
-                { ...item, isCompleted: true, completedAt: new Date() } : item));
+        setTaskItems(
+            prev => prev ? {
+            ...prev,
+            items: prev.items.map(item => item.id === id ? 
+                { ...item, isCompleted: true, completedAt: new Date() } : item)
+        } : null);
     };
 
     const handleDelete = async (id: string) => {
         await deleteTaskItem(id);
-        setTaskItems(taskItems.filter(item => item.id !== id));
+        setTaskItems(
+            prev => prev ? {
+            ...prev,
+            items: prev.items.filter(item => item.id !== id),
+            totalCount: prev.totalCount - 1
+        } : null);
     };
 
     const getItemClassName = (item: TaskItem) : string => {
@@ -244,7 +257,7 @@ export const DashboardPage = () => {
                     
                 </div>
 
-                {taskItems.map(item => (
+                {taskItems?.items.map(item => (
                     <div key={item.id} 
                         className={`flex flex-col md:flex-row gap-4 
                             items-start md:items-center ${getItemClassName(item)}`}>
