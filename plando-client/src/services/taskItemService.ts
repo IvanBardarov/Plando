@@ -6,7 +6,7 @@ export const getTaskItemByUserId = async (
     createdAtFrom: Date | null, createdAtTo: Date | null, 
     dueDateFrom: Date | null, dueDateTo: Date | null,
     completedAtFrom: Date | null, completedAtTo: Date | null,
-    isCompleted: boolean | null)
+    isCompleted: boolean | null, page: number | null, pageSize: number | null)
  : Promise<PagedResultDto<TaskItem>> => {
     const response = await instance.get(`/TaskItems/${userId}`, {
         params: {
@@ -18,7 +18,9 @@ export const getTaskItemByUserId = async (
             dueDateTo,
             completedAtFrom, 
             completedAtTo, 
-            isCompleted
+            isCompleted,
+            page,
+            pageSize
         }
     });
     return response.data;

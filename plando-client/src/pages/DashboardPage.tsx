@@ -10,39 +10,35 @@ import { TaskItem, PagedResultDto } from '../types';
 export const DashboardPage = () => {
     const [taskItems, setTaskItems] = useState<PagedResultDto<TaskItem> | null>(null);
     const userId = localStorage.getItem('userId');
+    const [page, setPage] = useState(1);
+    const [pageSize] = useState(10);
 
     useEffect(() => {        
         const fetchData = async () => {
             const items = await getTaskItemByUserId(
-                userId!,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null
+                userId!, null, null, null, null, null, null, null, null, null, 1, pageSize
             );
             setTaskItems(items);
         };
         fetchData();
     }, []);
 
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [dueDate, setDueDate] = useState('');
+    // for Create form
+    const [createTitle, setCreateTitle] = useState('');
+    const [createDescription, setCreateDescription] = useState('');
+    const [createDueDate, setCreateDueDate] = useState('');
+
+    // for Filter form
+    const [filterTitle, setFilterTitle] = useState('');
+    const [filterDescription, setFilterDescription] = useState('');
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        const newItem = await createTaskItem(title,description, userId!, new Date(dueDate), null);
-        setTaskItems(
-            prev => prev ? {
-            ...prev,
-            items: [...prev.items, newItem],
-            totalCount: prev.totalCount + 1
-        } : null);
+        await createTaskItem(createTitle, createDescription, userId!, new Date(createDueDate), null);
+        const items = await getTaskItemByUserId(
+            userId!, null, null, null, null, null, null, null, null, null, 1, pageSize
+        );
+        setTaskItems(items);
     };
 
     const handleComplete = async (id: string) => {
@@ -90,17 +86,29 @@ export const DashboardPage = () => {
         e.preventDefault();
             const items = await getTaskItemByUserId(
                 userId!,
-                title,
-                description,
+                filterTitle,
+                filterDescription,
                 createdAtFrom,
                 createdAtTo,
                 dueDateFrom,
                 dueDateTo,
                 completedAtFrom,
                 completedAtTo,
-                isCompleted
+                isCompleted,
+                page,
+                pageSize
             );
             setTaskItems(items);
+    };
+
+    const handlePageChange = async (newPage: number) => {
+        setPage(newPage);
+        const items = await getTaskItemByUserId(
+            userId!, filterTitle, filterDescription, createdAtFrom, createdAtTo,
+            dueDateFrom, dueDateTo, completedAtFrom, completedAtTo,
+            isCompleted, newPage, pageSize
+        );
+        setTaskItems(items);
     };
 
     return (
@@ -112,18 +120,18 @@ export const DashboardPage = () => {
                 <label>Title</label>
                 <input 
                     className="border rounded p-2 w-full md:flex-1"
-                    type="text" onChange={e => setTitle(e.target.value)}/>
+                    type="text" onChange={e => setCreateTitle(e.target.value)}/>
 
                 <label>Description</label>
                 <textarea 
                     rows={1}
                     className="border rounded p-2 w-full md:flex-1"
-                    onChange={e => setDescription(e.target.value)}></textarea>
+                    onChange={e => setCreateDescription(e.target.value)}></textarea>
 
                 <label>Due Date</label>
                 <input 
                     className="border rounded p-2 w-56 shrink-0"
-                    type="date" onChange={e => setDueDate(e.target.value)}/>
+                    type="date" onChange={e => setCreateDueDate(e.target.value)}/>
 
                 <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
 
@@ -139,7 +147,7 @@ export const DashboardPage = () => {
                         <label>Title</label>
                         <input 
                             className="border rounded p-2"
-                            type="text" onChange={e => setTitle(e.target.value)}/>
+                            type="text" onChange={e => setFilterTitle(e.target.value)}/>
 
                     </div>
 
@@ -149,7 +157,7 @@ export const DashboardPage = () => {
                         <textarea 
                             rows={1}
                             className="border rounded p-2"
-                            onChange={e => setDescription(e.target.value)}></textarea>
+                            onChange={e => setFilterDescription(e.target.value)}></textarea>
                         
                     </div>
 
@@ -237,9 +245,7 @@ export const DashboardPage = () => {
 
                     </div>                                     
 
-                </div>
-
-                
+                </div>                
 
             </form>
 
@@ -295,6 +301,22 @@ export const DashboardPage = () => {
                         </div>
                     </div>                
                 ))}
+
+                <div className="flex gap-2 items-center justify-center mt-4">
+                    <button 
+                        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+                        disabled={taskItems?.page === 1}
+                        onClick={() => handlePageChange(taskItems!.page - 1)}>
+                        Previous
+                    </button>
+                    <span>{taskItems?.page} / {taskItems?.totalPages}</span>
+                    <button 
+                        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
+                        disabled={taskItems?.page === taskItems?.totalPages}
+                        onClick={() => handlePageChange(taskItems!.page + 1)}>
+                        Next
+                    </button>
+                </div>
 
             </div>          
 
