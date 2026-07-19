@@ -168,4 +168,116 @@ public class GetTaskItemsByUserIdQueryHandlerTests
 
         Assert.Empty(result.Items);
     }
+
+    [Fact]
+    public async Task ReturnsCorrectPage()
+    {
+        var passwordHasher = new PasswordHasher<string>();
+        var realHash = passwordHasher.HashPassword("test@example.com", "abc123");
+        var user = User.Create("test@example.com", realHash);
+
+        var taskItemsList = new List<TaskItem>();
+        var taskItemDTOsList = new List<TaskItemDto>();
+
+        for (var i = 1; i < 16; i++)
+        {
+            var taskItem = TaskItem.Create(
+                $"Title{i}",
+                $"Description{i}",
+                DateTime.UtcNow,
+                user,
+                null);
+
+            var taskItemDto = TaskItemDto.FromEntity(taskItem);
+
+            taskItemsList.Add(taskItem);
+
+            if (i >= 6 && i <= 10)
+                taskItemDTOsList.Add(taskItemDto);
+        }
+
+        _taskItemRepositoryMock
+            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .ReturnsAsync(taskItemsList);
+
+        var query = new GetTaskItemsByUserIdQuery(
+            user.Id, null, null, null, null, null,
+            null, null, null, null, 2, 5);
+
+        var result = await _handler.HandleAsync(query);
+
+        Assert.Equal(taskItemDTOsList.Count, result.Items.Count());
+        Assert.Equal(taskItemDTOsList.Select(t => t.Title),
+            result.Items.Select(t => t.Title));
+        Assert.Equal(taskItemDTOsList.Select(t => t.Description),
+            result.Items.Select(t => t.Description));
+    }
+
+    [Fact]
+    public async Task ReturnsCorrectTotalCount()
+    {
+        var passwordHasher = new PasswordHasher<string>();
+        var realHash = passwordHasher.HashPassword("test@example.com", "abc123");
+        var user = User.Create("test@example.com", realHash);
+
+        var taskItemsList = new List<TaskItem>();
+
+        for (var i = 1; i < 16; i++)
+        {
+            var taskItem = TaskItem.Create(
+                $"Title{i}",
+                $"Description{i}",
+                DateTime.UtcNow,
+                user,
+                null);
+
+            taskItemsList.Add(taskItem);
+        }
+
+        _taskItemRepositoryMock
+            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .ReturnsAsync(taskItemsList);
+
+        var query = new GetTaskItemsByUserIdQuery(
+            user.Id, null, null, null, null, null,
+            null, null, null, null, null, null);
+
+        var result = await _handler.HandleAsync(query);
+
+        Assert.Equal(15, result.TotalCount);
+    }
+
+    [Fact]
+    public async Task ReturnsCorrectTotalPages()
+    {
+        var passwordHasher = new PasswordHasher<string>();
+        var realHash = passwordHasher.HashPassword("test@example.com", "abc123");
+        var user = User.Create("test@example.com", realHash);
+
+        var taskItemsList = new List<TaskItem>();
+
+        for (var i = 1; i < 16; i++)
+        {
+            var taskItem = TaskItem.Create(
+                $"Title{i}",
+                $"Description{i}",
+                DateTime.UtcNow,
+                user,
+                null);
+
+            taskItemsList.Add(taskItem);
+        }
+
+        _taskItemRepositoryMock
+            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .ReturnsAsync(taskItemsList);
+
+        var query = new GetTaskItemsByUserIdQuery(
+            user.Id, null, null, null, null, null,
+            null, null, null, null, null, 5);
+
+        var result = await _handler.HandleAsync(query);
+
+        Assert.Equal(3, result.TotalPages);
+    }
 }
