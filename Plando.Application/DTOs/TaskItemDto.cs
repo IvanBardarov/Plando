@@ -18,6 +18,7 @@ namespace Plando.Application.DTOs
             this.UserId = taskItem.UserId;
             this.TaskListId = taskItem.TaskListId;
             this.CompletedAt = taskItem.CompletedAt;
+            this.StartDate = taskItem.StartDate;
         }
 
         public static TaskItemDto FromEntity(TaskItem taskItem)
@@ -34,5 +35,6 @@ namespace Plando.Application.DTOs
         public Guid UserId { get; init; }
         public Guid? TaskListId { get; init; }
         public DateTime? CompletedAt { get; init; }
+        public DateTime? StartDate { get; init; }
     }
 }

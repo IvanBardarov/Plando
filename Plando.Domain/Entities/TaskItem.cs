@@ -19,7 +19,9 @@ public sealed class TaskItem
     /// <param name="taskList"></param>
     /// <returns></returns>
     /// <exception cref="DomainException"></exception>
-    public static TaskItem Create(string title, string description, DateTime dueDate, User user, TaskList? taskList = null)
+    public static TaskItem Create(
+        string title, string description, DateTime dueDate, User user, 
+        DateTime? startDate, TaskList? taskList = null)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException("TaskItem.Create: title can not be empty!");
@@ -32,6 +34,14 @@ public sealed class TaskItem
 
         if (user is null)
             throw new DomainException("TaskItem: User can not be null!");
+
+        if (startDate is not null && startDate.Value.Date < DateTime.UtcNow.Date)
+            throw new DomainException("Start date of the task can not be older" +
+                " than the date of task creation!");
+
+        if (startDate is not null && startDate > dueDate)
+            throw new DomainException("Start date of the task can not be newer" +
+                " than the due date of the task!");
 
         // todo: to check if userId exists
 
@@ -46,7 +56,8 @@ public sealed class TaskItem
             UserId = user.Id,
             User = user,
             TaskListId = taskList?.Id,
-            TaskList = taskList
+            TaskList = taskList,
+            StartDate = startDate
         };
     }
 
@@ -67,4 +78,5 @@ public sealed class TaskItem
     public Guid? TaskListId { get; init; }    
     public TaskList? TaskList { get; init; }
     public DateTime? CompletedAt { get; private set; }
+    public DateTime? StartDate { get; init; }
 }
