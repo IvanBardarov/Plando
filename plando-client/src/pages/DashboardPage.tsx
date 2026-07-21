@@ -30,6 +30,7 @@ export const DashboardPage = () => {
     // for Create form
     const [createTitle, setCreateTitle] = useState('');
     const [createDescription, setCreateDescription] = useState('');
+    const [createStartDate, setCreateStartDate] = useState('');
     const [createDueDate, setCreateDueDate] = useState('');
 
     // for Filter form
@@ -38,7 +39,13 @@ export const DashboardPage = () => {
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await createTaskItem(createTitle, createDescription, userId!, new Date(createDueDate), null);
+        await createTaskItem(
+            createTitle, 
+            createDescription, 
+            userId!, 
+            new Date(createDueDate), 
+            null,
+            createStartDate ? new Date(createStartDate) : null);
         const items = await getTaskItemByUserId(
             userId!, null, null, null, null, null, null, null, null, null, null, pageSize
         );
@@ -136,6 +143,11 @@ export const DashboardPage = () => {
                             rows={1}
                             className="border rounded p-2 w-full md:flex-1"
                             onChange={e => setCreateDescription(e.target.value)}></textarea>
+
+                        <label>Start Date</label>
+                        <input 
+                            className = "border rounded p-2 w-full md:flex-1"
+                            type="date" onChange={e => setCreateStartDate(e.target.value)}/>
 
                         <label>Due Date</label>
                         <input 
@@ -276,6 +288,7 @@ export const DashboardPage = () => {
 
                     <div className="flex-1 justify-center text-center">Title</div>
                     <div className="flex-1 justify-center text-center">Description</div>
+                    <div className="flex-1 justify-center text-center">Start Date</div>
                     <div className="flex-1 justify-center text-center">Due Date</div>
                     <div className="flex-1 justify-center text-center">Completed</div>
                     <div className="flex-1 justify-center text-center">Date of Completion</div>
@@ -294,6 +307,12 @@ export const DashboardPage = () => {
 
                         <div className="flex-1 justify-center text-center">
                             {item.description}
+                        </div>
+
+                        <div className="flex-1 justify-center text-center">
+                            {item.startDate ?
+                             new Date(item.startDate).toLocaleDateString() : 
+                             '-'}
                         </div>
 
                         <div className="flex-1 justify-center text-center">
