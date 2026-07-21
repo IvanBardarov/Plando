@@ -122,6 +122,18 @@ export const DashboardPage = () => {
         setTaskItems(items);
     };
 
+    const handleTitleVoiceInput = () => {
+        const SpeechRecognition = (window as any).SpeechRecognition ||
+                                  (window as any).webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+        recognition.lang = 'en-US';
+        recognition.onresult = (event: any) => {
+            const text = event.results[0][0].transcript;
+            setCreateTitle(text);
+        };
+        recognition.start();
+    };
+
     return (
         <section className="p-8">
 
@@ -137,6 +149,7 @@ export const DashboardPage = () => {
                         <input 
                             className="border rounded p-2 w-full md:flex-1"
                             type="text" onChange={e => setCreateTitle(e.target.value)}/>
+                        <button type="button" onClick={handleTitleVoiceInput}>🎤</button>
 
                         <label>Description</label>
                         <textarea 
