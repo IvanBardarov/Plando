@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { 
     getTaskItemByUserId, 
     createTaskItem, 
@@ -26,6 +26,8 @@ export const DashboardPage = () => {
         };
         fetchData();
     }, []);
+
+    const [isListening, setIsListening] = useState(false);
 
     // for Create form
     const [createTitle, setCreateTitle] = useState('');
@@ -85,6 +87,11 @@ export const DashboardPage = () => {
         return "border p-4 rounded bg-yellow-100";
     };
 
+    const changeVoiceInputButtonColor = () => {
+        return isListening ? "bg-red-400 text-white px-2 py-1 rounded" 
+                       : "bg-gray-200 px-2 py-1 rounded";
+    };
+
     const [createdAtFrom, setCreatedAtFrom] = useState<Date | null>(null);
     const [createdAtTo, setCreatedAtTo] = useState<Date | null>(null);
     const [dueDateFrom, setDueDateFrom] = useState<Date | null>(null);
@@ -122,16 +129,31 @@ export const DashboardPage = () => {
         setTaskItems(items);
     };
 
+    const recognitionRef = useRef<any>(null);
+
     const handleTitleVoiceInput = () => {
+        if (isListening) {
+            recognitionRef.current?.stop();
+            setIsListening(false);
+            return;
+        }
+        
         const SpeechRecognition = (window as any).SpeechRecognition ||
-                                  (window as any).webkitSpeechRecognition;
-        const recognition = new SpeechRecognition();
-        recognition.lang = 'en-US';
-        recognition.onresult = (event: any) => {
+                                (window as any).webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.lang = 'en-US';
+        recognitionRef.current.onresult = (event: any) => {
             const text = event.results[0][0].transcript;
             setCreateTitle(text);
+            setIsListening(false);
         };
-        recognition.start();
+        recognitionRef.current.onerror = (event: any) => {
+            if (event.error !== 'aborted') {
+                setIsListening(false);
+            }
+        };
+        recognitionRef.current.start();
+        setIsListening(true);
     };
 
     return (
@@ -148,8 +170,12 @@ export const DashboardPage = () => {
                         <label>Title</label>
                         <input 
                             className="border rounded p-2 w-full md:flex-1"
-                            type="text" onChange={e => setCreateTitle(e.target.value)}/>
-                        <button type="button" onClick={handleTitleVoiceInput}>🎤</button>
+                            type="text" onChange={e => setCreateTitle(e.target.value)}
+                            value={createTitle}/>
+                        <button 
+                            type="button" 
+                            className={`${changeVoiceInputButtonColor()}`}
+                            onClick={handleTitleVoiceInput}>🎤</button>
 
                         <label>Description</label>
                         <textarea 
