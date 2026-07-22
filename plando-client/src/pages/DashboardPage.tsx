@@ -27,8 +27,6 @@ export const DashboardPage = () => {
         fetchData();
     }, []);
 
-    const [isListening, setIsListening] = useState(false);
-
     // for Create form
     const [createTitle, setCreateTitle] = useState('');
     const [createDescription, setCreateDescription] = useState('');
@@ -87,9 +85,12 @@ export const DashboardPage = () => {
         return "border p-4 rounded bg-yellow-100";
     };
 
-    const changeVoiceInputButtonColor = () => {
-        return isListening ? "bg-red-400 text-white px-2 py-1 rounded" 
-                       : "bg-gray-200 px-2 py-1 rounded";
+    const [listeningField, setListeningField] = useState<'title' | 'description' | null>(null);
+
+    const getVoiceButtonClass = (field: 'title' | 'description') => {
+        return listeningField === field 
+            ? "bg-red-400 text-white px-2 py-1 rounded" 
+            : "bg-gray-200 px-2 py-1 rounded";
     };
 
     const [createdAtFrom, setCreatedAtFrom] = useState<Date | null>(null);
@@ -131,10 +132,11 @@ export const DashboardPage = () => {
 
     const recognitionRef = useRef<any>(null);
 
-    const handleTitleVoiceInput = () => {
-        if (isListening) {
+    const handleVoiceInput = (setter: (text: string) => void,
+        field: 'title' | 'description') => {
+        if (listeningField === field) {
             recognitionRef.current?.stop();
-            setIsListening(false);
+            setListeningField(null);
             return;
         }
         
@@ -144,16 +146,16 @@ export const DashboardPage = () => {
         recognitionRef.current.lang = 'en-US';
         recognitionRef.current.onresult = (event: any) => {
             const text = event.results[0][0].transcript;
-            setCreateTitle(text);
-            setIsListening(false);
+            setter(text);
+            setListeningField(null);
         };
         recognitionRef.current.onerror = (event: any) => {
             if (event.error !== 'aborted') {
-                setIsListening(false);
+                setListeningField(null);
             }
         };
         recognitionRef.current.start();
-        setIsListening(true);
+        setListeningField(field);
     };
 
     return (
@@ -174,14 +176,20 @@ export const DashboardPage = () => {
                             value={createTitle}/>
                         <button 
                             type="button" 
-                            className={`${changeVoiceInputButtonColor()}`}
-                            onClick={handleTitleVoiceInput}>🎤</button>
+                            className={`${getVoiceButtonClass('title')}`}
+                            onClick={() => handleVoiceInput(setCreateTitle, 'title')}>🎤</button>
 
                         <label>Description</label>
                         <textarea 
                             rows={1}
                             className="border rounded p-2 w-full md:flex-1"
-                            onChange={e => setCreateDescription(e.target.value)}></textarea>
+                            onChange={e => setCreateDescription(e.target.value)}
+                            value={createDescription}></textarea>                        
+                        <button
+                            type="button"
+                            className={`${getVoiceButtonClass('description')}`}
+                            onClick={() => handleVoiceInput(setCreateDescription, 'description')}>
+                                🎤</button>
 
                         <label>Start Date</label>
                         <input 
