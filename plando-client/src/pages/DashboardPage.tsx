@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
     getTaskItemByUserId, 
     createTaskItem, 
@@ -14,6 +15,7 @@ export const DashboardPage = () => {
 
     const [taskItems, setTaskItems] = useState<PagedResultDto<TaskItem> | null>(null);
     const userId = localStorage.getItem('userId');
+    const navigate = useNavigate();
     const [page, setPage] = useState<number | null>(null);
     const [pageSize] = useState<number | null>(null);
 
@@ -160,6 +162,13 @@ export const DashboardPage = () => {
 
     return (
         <section className="p-8">
+
+            <div className="flex justify-end mb-4">
+                <button className="bg-green-500 text-white px-4 py-2 rounded"
+                    onClick={() => navigate('/tasklists')}>
+                    Task Lists
+                </button>
+            </div>
 
             <div>
                 <button onClick={() => setShowCreate(!showCreate)}>
@@ -325,8 +334,6 @@ export const DashboardPage = () => {
                     </form>
                 }
             </div>
-
-
 
             <div className="flex flex-col gap-4">
 
