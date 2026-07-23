@@ -17,7 +17,7 @@ export const TaskListsPage = () => {
 
     useEffect(() => {
         const fetchDate = async () => {
-            const lists = await getTaskListByUserId(userId!);
+            const lists = await getTaskListByUserId();
             setTaskLists(lists);
         };
         fetchDate();
@@ -30,7 +30,7 @@ export const TaskListsPage = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         await createTaskList(createName, userId!, createColor);
-        const lists = await getTaskListByUserId(userId!);
+        const lists = await getTaskListByUserId();
         setTaskLists(lists);
     };
 

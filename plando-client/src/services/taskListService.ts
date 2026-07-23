@@ -1,8 +1,8 @@
 import instance from "./api";
 import { TaskList, Guid, TaskListColor } from "../types";
 
-export const getTaskListByUserId = async (userId: Guid) : Promise<TaskList[]> => {
-    const response = await instance.get(`/TaskLists/${userId}`);
+export const getTaskListByUserId = async () : Promise<TaskList[]> => {
+    const response = await instance.get(`/TaskLists`);
     return response.data;
 };
 
