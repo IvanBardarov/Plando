@@ -2,13 +2,13 @@ import instance from "./api";
 import { TaskItem, Guid, PagedResultDto } from "../types";
 
 export const getTaskItemByUserId = async (
-    userId: Guid, title: string | null, description: string | null,
+    title: string | null, description: string | null,
     createdAtFrom: Date | null, createdAtTo: Date | null, 
     dueDateFrom: Date | null, dueDateTo: Date | null,
     completedAtFrom: Date | null, completedAtTo: Date | null,
     isCompleted: boolean | null, page: number | null, pageSize: number | null)
  : Promise<PagedResultDto<TaskItem>> => {
-    const response = await instance.get(`/TaskItems/${userId}`, {
+    const response = await instance.get(`/TaskItems`, {
         params: {
             title, 
             description, 

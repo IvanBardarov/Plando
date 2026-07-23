@@ -22,7 +22,7 @@ export const DashboardPage = () => {
     useEffect(() => {        
         const fetchData = async () => {
             const items = await getTaskItemByUserId(
-                userId!, null, null, null, null, null, null, null, null, null, null, pageSize
+                null, null, null, null, null, null, null, null, null, null, pageSize
             );
             setTaskItems(items);
         };
@@ -49,7 +49,7 @@ export const DashboardPage = () => {
             null,
             createStartDate ? new Date(createStartDate) : null);
         const items = await getTaskItemByUserId(
-            userId!, null, null, null, null, null, null, null, null, null, null, pageSize
+            null, null, null, null, null, null, null, null, null, null, pageSize
         );
         setTaskItems(items);
     };
@@ -106,7 +106,6 @@ export const DashboardPage = () => {
     const handleFilter = async (e: React.SyntheticEvent) => {
         e.preventDefault();
             const items = await getTaskItemByUserId(
-                userId!,
                 filterTitle,
                 filterDescription,
                 createdAtFrom,
@@ -125,7 +124,7 @@ export const DashboardPage = () => {
     const handlePageChange = async (newPage: number) => {
         setPage(newPage);
         const items = await getTaskItemByUserId(
-            userId!, filterTitle, filterDescription, createdAtFrom, createdAtTo,
+            filterTitle, filterDescription, createdAtFrom, createdAtTo,
             dueDateFrom, dueDateTo, completedAtFrom, completedAtTo,
             isCompleted, newPage, pageSize
         );
