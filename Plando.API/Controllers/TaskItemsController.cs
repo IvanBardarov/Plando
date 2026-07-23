@@ -63,7 +63,6 @@ public class TaskItemsController : ControllerBase
         )));
     }
 
-
     [HttpPost]
     [Route("")]
     public async Task<ActionResult<TaskItemDto>> Create([FromBody] CreateTaskItemCommand command) =>

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.TaskLists;
+using System.Security.Claims;
 
 namespace Plando.API.Controllers;
 
@@ -15,8 +16,8 @@ public class TaskListsController : ControllerBase
     private readonly CreateTaskListCommandHandler _createHandler;
     private readonly DeleteTaskListCommandHandler _deleteHandler;
 
-    public TaskListsController(GetTaskListsByUserIdQueryHandler getQuery, 
-        CreateTaskListCommandHandler createHandler, 
+    public TaskListsController(GetTaskListsByUserIdQueryHandler getQuery,
+        CreateTaskListCommandHandler createHandler,
         DeleteTaskListCommandHandler deleteHandler)
     {
         _getQuery = getQuery;
@@ -25,9 +26,15 @@ public class TaskListsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{userId}")]
-    public async Task<ActionResult<IEnumerable<TaskListDto>>> GetByUserId(Guid userId) =>
-        Ok(await _getQuery.HandleAsync(new GetTaskListsByUserIdQuery(userId)));
+    [Route("")]
+    public async Task<ActionResult<IEnumerable<TaskListDto>>> GetByUserId()
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        return Ok(await _getQuery.HandleAsync(new GetTaskListsByUserIdQuery(userId)));
+    }
 
     [HttpPost]
     [Route("")]
