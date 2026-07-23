@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.TaskItems;
+using System.Security.Claims;
 
 namespace Plando.API.Controllers;
 
@@ -28,9 +29,8 @@ public class TaskItemsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("{userId}")]
+    [Route("")]
     public async Task<ActionResult<PagedResultDto<TaskItemDto>>> GetByUserId(
-        Guid userId,
         string? title,
         string? description,
         DateTime? createdAtFrom,
@@ -41,21 +41,28 @@ public class TaskItemsController : ControllerBase
         DateTime? completedAtTo,
         bool? isCompleted,
         int? page,
-        int? pageSize) =>
-        Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
-            userId,
-            title,
-            description,
-            createdAtFrom,
-            createdAtTo,
-            dueDateFrom,
-            dueDateTo,
-            completedAtFrom,
-            completedAtTo,
-            isCompleted,
-            page,
-            pageSize
-            )));
+        int? pageSize)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        return Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
+        userId,
+        title,
+        description,
+        createdAtFrom,
+        createdAtTo,
+        dueDateFrom,
+        dueDateTo,
+        completedAtFrom,
+        completedAtTo,
+        isCompleted,
+        page,
+        pageSize
+        )));
+    }
+
 
     [HttpPost]
     [Route("")]
