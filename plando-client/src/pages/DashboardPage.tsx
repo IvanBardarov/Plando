@@ -6,7 +6,8 @@ import {
     completeTaskItem, 
     deleteTaskItem
  } from '../services/taskItemService';
-import { TaskItem, PagedResultDto } from '../types';
+import { getTaskListByUserId } from '../services/taskListService';
+import { TaskItem, PagedResultDto, TaskList, Guid } from '../types';
 
 export const DashboardPage = () => {
 
@@ -14,6 +15,7 @@ export const DashboardPage = () => {
     const [showFilter, setShowFilter] = useState(false);
 
     const [taskItems, setTaskItems] = useState<PagedResultDto<TaskItem> | null>(null);
+    const [taskLists, setTaskLists] = useState<TaskList[] | null>(null);
     const userId = localStorage.getItem('userId');
     const navigate = useNavigate();
     const [page, setPage] = useState<number | null>(null);
@@ -25,6 +27,8 @@ export const DashboardPage = () => {
                 null, null, null, null, null, null, null, null, null, null, pageSize
             );
             setTaskItems(items);
+            const lists = await getTaskListByUserId();
+            setTaskLists(lists);
         };
         fetchData();
     }, []);
@@ -34,6 +38,7 @@ export const DashboardPage = () => {
     const [createDescription, setCreateDescription] = useState('');
     const [createStartDate, setCreateStartDate] = useState('');
     const [createDueDate, setCreateDueDate] = useState('');
+    const [createTaskListId, setCreateTaskListId] = useState<Guid | null>(null);
 
     // for Filter form
     const [filterTitle, setFilterTitle] = useState('');
@@ -46,7 +51,7 @@ export const DashboardPage = () => {
             createDescription, 
             userId!, 
             new Date(createDueDate), 
-            null,
+            createTaskListId || null,
             createStartDate ? new Date(createStartDate) : null);
         const items = await getTaskItemByUserId(
             null, null, null, null, null, null, null, null, null, null, pageSize
@@ -206,8 +211,17 @@ export const DashboardPage = () => {
 
                         <label>Due Date</label>
                         <input 
-                            className="border rounded p-2 w-56 shrink-0"
+                            className="border rounded p-2 w-full md:flex-1"
                             type="date" onChange={e => setCreateDueDate(e.target.value)}/>
+
+                        <label>Task List</label>
+                        <select className="border rounded p-2 w-56 shrink-0"
+                            onChange={e => setCreateTaskListId(e.target.value)}>
+                            <option value="">None</option>
+                            {taskLists?.map(list => (
+                                <option key={list.id} value={list.id}>{list.name}</option>
+                            ))}
+                        </select>
 
                         <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
 
