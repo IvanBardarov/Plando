@@ -119,7 +119,8 @@ export const TaskListsPage = () => {
                 {taskLists?.map(item => (
                     <div key={item.id} 
                         className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center ${getTaskListColor(item)}`}>
+                            items-start md:items-center ${getTaskListColor(item)}`}
+                        onClick={ () => navigate(`/tasklists/${item.id}`)}>
 
                         <div className="flex-1 justify-center text-center">
                             {item.name}

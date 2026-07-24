@@ -24,7 +24,7 @@ export const DashboardPage = () => {
     useEffect(() => {        
         const fetchData = async () => {
             const items = await getTaskItemByUserId(
-                null, null, null, null, null, null, null, null, null, null, pageSize
+                null, null, null, null, null, null, null, null, null, null, null, pageSize
             );
             setTaskItems(items);
             const lists = await getTaskListByUserId();
@@ -43,6 +43,7 @@ export const DashboardPage = () => {
     // for Filter form
     const [filterTitle, setFilterTitle] = useState('');
     const [filterDescription, setFilterDescription] = useState('');
+    const [filterTaskListId, setFilterTaskListId] = useState<Guid | null>(null);
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
@@ -54,7 +55,7 @@ export const DashboardPage = () => {
             createTaskListId || null,
             createStartDate ? new Date(createStartDate) : null);
         const items = await getTaskItemByUserId(
-            null, null, null, null, null, null, null, null, null, null, pageSize
+            null, null, null, null, null, null, null, null, null, null, null, pageSize
         );
         setTaskItems(items);
     };
@@ -111,6 +112,7 @@ export const DashboardPage = () => {
     const handleFilter = async (e: React.SyntheticEvent) => {
         e.preventDefault();
             const items = await getTaskItemByUserId(
+                filterTaskListId,
                 filterTitle,
                 filterDescription,
                 createdAtFrom,
@@ -129,7 +131,7 @@ export const DashboardPage = () => {
     const handlePageChange = async (newPage: number) => {
         setPage(newPage);
         const items = await getTaskItemByUserId(
-            filterTitle, filterDescription, createdAtFrom, createdAtTo,
+            filterTaskListId, filterTitle, filterDescription, createdAtFrom, createdAtTo,
             dueDateFrom, dueDateTo, completedAtFrom, completedAtTo,
             isCompleted, newPage, pageSize
         );
