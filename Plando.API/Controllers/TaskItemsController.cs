@@ -31,6 +31,7 @@ public class TaskItemsController : ControllerBase
     [HttpGet]
     [Route("")]
     public async Task<ActionResult<PagedResultDto<TaskItemDto>>> GetByUserId(
+        Guid? taskListId,
         string? title,
         string? description,
         DateTime? createdAtFrom,
@@ -49,6 +50,7 @@ public class TaskItemsController : ControllerBase
 
         return Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
         userId,
+        taskListId,
         title,
         description,
         createdAtFrom,

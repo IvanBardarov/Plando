@@ -51,7 +51,11 @@ public class GetTaskItemsByUserIdQueryHandler
                 .Where(t => t.IsCompleted == true);
         else if (query.IsCompleted is false)
             taskItems = taskItems
-                .Where(t => t.IsCompleted == false);        
+                .Where(t => t.IsCompleted == false);
+
+        if (query.TaskListId is not null)
+            taskItems = taskItems
+                .Where(t => t.TaskListId == query.TaskListId);
 
         if (taskItems is null || !taskItems.Any())
             return PagedResultDto<TaskItemDto>

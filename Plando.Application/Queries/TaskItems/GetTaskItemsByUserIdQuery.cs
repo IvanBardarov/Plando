@@ -2,6 +2,7 @@
 
 public record GetTaskItemsByUserIdQuery(
     Guid UserId,
+    Guid? TaskListId,
     string? Title,
     string? Description,
     DateTime? CreatedAtFrom,

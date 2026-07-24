@@ -50,7 +50,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, null, null, null, null, null,
+            user.Id, null, null, null, null, null, null,
             null, null, null, null, null, null);
 
         var result = await _handler.HandleAsync(query);
@@ -96,7 +96,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, "Title", null, null, null, null,
+            user.Id, null, "Title", null, null, null, null,
             null, null, null, null, null, null);
 
         var result = await _handler.HandleAsync(query);
@@ -141,7 +141,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, null, null, null, null, null,
+            user.Id, null, null, null, null, null, null,
             null, null, null, true, null, null);
 
         var result = await _handler.HandleAsync(query);
@@ -161,7 +161,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(new List<TaskItem>());
 
         var query = new GetTaskItemsByUserIdQuery(
-            Guid.NewGuid(), null, null, null, null, null,
+            Guid.NewGuid(), null, null, null, null, null, null,
             null, null, null, true, null, null);
 
         var result = await _handler.HandleAsync(query);
@@ -201,7 +201,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, null, null, null, null, null,
+            user.Id, null, null, null, null, null, null,
             null, null, null, null, 2, 5);
 
         var result = await _handler.HandleAsync(query);
@@ -239,7 +239,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, null, null, null, null, null,
+            user.Id, null, null, null, null, null, null,
             null, null, null, null, null, null);
 
         var result = await _handler.HandleAsync(query);
@@ -273,7 +273,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
-            user.Id, null, null, null, null, null,
+            user.Id, null, null, null, null, null, null,
             null, null, null, null, null, 5);
 
         var result = await _handler.HandleAsync(query);
