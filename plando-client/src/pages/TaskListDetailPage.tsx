@@ -1,7 +1,10 @@
 import { useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
-import { getTaskItemByUserId } from '../services/taskItemService';
+import { 
+    getTaskItemByUserId,
+    completeTaskItem, 
+    deleteTaskItem } from '../services/taskItemService';
 
 import { TaskItem, PagedResultDto } from '../types';
 
@@ -20,6 +23,39 @@ export const TaskListDetailPage = () => {
         };
         fetchDate();
     }, []);
+
+        const handleComplete = async (id: string) => {
+        await completeTaskItem(id);
+        setTaskItems(
+            prev => prev ? {
+            ...prev,
+            items: prev.items.map(item => item.id === id ? 
+                { ...item, isCompleted: true, completedAt: new Date() } : item)
+        } : null);
+    };
+
+    const handleDelete = async (id: string) => {
+        await deleteTaskItem(id);
+        setTaskItems(
+            prev => prev ? {
+            ...prev,
+            items: prev.items.filter(item => item.id !== id),
+            totalCount: prev.totalCount - 1
+        } : null);
+    };
+
+    const getItemClassName = (item: TaskItem) : string => {
+        const now = new Date();
+        const due = new Date(item.dueDate);
+
+        if(item.isCompleted && item.completedAt && new Date(item.completedAt) <= due)
+            return "border p-4 rounded bg-green-100";
+        if(item.isCompleted && item.completedAt && new Date(item.completedAt) > due)
+            return "border p-4 rounded bg-gray-100";
+        if(!item.isCompleted && now > due)
+            return "border p-4 rounded bg-red-100";
+        return "border p-4 rounded bg-yellow-100";
+    };
 
     return (
         <section className="p-8">
@@ -41,10 +77,10 @@ export const TaskListDetailPage = () => {
                     
                 </div>
 
-                                {taskItems?.items.map(item => (
+                {taskItems?.items.map(item => (
                     <div key={item.id} 
                         className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center`}>
+                            items-start md:items-center ${getItemClassName(item)}`}>
 
                         <div className="flex-1 justify-center text-center">
                             {item.title}
@@ -70,6 +106,18 @@ export const TaskListDetailPage = () => {
                         
                         <div className="flex-1 justify-center text-center">
                             {item.completedAt ? new Date(item.completedAt).toLocaleDateString() : '-'}
+                        </div>
+
+                        <div className="flex gap-2">
+
+                            <button 
+                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                onClick={() => handleComplete(item.id)}>Complete</button>
+
+                            <button 
+                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                onClick={() => handleDelete(item.id)}>Delete</button>
+
                         </div>
 
                     </div>                
