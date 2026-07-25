@@ -1,7 +1,9 @@
+import React from 'react';
+
 export type Guid = string;
 export type TaskListColor = number;
 
-export interface User{
+export interface User {
   id: Guid;
   email: string;
   createdAt: Date;
@@ -9,7 +11,7 @@ export interface User{
   taskLists: TaskList[]
 }
 
-export interface TaskItem{
+export interface TaskItem {
   id: Guid;
   title: string;
   description: string;
@@ -22,7 +24,7 @@ export interface TaskItem{
   startDate: Date | null;
 }
 
-export interface TaskList{
+export interface TaskList {
   id: Guid;
   name: string;
   color: TaskListColor;
@@ -37,4 +39,11 @@ export interface PagedResultDto<T> {
   page: number;
   pageSize: number;
   totalPages: number;
+}
+
+export interface UseTaskItemsReturn {
+  taskItems: PagedResultDto<TaskItem> | null;
+  setTaskItems: React.Dispatch<React.SetStateAction<PagedResultDto<TaskItem> | null>>;
+  handleComplete: (id: string) => Promise<void>;
+  handleDelete: (id: string) => Promise<void>;
 }
