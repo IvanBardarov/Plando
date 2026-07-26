@@ -4,17 +4,19 @@ import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
-import { Guid } from '../types';
+import { FilterValues } from '../types';
+import { FilterTaskItemsForm } from '../components/FilterTaskItemsForm';
+import { Pagination } from '../components/Pagination';
 
 export const DashboardPage = () => {
-
-    const [showFilter, setShowFilter] = useState(false);
 
     const { taskItems, setTaskItems, handleComplete, handleDelete } = useTaskItems();
 
     const navigate = useNavigate();
-    const [page, setPage] = useState<number | null>(null);
+
     const [pageSize] = useState<number | null>(null);
+
+    const [currentFilters, setCurrentFilters] = useState<FilterValues | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -25,48 +27,6 @@ export const DashboardPage = () => {
         };
         fetchData();
     }, []);
-
-    // for Filter form
-    const [filterTitle, setFilterTitle] = useState('');
-    const [filterDescription, setFilterDescription] = useState('');
-    const [filterTaskListId, setFilterTaskListId] = useState<Guid | null>(null);
-
-    const [createdAtFrom, setCreatedAtFrom] = useState<Date | null>(null);
-    const [createdAtTo, setCreatedAtTo] = useState<Date | null>(null);
-    const [dueDateFrom, setDueDateFrom] = useState<Date | null>(null);
-    const [dueDateTo, setDueDateTo] = useState<Date | null>(null);
-    const [completedAtFrom, setCompletedAtFrom] = useState<Date | null>(null);
-    const [completedAtTo, setCompletedAtTo] = useState<Date | null>(null);
-    const [isCompleted, setIsCompleted] = useState<boolean | null>(null);
-
-    const handleFilter = async (e: React.SyntheticEvent) => {
-        e.preventDefault();
-        const items = await getTaskItemByUserId(
-            filterTaskListId,
-            filterTitle,
-            filterDescription,
-            createdAtFrom,
-            createdAtTo,
-            dueDateFrom,
-            dueDateTo,
-            completedAtFrom,
-            completedAtTo,
-            isCompleted,
-            page,
-            pageSize
-        );
-        setTaskItems(items);
-    };
-
-    const handlePageChange = async (newPage: number) => {
-        setPage(newPage);
-        const items = await getTaskItemByUserId(
-            filterTaskListId, filterTitle, filterDescription, createdAtFrom, createdAtTo,
-            dueDateFrom, dueDateTo, completedAtFrom, completedAtTo,
-            isCompleted, newPage, pageSize
-        );
-        setTaskItems(items);
-    };
 
     return (
         <section className="p-8">
@@ -85,124 +45,9 @@ export const DashboardPage = () => {
                 setTaskItems(items);
             }} />
 
-            <div>
-                <button onClick={() => setShowFilter(!showFilter)}>
-                    ▼ Show Filter
-                </button>
-                {showFilter &&
-                    <form onSubmit={handleFilter}
-                        className="flex flex-col gap-4 mb-8 w-full border p-2">
-
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-
-                            <div className="flex flex-col gap-1 md:col-span-2">
-
-                                <label>Title</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="text" onChange={e => setFilterTitle(e.target.value)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1 md:col-span-2">
-
-                                <label>Description</label>
-                                <textarea
-                                    rows={1}
-                                    className="border rounded p-2"
-                                    onChange={e => setFilterDescription(e.target.value)}></textarea>
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>From Date of Creation</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setCreatedAtFrom(e.target.value ? new Date(e.target.value) : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>To Date of Creation</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setCreatedAtTo(e.target.value ? new Date(e.target.value) : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>From Due Date</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setDueDateFrom(e.target.value ? new Date(e.target.value) : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>To Due Date</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setDueDateTo(e.target.value ? new Date(e.target.value) : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>From Date of Completion</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setCompletedAtFrom(e.target.value ? new Date(e.target.value)
-                                            : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>To Date of Completion</label>
-                                <input
-                                    className="border rounded p-2"
-                                    type="date" onChange={e =>
-                                        setCompletedAtTo(e.target.value ? new Date(e.target.value) : null)} />
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <label>Is Task Competed</label>
-                                <select className="border rounded p-2"
-                                    onChange={e =>
-                                        setIsCompleted(e.target.value === ''
-                                            ? null : e.target.value === 'true')}>
-                                    <option value="">All</option>
-                                    <option value="true">Yes</option>
-                                    <option value="false">No</option>
-                                </select>
-
-                            </div>
-
-                            <div className="flex flex-col gap-1">
-
-                                <button
-                                    className="bg-blue-500 text-white px-4 py-2 rounded mt-7">
-                                    Filter
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </form>
-                }
-            </div>
+            <FilterTaskItemsForm
+                onFilter={async (items) => setTaskItems(items)}
+                onFiltersChange={setCurrentFilters} />
 
             <div className="flex flex-col gap-4">
 
@@ -264,21 +109,12 @@ export const DashboardPage = () => {
                     </div>
                 ))}
 
-                <div className="flex gap-2 items-center justify-center mt-4">
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-                        disabled={taskItems?.page === 1}
-                        onClick={() => handlePageChange(taskItems!.page - 1)}>
-                        Previous
-                    </button>
-                    <span>{taskItems?.page} / {taskItems?.totalPages}</span>
-                    <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
-                        disabled={taskItems?.page === taskItems?.totalPages}
-                        onClick={() => handlePageChange(taskItems!.page + 1)}>
-                        Next
-                    </button>
-                </div>
+                {taskItems && (
+                    <Pagination
+                        taskItems={taskItems}
+                        filters={currentFilters}
+                        onPageChange={setTaskItems} />
+                )}
 
             </div>
 

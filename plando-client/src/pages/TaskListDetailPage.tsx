@@ -1,9 +1,12 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
+import { FilterValues } from '../types';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
+import { FilterTaskItemsForm } from '../components/FilterTaskItemsForm';
+import { Pagination } from '../components/Pagination';
 
 export const TaskListDetailPage = () => {
 
@@ -11,6 +14,8 @@ export const TaskListDetailPage = () => {
     const { id } = params;
 
     const { taskItems, setTaskItems, handleComplete, handleDelete } = useTaskItems();
+
+    const [currentFilters, setCurrentFilters] = useState<FilterValues | null>(null);
 
     useEffect(() => {
         const fetchDate = async () => {
@@ -34,6 +39,11 @@ export const TaskListDetailPage = () => {
                     );
                     setTaskItems(items);
                 }} />
+
+            <FilterTaskItemsForm
+                defaultTaskListId={id}
+                onFilter={async (items) => setTaskItems(items)}
+                onFiltersChange={setCurrentFilters} />
 
             <div className="flex flex-col gap-4">
 
@@ -95,6 +105,13 @@ export const TaskListDetailPage = () => {
 
                     </div>
                 ))}
+
+                {taskItems && (
+                    <Pagination
+                        taskItems={taskItems}
+                        filters={currentFilters}
+                        onPageChange={setTaskItems} />
+                )}
 
             </div>
 

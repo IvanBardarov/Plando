@@ -47,3 +47,18 @@ export interface UseTaskItemsReturn {
   handleComplete: (id: string) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
 }
+
+export interface FilterValues {
+  taskListId: Guid | null;
+  title: string | null;
+  description: string | null;
+  createdAtFrom: Date | null;
+  createdAtTo: Date | null;
+  dueDateFrom: Date | null;
+  dueDateTo: Date | null;
+  completedAtFrom: Date | null;
+  completedAtTo: Date | null;
+  isCompleted: boolean | null;
+  page: number | null;
+  pageSize: number | null;
+}
