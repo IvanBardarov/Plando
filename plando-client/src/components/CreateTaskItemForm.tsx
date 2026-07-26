@@ -5,9 +5,10 @@ import { Guid, TaskItem, PagedResultDto, TaskList } from '../types';
 
 interface CreateTaskItemFormProps {
     onCreate: (item: TaskItem) => void;
+    defaultTaskListId?: Guid;
 }
 
-export const CreateTaskItemForm = ({ onCreate }: CreateTaskItemFormProps) => {
+export const CreateTaskItemForm = ({ onCreate, defaultTaskListId }: CreateTaskItemFormProps) => {
 
     const [showCreate, setShowCreate] = useState(false);
 
@@ -18,7 +19,8 @@ export const CreateTaskItemForm = ({ onCreate }: CreateTaskItemFormProps) => {
     const [createDescription, setCreateDescription] = useState('');
     const [createStartDate, setCreateStartDate] = useState('');
     const [createDueDate, setCreateDueDate] = useState('');
-    const [createTaskListId, setCreateTaskListId] = useState<Guid | null>(null);
+    const [createTaskListId, setCreateTaskListId] =
+        useState<Guid | null>(defaultTaskListId ?? null);
     const [pageSize] = useState<number | null>(null);
 
     useEffect(() => {
@@ -121,6 +123,8 @@ export const CreateTaskItemForm = ({ onCreate }: CreateTaskItemFormProps) => {
 
                     <label>Task List</label>
                     <select className="border rounded p-2 w-56 shrink-0"
+                        disabled={!!defaultTaskListId}
+                        value={createTaskListId || ''}
                         onChange={e => setCreateTaskListId(e.target.value)}>
                         <option value="">None</option>
                         {taskLists?.map(list => (

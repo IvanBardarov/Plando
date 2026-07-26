@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
+import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
 
 export const TaskListDetailPage = () => {
 
@@ -18,12 +19,21 @@ export const TaskListDetailPage = () => {
             setTaskItems(items);
         };
         fetchDate();
-    }, []);    
+    }, []);
 
     return (
         <section className="p-8">
 
             <h5>Task List Detail Page</h5>
+
+            <CreateTaskItemForm
+                defaultTaskListId={id}
+                onCreate={async () => {
+                    const items = await getTaskItemByUserId(
+                        id || null, null, null, null, null, null, null, null, null, null, null, null
+                    );
+                    setTaskItems(items);
+                }} />
 
             <div className="flex flex-col gap-4">
 
