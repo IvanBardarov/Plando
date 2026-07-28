@@ -86,7 +86,7 @@ export const FilterTaskItemsForm =
                 ▼ Show Filter
             </button>
             {showFilter &&
-                <form onSubmit={handleFilter}
+                <form aria-label="filter-tasks-form" onSubmit={handleFilter}
                     className="flex flex-col gap-4 mb-8 w-full border p-2">
 
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
