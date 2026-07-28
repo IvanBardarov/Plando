@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
-import { DashboardPage } from './pages/DashboardPage';
+import { TasksPage } from './pages/TasksPage';
 import { TaskListsPage } from './pages/TaskListsPage';
 import { TaskListDetailPage } from './pages/TaskListDetailPage';
 
@@ -13,9 +13,9 @@ function App() {
         <Route path="/" element={<Navigate to="login" />}/>
         <Route path="/login" element={<LoginPage />}/>
         <Route path="/register" element={<RegisterPage />}/>
-        <Route path="/dashboard" element={<DashboardPage />}/>
-        <Route path="/tasklists" element={<TaskListsPage/>} />
-        <Route path="/tasklists/:id" element={<TaskListDetailPage/>}/>
+        <Route path="/tasks" element={<TasksPage />}/>
+        <Route path="/tasklists" element={<TaskListsPage/>}/>
+        <Route path="/tasklists/:id" element={<TaskListDetailPage />}/>
       </Routes>
     </BrowserRouter>
   );

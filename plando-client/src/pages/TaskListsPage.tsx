@@ -67,8 +67,8 @@ export const TaskListsPage = () => {
 
             <div className="flex justify-end mb-4">
                 <button className="bg-green-500 text-white px-4 py-2 rounded"
-                    onClick={() => navigate('/dashboard')}>
-                    Task Items
+                    onClick={() => navigate('/tasks')}>
+                    Tasks
                 </button>
             </div>
 

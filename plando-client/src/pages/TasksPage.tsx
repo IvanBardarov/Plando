@@ -8,7 +8,7 @@ import { FilterValues } from '../types';
 import { FilterTaskItemsForm } from '../components/FilterTaskItemsForm';
 import { Pagination } from '../components/Pagination';
 
-export const DashboardPage = () => {
+export const TasksPage = () => {
 
     const { taskItems, setTaskItems, handleComplete, handleDelete } = useTaskItems();
 

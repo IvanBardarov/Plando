@@ -21,7 +21,7 @@ export const LoginPage = () => {
 
         localStorage.setItem('userId', userId);
         
-        navigate('/dashboard');
+        navigate('/tasks');
     };
 
     return (
