@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { createTaskItem } from '../services/taskItemService';
 import { getTaskListByUserId } from '../services/taskListService';
-import { Guid, TaskItem, PagedResultDto, TaskList } from '../types';
+import { Guid, TaskItem, TaskList } from '../types';
 
 interface CreateTaskItemFormProps {
     onCreate: (item: TaskItem) => void;
@@ -86,7 +86,7 @@ export const CreateTaskItemForm = ({ onCreate, defaultTaskListId }: CreateTaskIt
                 ▼ Create Task
             </button>
             {showCreate &&
-                <form onSubmit={handleSubmit}
+                <form aria-label="create-task-form" onSubmit={handleSubmit}
                     className="flex flex-col md:flex-row items-center gap-2 mb-8 w-full">
 
                     <label>Title</label>
