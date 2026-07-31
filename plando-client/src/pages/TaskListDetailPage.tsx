@@ -15,7 +15,6 @@ export const TaskListDetailPage = () => {
 
     const { taskItems, setTaskItems, handleComplete, handleDelete } = useTaskItems();
 
-    // const [currentFilters, setCurrentFilters] = useState<FilterValues | null>(null);
     const [currentFilters, setCurrentFilters] = useState<FilterValues | null>({
         taskListId: id || null,
         title: null,

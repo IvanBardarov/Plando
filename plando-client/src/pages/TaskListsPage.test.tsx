@@ -1,6 +1,5 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TaskList } from '../types';
 import { TaskListsPage } from './TaskListsPage';
 
 jest.mock('../services/taskListService', () => ({
