@@ -74,7 +74,7 @@ export const TaskListsPage = () => {
 
             <div>
                 <button onClick={() => setShowCreate(!showCreate)}>
-                    ▼ Create Task
+                    ▼ Create List
                 </button>
                 {showCreate && 
                     <form onSubmit={handleSubmit}
