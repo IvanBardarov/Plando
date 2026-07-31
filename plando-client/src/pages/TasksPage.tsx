@@ -30,7 +30,7 @@ export const TasksPage = () => {
 
     return (
         <section className="p-8">
-
+            <script>console.log(taskItems);</script>            
             <div className="flex justify-end mb-4">
                 <button className="bg-green-500 text-white px-4 py-2 rounded"
                     onClick={() => navigate('/tasklists')}>
