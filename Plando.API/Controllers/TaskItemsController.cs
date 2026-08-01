@@ -12,20 +12,23 @@ namespace Plando.API.Controllers;
 [Authorize]
 public class TaskItemsController : ControllerBase
 {
-    private readonly GetTaskItemsByUserIdQueryHandler _getQuery;
+    private readonly GetTaskItemsByUserIdQueryHandler _getTaskByUserIdQuery;
     private readonly CreateTaskItemCommandHandler _createHandler;
     private readonly CompleteTaskItemCommandHandler _completeHandler;
     private readonly DeleteTaskItemCommandHandler _deleteHandler;
+    private readonly GetTaskItemByIdQueryHandler _getTaskByIdQuery;
 
-    public TaskItemsController(GetTaskItemsByUserIdQueryHandler getQuery,
+    public TaskItemsController(GetTaskItemsByUserIdQueryHandler getTaskByUserIdQuery,
         CreateTaskItemCommandHandler createHandler,
         CompleteTaskItemCommandHandler completeHandler,
-        DeleteTaskItemCommandHandler deleteHandler)
+        DeleteTaskItemCommandHandler deleteHandler,
+        GetTaskItemByIdQueryHandler getTaskByIdQuery)
     {
-        _getQuery = getQuery;
+        _getTaskByUserIdQuery = getTaskByUserIdQuery;
         _createHandler = createHandler;
         _completeHandler = completeHandler;
         _deleteHandler = deleteHandler;
+        _getTaskByIdQuery = getTaskByIdQuery;
     }
 
     [HttpGet]
@@ -48,7 +51,7 @@ public class TaskItemsController : ControllerBase
         if (!Guid.TryParse(userIdString, out var userId))
             return Unauthorized();
 
-        return Ok(await _getQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
+        return Ok(await _getTaskByUserIdQuery.HandleAsync(new GetTaskItemsByUserIdQuery(
         userId,
         taskListId,
         title,
@@ -79,4 +82,9 @@ public class TaskItemsController : ControllerBase
     [Route("{id}/complete")]
     public async Task<ActionResult<TaskItemDto>> Complete(Guid id) =>
         await _completeHandler.HandleAsync(new CompleteTaskItemCommand(id));
+
+    [HttpGet]
+    [Route("{id}/details")]
+    public async Task<ActionResult<TaskItemDto>> Details(Guid id) =>
+        await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
 }
