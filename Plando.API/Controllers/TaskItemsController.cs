@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.TaskItems;
+using Plando.Domain.Exceptions;
 using System.Security.Claims;
 
 namespace Plando.API.Controllers;
@@ -85,6 +86,16 @@ public class TaskItemsController : ControllerBase
 
     [HttpGet]
     [Route("{id}/details")]
-    public async Task<ActionResult<TaskItemDto>> Details(Guid id) =>
-        await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+    public async Task<ActionResult<TaskItemDto>> Details(Guid id)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItem.UserId != userId)
+            return Forbid();
+
+        return Ok(taskItem);
+    }        
 }
