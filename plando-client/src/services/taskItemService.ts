@@ -44,3 +44,8 @@ export const deleteTaskItem = async (id: Guid) : Promise<null> => {
     const response = await instance.delete(`/TaskItems/${id}`);
     return response.data;
 };
+
+export const getTaskItemById = async(id: Guid) : Promise<TaskItem> => {
+    const response = await instance.get(`/TaskItems/${id}/details`);
+    return response.data;
+};

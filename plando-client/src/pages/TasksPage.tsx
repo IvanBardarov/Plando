@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getTaskItemByUserId } from '../services/taskItemService';
+import { getTaskItemByUserId, getTaskItemById } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
@@ -30,7 +30,7 @@ export const TasksPage = () => {
 
     return (
         <section className="p-8">
-            <script>console.log(taskItems);</script>            
+            <script>console.log(taskItems);</script>
             <div className="flex justify-end mb-4">
                 <button className="bg-green-500 text-white px-4 py-2 rounded"
                     onClick={() => navigate('/tasklists')}>
@@ -67,7 +67,8 @@ export const TasksPage = () => {
                 {taskItems?.items.map(item => (
                     <div key={item.id}
                         className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center ${getItemClassName(item)}`}>
+                            items-start md:items-center ${getItemClassName(item)}`}
+                        onClick={async () => navigate(`/tasks/${item.id}/details`)}>
 
                         <div className="flex-1 justify-center text-center">
                             {item.title}

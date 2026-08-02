@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
@@ -12,6 +13,8 @@ export const TaskListDetailPage = () => {
 
     const params = useParams();
     const { id } = params;
+
+    const navigate = useNavigate();
 
     const { taskItems, setTaskItems, handleComplete, handleDelete } = useTaskItems();
 
@@ -76,7 +79,8 @@ export const TaskListDetailPage = () => {
                 {taskItems?.items.map(item => (
                     <div key={item.id}
                         className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center ${getItemClassName(item)}`}>
+                            items-start md:items-center ${getItemClassName(item)}`}
+                        onClick={() => navigate(`/tasks/${item.id}/details`)}>
 
                         <div className="flex-1 justify-center text-center">
                             {item.title}
