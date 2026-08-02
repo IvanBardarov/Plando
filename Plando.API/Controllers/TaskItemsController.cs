@@ -71,18 +71,50 @@ public class TaskItemsController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public async Task<ActionResult<TaskItemDto>> Create([FromBody] CreateTaskItemCommand command) =>
-        await _createHandler.HandleAsync(command);
+    public async Task<ActionResult<TaskItemDto>> Create([FromBody] CreateTaskItemCommand command)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        var newCommand = command with { UserId = userId };
+        return await _createHandler.HandleAsync(newCommand);
+    }
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task Delete(Guid id) =>
+    public async Task<ActionResult> Delete(Guid id)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItem.UserId != userId)
+            return Forbid();
+
         await _deleteHandler.HandleAsync(new DeleteTaskItemCommand(id));
+
+        return Ok();
+    }
 
     [HttpPut]
     [Route("{id}/complete")]
-    public async Task<ActionResult<TaskItemDto>> Complete(Guid id) =>
-        await _completeHandler.HandleAsync(new CompleteTaskItemCommand(id));
+    public async Task<ActionResult<TaskItemDto>> Complete(Guid id)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItem.UserId != userId)
+            return Forbid();
+
+        taskItem = await _completeHandler.HandleAsync(new CompleteTaskItemCommand(id));
+
+        return Ok(taskItem);
+    }
+
 
     [HttpGet]
     [Route("{id}/details")]
@@ -97,5 +129,5 @@ public class TaskItemsController : ControllerBase
             return Forbid();
 
         return Ok(taskItem);
-    }        
+    }
 }
