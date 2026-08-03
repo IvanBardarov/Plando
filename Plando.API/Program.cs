@@ -40,6 +40,7 @@ builder.Services.AddScoped<CompleteTaskItemCommandHandler>();
 builder.Services.AddScoped<DeleteTaskItemCommandHandler>();
 builder.Services.AddScoped<GetTaskItemsByUserIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemByIdQueryHandler>();
+builder.Services.AddScoped<UpdateTaskItemCommandHandler>();
 
 // TaskList handlers
 builder.Services.AddScoped<CreateTaskListCommandHandler>();

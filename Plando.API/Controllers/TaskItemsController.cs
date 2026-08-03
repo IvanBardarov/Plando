@@ -18,18 +18,21 @@ public class TaskItemsController : ControllerBase
     private readonly CompleteTaskItemCommandHandler _completeHandler;
     private readonly DeleteTaskItemCommandHandler _deleteHandler;
     private readonly GetTaskItemByIdQueryHandler _getTaskByIdQuery;
+    private readonly UpdateTaskItemCommandHandler _updateHandler;
 
     public TaskItemsController(GetTaskItemsByUserIdQueryHandler getTaskByUserIdQuery,
         CreateTaskItemCommandHandler createHandler,
         CompleteTaskItemCommandHandler completeHandler,
         DeleteTaskItemCommandHandler deleteHandler,
-        GetTaskItemByIdQueryHandler getTaskByIdQuery)
+        GetTaskItemByIdQueryHandler getTaskByIdQuery,
+        UpdateTaskItemCommandHandler updateHandler)
     {
         _getTaskByUserIdQuery = getTaskByUserIdQuery;
         _createHandler = createHandler;
         _completeHandler = completeHandler;
         _deleteHandler = deleteHandler;
         _getTaskByIdQuery = getTaskByIdQuery;
+        _updateHandler = updateHandler;
     }
 
     [HttpGet]
@@ -89,8 +92,8 @@ public class TaskItemsController : ControllerBase
         if (!Guid.TryParse(userIdString, out Guid userId))
             return Unauthorized();
 
-        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
-        if (taskItem.UserId != userId)
+        var taskItemDto = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItemDto.UserId != userId)
             return Forbid();
 
         await _deleteHandler.HandleAsync(new DeleteTaskItemCommand(id));
@@ -106,13 +109,13 @@ public class TaskItemsController : ControllerBase
         if (!Guid.TryParse(userIdString, out Guid userId))
             return Unauthorized();
 
-        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
-        if (taskItem.UserId != userId)
+        var taskItemDto = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItemDto.UserId != userId)
             return Forbid();
 
-        taskItem = await _completeHandler.HandleAsync(new CompleteTaskItemCommand(id));
+        taskItemDto = await _completeHandler.HandleAsync(new CompleteTaskItemCommand(id));
 
-        return Ok(taskItem);
+        return Ok(taskItemDto);
     }
 
 
@@ -124,10 +127,28 @@ public class TaskItemsController : ControllerBase
         if (!Guid.TryParse(userIdString, out Guid userId))
             return Unauthorized();
 
-        var taskItem = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
-        if (taskItem.UserId != userId)
+        var taskItemDto = await _getTaskByIdQuery.HandleAsync(new GetTaskItemByIdQuery(id));
+        if (taskItemDto.UserId != userId)
             return Forbid();
 
-        return Ok(taskItem);
+        return Ok(taskItemDto);
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<ActionResult<TaskItemDto>> Update([FromBody] UpdateTaskItemCommand command)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var taskItemDto = await _getTaskByIdQuery
+            .HandleAsync(new GetTaskItemByIdQuery(command.Id));
+        if (taskItemDto.UserId != userId)
+            return Forbid();
+
+        taskItemDto = await _updateHandler.HandleAsync(command);
+
+        return Ok(taskItemDto);
     }
 }

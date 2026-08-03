@@ -23,25 +23,10 @@ public sealed class TaskItem
         string title, string description, DateTime dueDate, User user, 
         DateTime? startDate, TaskList? taskList = null)
     {
-        if (string.IsNullOrWhiteSpace(title))
-            throw new DomainException("TaskItem.Create: title can not be empty!");
-
-        if (string.IsNullOrWhiteSpace(description))
-            throw new DomainException("TaskItem.Create: description can not be empty!");
-
-        if (dueDate == DateTime.MinValue)
-            throw new DomainException($"TaskItem.Create: dueDate can not be {dueDate}!");
-
         if (user is null)
-            throw new DomainException("TaskItem: User can not be null!");
+            throw new DomainException("TaskItem.Create: User can not be null!");
 
-        if (startDate is not null && startDate.Value.Date < DateTime.UtcNow.Date)
-            throw new DomainException("Start date of the task can not be older" +
-                " than the date of task creation!");
-
-        if (startDate is not null && startDate > dueDate)
-            throw new DomainException("Start date of the task can not be newer" +
-                " than the due date of the task!");
+        Validate("Create", title, description, dueDate, startDate);
 
         // todo: to check if userId exists
 
@@ -67,16 +52,50 @@ public sealed class TaskItem
         CompletedAt = DateTime.UtcNow;
     }
 
+    public void Update(string title, string description, DateTime? startDate,
+        DateTime dueDate, Guid? taskListId, TaskList? taskList)
+    {
+        Validate("Update", title, description, dueDate, startDate);
+
+        Title = title;
+        Description = description;
+        StartDate = startDate;
+        DueDate = dueDate;
+        TaskListId = taskListId;
+        TaskList = taskList;
+    }
+
+    private static void Validate(string methodName, string title, string description, 
+        DateTime dueDate, DateTime? startDate)
+    {
+        if (string.IsNullOrWhiteSpace(title))
+            throw new DomainException($"TaskItem.{methodName}: title can not be empty!");
+
+        if (string.IsNullOrWhiteSpace(description))
+            throw new DomainException($"TaskItem.{methodName}: description can not be empty!");
+
+        if (dueDate == DateTime.MinValue)
+            throw new DomainException($"TaskItem.{methodName}: dueDate can not be {dueDate}!");
+
+        if (startDate is not null && startDate.Value.Date < DateTime.UtcNow.Date)
+            throw new DomainException($"TaskItem.{methodName}: Start date of the task can not be older" +
+                " than the date of task creation!");
+
+        if (startDate is not null && startDate > dueDate)
+            throw new DomainException($"TaskItem.{methodName}: Start date of the task can not be newer" +
+                " than the due date of the task!");
+    }
+
     public Guid Id { get; init; }
-    public required string Title { get; init; }
-    public required string Description { get; init; }
-    public DateTime DueDate { get; init; }
+    public string Title { get; private set; } = null!;
+    public string Description { get; private set; } = null!;
+    public DateTime DueDate { get; private set; }
     public bool IsCompleted { get; private set; }
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
-    public required User User { get; init; }
-    public Guid? TaskListId { get; init; }    
-    public TaskList? TaskList { get; init; }
+    public User User { get; private set; } = null!;
+    public Guid? TaskListId { get; private set; }    
+    public TaskList? TaskList { get; private set; }
     public DateTime? CompletedAt { get; private set; }
-    public DateTime? StartDate { get; init; }
+    public DateTime? StartDate { get; private set; }
 }
