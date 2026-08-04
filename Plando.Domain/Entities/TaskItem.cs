@@ -26,7 +26,8 @@ public sealed class TaskItem
         if (user is null)
             throw new DomainException("TaskItem.Create: User can not be null!");
 
-        Validate("Create", title, description, dueDate, startDate);
+        var createdAt = DateTime.UtcNow;
+        Validate("Create", title, description, dueDate, startDate, createdAt);
 
         // todo: to check if userId exists
 
@@ -37,7 +38,7 @@ public sealed class TaskItem
             Description = description,
             DueDate = dueDate,
             IsCompleted = false,
-            CreatedAt = DateTime.UtcNow,
+            CreatedAt = createdAt,
             UserId = user.Id,
             User = user,
             TaskListId = taskList?.Id,
@@ -55,7 +56,7 @@ public sealed class TaskItem
     public void Update(string title, string description, DateTime? startDate,
         DateTime dueDate, Guid? taskListId, TaskList? taskList)
     {
-        Validate("Update", title, description, dueDate, startDate);
+        Validate("Update", title, description, dueDate, startDate, CreatedAt);
 
         Title = title;
         Description = description;
@@ -66,7 +67,7 @@ public sealed class TaskItem
     }
 
     private static void Validate(string methodName, string title, string description, 
-        DateTime dueDate, DateTime? startDate)
+        DateTime dueDate, DateTime? startDate, DateTime minStartDate)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new DomainException($"TaskItem.{methodName}: title can not be empty!");
@@ -77,7 +78,7 @@ public sealed class TaskItem
         if (dueDate == DateTime.MinValue)
             throw new DomainException($"TaskItem.{methodName}: dueDate can not be {dueDate}!");
 
-        if (startDate is not null && startDate.Value.Date < DateTime.UtcNow.Date)
+        if (startDate is not null && startDate.Value.Date < minStartDate.Date)
             throw new DomainException($"TaskItem.{methodName}: Start date of the task can not be older" +
                 " than the date of task creation!");
 
