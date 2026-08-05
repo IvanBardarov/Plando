@@ -12,16 +12,19 @@ public class CreateTaskItemCommandHandlerTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private readonly Mock<ITaskItemRepository> _taskItemRepositoryMock;
+    private readonly Mock<ITaskListRepository> _taskListRepositoryMock;
     private readonly CreateTaskItemCommandHandler _handler;
 
     public CreateTaskItemCommandHandlerTests()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
         _taskItemRepositoryMock = new Mock<ITaskItemRepository>();
+        _taskListRepositoryMock = new Mock<ITaskListRepository>();
 
         _handler = new CreateTaskItemCommandHandler(
             _taskItemRepositoryMock.Object,
-            _userRepositoryMock.Object
+            _userRepositoryMock.Object,
+            _taskListRepositoryMock.Object
             );
     }
 

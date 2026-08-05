@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Plando.API.Middleware;
+using Plando.Application.Commands.Notes;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Commands.Users;
 using Plando.Application.Interfaces;
+using Plando.Application.Queries.Notes;
 using Plando.Application.Queries.TaskItems;
 using Plando.Application.Queries.TaskLists;
 using Plando.Application.Queries.Users;
@@ -25,6 +27,7 @@ builder.Services.AddDbContext<PlandoDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
+builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
 builder.Services.AddControllers();
@@ -46,6 +49,12 @@ builder.Services.AddScoped<UpdateTaskItemCommandHandler>();
 builder.Services.AddScoped<CreateTaskListCommandHandler>();
 builder.Services.AddScoped<DeleteTaskListCommandHandler>();
 builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
+
+// Note handlers
+builder.Services.AddScoped<CreateNoteCommandHandler>();
+builder.Services.AddScoped<DeleteNoteCommandHandler>();
+builder.Services.AddScoped<GetNoteByIdQueryHandler>();
+builder.Services.AddScoped<GetNotesByTaskItemIdQueryHandler>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
