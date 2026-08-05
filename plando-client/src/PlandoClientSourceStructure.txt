@@ -1,0 +1,49 @@
+﻿Folder PATH listing
+Volume serial number is 000000D1 948A:3441
+C:.
+|   App.css
+|   App.tsx
+|   declarations.d.ts
+|   index.css
+|   index.tsx
+|   PlandoClientSourceStructure.txt
+|   react-app-env.d.ts
+|   
++---components
+|       CreateTaskItemForm.test.tsx
+|       CreateTaskItemForm.tsx
+|       FilterTaskItemsForm.test.tsx
+|       FilterTaskItemsForm.tsx
+|       Pagination.test.tsx
+|       Pagination.tsx
+|       
++---hooks
+|       useTaskItems.test.ts
+|       useTaskItems.ts
+|       
++---pages
+|       LoginPage.test.tsx
+|       LoginPage.tsx
+|       RegisterPage.test.tsx
+|       RegisterPage.tsx
+|       TaskItemDetailPage.tsx
+|       TaskListDetailPage.test.tsx
+|       TaskListDetailPage.tsx
+|       TaskListsPage.test.tsx
+|       TaskListsPage.tsx
+|       TasksPage.test.tsx
+|       TasksPage.tsx
+|       
++---services
+|       api.ts
+|       taskItemService.ts
+|       taskListService.ts
+|       userService.ts
+|       
++---types
+|       index.ts
+|       
+\---utils
+        taskItemUtils.test.ts
+        taskItemUtils.ts
+        

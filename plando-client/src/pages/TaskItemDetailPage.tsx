@@ -21,8 +21,8 @@ export const TaskItemDetailPage = () => {
         const fetchData = async () => {
             const taskItem = await getTaskItemById(id!);
             setTaskItem(taskItem);
-            setTitle(taskItem?.title);
-            setDescription(taskItem?.description);
+            setTitle(taskItem?.title ?? '');
+            setDescription(taskItem?.description ?? '');
             const lists = await getTaskListByUserId();
             setTaskLists(lists);
             setTaskListId(taskItem?.taskListId ?? null);
