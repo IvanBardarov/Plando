@@ -62,3 +62,11 @@ export interface FilterValues {
   page: number | null;
   pageSize: number | null;
 }
+
+export interface Note {
+  id: Guid;
+  content: string;
+  createdAt: Date;
+  taskItemId: Guid;
+  userId: Guid;
+}

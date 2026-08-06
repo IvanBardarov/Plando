@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import { getTaskItemById, updateTaskItem } from '../services/taskItemService';
-import { Guid, TaskItem, TaskList } from '../types';
+import { Guid, TaskItem, TaskList, Note } from '../types';
 import { getTaskListByUserId } from '../services/taskListService';
+import { createNote, getNotesByTaskItemId, deleteNote } from '../services/noteService';
 
 export const TaskItemDetailPage = () => {
 
@@ -17,6 +18,8 @@ export const TaskItemDetailPage = () => {
     const [taskLists, setTaskLists] = useState<TaskList[] | null>(null);
     const [taskListId, setTaskListId] = useState<Guid | null>(null);
 
+    const [notes, setNotes] = useState<Note[] | null>(null);
+
     useEffect(() => {
         const fetchData = async () => {
             const taskItem = await getTaskItemById(id!);
@@ -28,6 +31,8 @@ export const TaskItemDetailPage = () => {
             setTaskListId(taskItem?.taskListId ?? null);
             setStartDate(taskItem?.startDate ? new Date(taskItem?.startDate) : null);
             setDueDate(taskItem?.dueDate ? new Date(taskItem?.dueDate) : null);
+            const notes = await getNotesByTaskItemId(id!);
+            setNotes(notes);
         };
         fetchData();
     }, []);
@@ -38,6 +43,23 @@ export const TaskItemDetailPage = () => {
             id!, title, description, startDate, dueDate!, taskListId);
 
         setTaskItem(item);
+    };
+
+    const [noteContent, setNoteContent] = useState('');
+
+    const handleNoteSubmit = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        const note = await createNote(noteContent, id!);
+
+        setNoteContent('');
+
+        const newNotes = [...(notes ?? []), note];
+        setNotes(newNotes);
+    };
+
+    const handleNoteDelete = async (id: Guid) => {
+        await deleteNote(id);
+        setNotes(prev => (prev ?? []).filter(note => note.id !== id));
     };
 
     return (
@@ -80,6 +102,25 @@ export const TaskItemDetailPage = () => {
                     <option key={list.id} value={list.id}>{list.name}</option>
                 ))}
             </select>
+
+            <form onSubmit={handleNoteSubmit}>
+                <textarea
+                    value={noteContent}
+                    onChange={e => setNoteContent(e.target.value)}></textarea>
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded"
+                    type="submit">Save Note</button>
+            </form>
+
+            {notes?.map(note => (
+                <div key={note.id}
+                    className="flex items-center gap-2">
+                    <div>{note.content}</div>
+                    <button
+                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleNoteDelete(note.id)}>Delete Note</button>
+                </div>
+            ))}
 
             <button
                 type="submit"
