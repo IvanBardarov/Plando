@@ -2,6 +2,24 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import { TaskItemDetailPage } from './TaskItemDetailPage';
 import { updateTaskItem } from '../services/taskItemService';
+import { getNotesByTaskItemId, createNote, deleteNote, getNoteById } from '../services/noteService';
+
+jest.mock('../services/noteService');
+
+beforeEach(() => {
+    (getNotesByTaskItemId as jest.Mock).mockResolvedValue([
+        {
+            id: '1',
+            content: 'Test note',
+            createdAt: new Date(),
+            taskItemId: '1',
+            userId: '1'
+        }
+    ]);
+    (createNote as jest.Mock).mockResolvedValue({});
+    (deleteNote as jest.Mock).mockResolvedValue({});
+    (getNoteById as jest.Mock).mockResolvedValue({});
+});
 
 jest.mock('../services/taskItemService', () => ({
     getTaskItemById: jest.fn().mockResolvedValue({}),
@@ -26,7 +44,7 @@ describe('TaskItemDetailPage', () => {
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: 'Save' })).toBeInTheDocument();
-        });        
+        });
     });
 
     it('should call updateTaskItem correctly', async () => {
@@ -36,6 +54,39 @@ describe('TaskItemDetailPage', () => {
 
         await waitFor(() => {
             expect(userTaskItemMock).toHaveBeenCalled();
+        });
+    });
+
+    it('should render notes correctly', async () => {
+        render(<TaskItemDetailPage />);
+
+        const noteText = await screen.findByText('Test note');
+
+        await waitFor(() => {
+            expect(noteText).toBeInTheDocument();
+            expect(screen.getByRole('button', { name: 'Delete Note' })).toBeInTheDocument();
+        });
+    });
+
+    it('should call create note correctly', async () => {
+        const createNoteMock = createNote;
+        render(<TaskItemDetailPage />);
+        fireEvent.click(screen.getByRole('button', { name: 'Save Note' }));
+
+        await waitFor(() => {
+            expect(createNoteMock).toHaveBeenCalled();
+        });
+    });
+
+    it('should call delete note correctly', async () => {
+        const deleteNoteMock = deleteNote;
+        render(<TaskItemDetailPage />);
+
+        const deleteButton = await screen.findByRole('button', { name: 'Delete Note' });
+        fireEvent.click(deleteButton);
+
+        await waitFor(() => {
+            expect(deleteNoteMock).toHaveBeenCalled();
         });
     });
 

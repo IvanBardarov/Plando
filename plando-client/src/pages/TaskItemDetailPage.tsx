@@ -22,17 +22,22 @@ export const TaskItemDetailPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const taskItem = await getTaskItemById(id!);
-            setTaskItem(taskItem);
-            setTitle(taskItem?.title ?? '');
-            setDescription(taskItem?.description ?? '');
-            const lists = await getTaskListByUserId();
-            setTaskLists(lists);
-            setTaskListId(taskItem?.taskListId ?? null);
-            setStartDate(taskItem?.startDate ? new Date(taskItem?.startDate) : null);
-            setDueDate(taskItem?.dueDate ? new Date(taskItem?.dueDate) : null);
-            const notes = await getNotesByTaskItemId(id!);
-            setNotes(notes);
+            try {
+                const taskItem = await getTaskItemById(id!);
+                setTaskItem(taskItem);
+                setTitle(taskItem?.title ?? '');
+                setDescription(taskItem?.description ?? '');
+                const lists = await getTaskListByUserId();
+                setTaskLists(lists);
+                setTaskListId(taskItem?.taskListId ?? null);
+                setStartDate(taskItem?.startDate ? new Date(taskItem?.startDate) : null);
+                setDueDate(taskItem?.dueDate ? new Date(taskItem?.dueDate) : null);
+                const notes = await getNotesByTaskItemId(id!);
+                setNotes(notes);
+            }
+            catch (e) {
+                console.error('fetchData error:', e);
+             }
         };
         fetchData();
     }, []);
