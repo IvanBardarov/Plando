@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, Link } from 'react-router-dom'
 import { getTaskItemById, updateTaskItem } from '../services/taskItemService';
 import { Guid, TaskItem, TaskList, Note } from '../types';
 import { getTaskListByUserId } from '../services/taskListService';
@@ -37,7 +37,7 @@ export const TaskItemDetailPage = () => {
             }
             catch (e) {
                 console.error('fetchData error:', e);
-             }
+            }
         };
         fetchData();
     }, []);
@@ -121,6 +121,7 @@ export const TaskItemDetailPage = () => {
                 <div key={note.id}
                     className="flex items-center gap-2">
                     <div>{note.content}</div>
+                    <Link to={`/notes/${note.id}`}>Details</Link>
                     <button
                         className="bg-red-500 text-white px-4 py-2 rounded"
                         onClick={() => handleNoteDelete(note.id)}>Delete Note</button>

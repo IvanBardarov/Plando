@@ -17,6 +17,11 @@ export const createNote = async (content: string, taskItemId: Guid):
     return response.data;
 }
 
+export const updateNote = async (id: Guid, content: string): Promise<Note> => {
+    const response = await instance.put('/Notes', { id, content });
+    return response.data;
+}
+
 export const deleteNote = async (id: Guid):
     Promise<null> => {
     const response = await instance.delete(`/Notes/${id}`);

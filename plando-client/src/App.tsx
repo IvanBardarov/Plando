@@ -6,6 +6,7 @@ import { TasksPage } from './pages/TasksPage';
 import { TaskListsPage } from './pages/TaskListsPage';
 import { TaskListDetailPage } from './pages/TaskListDetailPage';
 import { TaskItemDetailPage } from './pages/TaskItemDetailPage';
+import { NoteDetailPage } from './pages/NoteDetailPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/tasklists" element={<TaskListsPage />} />
         <Route path="/tasklists/:id" element={<TaskListDetailPage />} />
         <Route path="/tasks/:id/details" element={<TaskItemDetailPage />} />
+        <Route path="/notes/:id" element={<NoteDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
