@@ -15,19 +15,22 @@ namespace Plando.API.Controllers;
 public class NotesController : ControllerBase
 {
     private readonly CreateNoteCommandHandler _createNoteCommandHandler;
+    private readonly UpdateNoteCommandHandler _updateNoteCommandHandler;
     private readonly DeleteNoteCommandHandler _deleteNoteCommandHandler;
     private readonly GetNotesByTaskItemIdQueryHandler _getNotesByTaskItemIdQueryHandler;
     private readonly GetNoteByIdQueryHandler _getNoteByIdQueryHandler;
-    private readonly GetTaskItemByIdQueryHandler _getTaskItemByIdQueryHandler;
+    private readonly GetTaskItemByIdQueryHandler _getTaskItemByIdQueryHandler;    
 
     public NotesController(
         CreateNoteCommandHandler createNoteCommandHandler,
+        UpdateNoteCommandHandler updateNoteCommandHandler,
         DeleteNoteCommandHandler deleteNoteCommandHandler,
         GetNotesByTaskItemIdQueryHandler getNotesByTaskItemIdQueryHandler,
         GetNoteByIdQueryHandler getNoteByIdQueryHandler,
         GetTaskItemByIdQueryHandler getTaskItemByIdQueryHandler)
     {
         _createNoteCommandHandler = createNoteCommandHandler;
+        _updateNoteCommandHandler = updateNoteCommandHandler;
         _deleteNoteCommandHandler = deleteNoteCommandHandler;
         _getNotesByTaskItemIdQueryHandler = getNotesByTaskItemIdQueryHandler;
         _getNoteByIdQueryHandler = getNoteByIdQueryHandler;
@@ -96,5 +99,20 @@ public class NotesController : ControllerBase
         await _deleteNoteCommandHandler.HandleAsync(new DeleteNoteCommand(id));
 
         return Ok();
+    }
+
+    [HttpPut]
+    [Route("")]
+    public async Task<ActionResult<NoteDto>> Update([FromBody] UpdateNoteCommand command)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var note = await _getNoteByIdQueryHandler.HandleAsync(command.Id);
+        if (note.UserId != userId)
+            return Forbid();
+
+        return await _updateNoteCommandHandler.HandleAsync(command);
     }
 }

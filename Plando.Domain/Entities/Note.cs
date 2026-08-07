@@ -21,6 +21,12 @@ public class Note
         };
     }
 
+    public void Update(string content)
+    {
+        Validate(content, TaskItemId, UserId);
+        Content = content;
+    }
+
     private static void Validate(string content, Guid taskItemId, Guid userId)
     {
         if (string.IsNullOrWhiteSpace(content))

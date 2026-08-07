@@ -52,6 +52,7 @@ builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
 
 // Note handlers
 builder.Services.AddScoped<CreateNoteCommandHandler>();
+builder.Services.AddScoped<UpdateNoteCommandHandler>();
 builder.Services.AddScoped<DeleteNoteCommandHandler>();
 builder.Services.AddScoped<GetNoteByIdQueryHandler>();
 builder.Services.AddScoped<GetNotesByTaskItemIdQueryHandler>();
