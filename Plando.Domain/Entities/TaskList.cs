@@ -35,10 +35,16 @@ public sealed class TaskList
 
     public void Update(string name, TaskListColor color)
     {
-        Validate("Update", name, User);
+        Validate("Update", name);
 
         Name = name;
         Color = color;
+    }
+
+    private static void Validate(string methodName, string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException($"TaskList.{methodName}: name can not be empty!");
     }
 
     private static void Validate(string methodName, string name, User user)

@@ -4,10 +4,11 @@ import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
-import { FilterValues } from '../types';
+import { FilterValues, TaskListColor } from '../types';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
 import { FilterTaskItemsForm } from '../components/FilterTaskItemsForm';
 import { Pagination } from '../components/Pagination';
+import { getTaskListById, updateTaskList, deleteTaskList } from '../services/taskListService';
 
 export const TaskListDetailPage = () => {
 
@@ -33,19 +34,67 @@ export const TaskListDetailPage = () => {
         pageSize: null
     });
 
+    const [name, setName] = useState('');
+    const [color, setColor] = useState<TaskListColor>();
+
     useEffect(() => {
         const fetchDate = async () => {
             const items = await getTaskItemByUserId(
                 id || null, null, null, null, null, null, null, null, null, null, null, null);
             setTaskItems(items);
+            const taskList = await getTaskListById(id!);
+            setName(taskList.name);
+            setColor(taskList.color);
         };
         fetchDate();
     }, []);
+
+    const handleSubmit = async (e: React.SyntheticEvent) => {
+        e.preventDefault();
+        const taskList = await updateTaskList(id!, name, color!);
+        setName(taskList.name);
+        setColor(taskList.color);
+    };
+
+    const handleTaskListDelete = async (id: string) => {
+        await deleteTaskList(id);
+        navigate('/tasklists');
+    };
 
     return (
         <section className="p-8">
 
             <h5>Task List Detail Page</h5>
+
+            <form onSubmit={handleSubmit}
+                className="flex flex-col md:flex-row items-center gap-2 mb-8 w-full">
+
+                <label>Task List Name</label>
+                <input
+                    type="text"
+                    value={name}
+                    onChange={e => setName(e.target.value)} />
+
+                <label>Task List Color</label>
+                <select
+                    value={color}
+                    onChange={e => setColor(Number(e.target.value))}>
+                    {Object.entries(TaskListColor).map(([key, value]) => (
+                        <option key={value} value={value}>{key}</option>
+                    ))}
+                </select>
+                <button
+                    type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded">
+                    Update Task List
+                </button>
+                <button
+                    className="bg-red-500 text-white px-4 py-2 rounded"
+                    onClick={() => handleTaskListDelete(id!)}>
+                    Delete
+                </button>
+
+            </form>
 
             <CreateTaskItemForm
                 defaultTaskListId={id}

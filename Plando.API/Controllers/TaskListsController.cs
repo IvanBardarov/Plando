@@ -42,6 +42,21 @@ public class TaskListsController : ControllerBase
         return Ok(await _getByUserIdQuery.HandleAsync(new GetTaskListsByUserIdQuery(userId)));
     }
 
+    [HttpGet]
+    [Route("{id}")]
+    public async Task<ActionResult<TaskListDto>> GetById(Guid id)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        var taskListDto = await _getByIdQuery.HandleAsync(new GetTaskListByIdQuery(id));
+        if (taskListDto.UserId != userId)
+            return Forbid();
+
+        return taskListDto;
+    }
+
     [HttpPost]
     [Route("")]
     public async Task<ActionResult<TaskListDto>> Create([FromBody] CreateTaskListCommand command) =>

@@ -1,6 +1,19 @@
 import React from 'react';
 
 export type Guid = string;
+
+export const TaskListColor = {
+    None: 0,
+    Red: 1,
+    Orange: 2,
+    Yellow: 3,
+    Green: 4,
+    Blue: 5,
+    Purple: 6,
+    Pink: 7,
+    Gray: 8
+} as const;
+
 export type TaskListColor = number;
 
 export interface User {
