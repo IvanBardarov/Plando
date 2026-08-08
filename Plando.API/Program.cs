@@ -39,16 +39,18 @@ builder.Services.AddScoped<GetUserByIdQueryHandler>();
 
 // TaskItem handlers
 builder.Services.AddScoped<CreateTaskItemCommandHandler>();
+builder.Services.AddScoped<UpdateTaskItemCommandHandler>();
 builder.Services.AddScoped<CompleteTaskItemCommandHandler>();
 builder.Services.AddScoped<DeleteTaskItemCommandHandler>();
 builder.Services.AddScoped<GetTaskItemsByUserIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemByIdQueryHandler>();
-builder.Services.AddScoped<UpdateTaskItemCommandHandler>();
 
 // TaskList handlers
 builder.Services.AddScoped<CreateTaskListCommandHandler>();
+builder.Services.AddScoped<UpdateTaskListCommandHandler>();
 builder.Services.AddScoped<DeleteTaskListCommandHandler>();
 builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
+builder.Services.AddScoped<GetTaskListByIdQueryHandler>();
 
 // Note handlers
 builder.Services.AddScoped<CreateNoteCommandHandler>();

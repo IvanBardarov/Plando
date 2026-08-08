@@ -1,5 +1,6 @@
 ﻿using Plando.Application.DTOs;
 using Plando.Application.Interfaces;
+using Plando.Domain.Entities;
 using Plando.Domain.Exceptions;
 
 namespace Plando.Application.Commands.TaskItems;
@@ -21,7 +22,7 @@ public class UpdateTaskItemCommandHandler
     {
         var taskItem = await _taskItemRepository.GetByIdAsync(command.Id);
 
-        Domain.Entities.TaskList? taskList = null;
+        TaskList? taskList = null;
         if (command.TaskListId is not null)
             taskList = await _taskListRepository.GetByIdAsync((Guid)command.TaskListId!);
 

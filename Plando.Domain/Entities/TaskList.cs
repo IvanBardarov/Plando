@@ -1,5 +1,5 @@
-﻿using Plando.Domain.Exceptions;
-using Plando.Domain.Enums;
+﻿using Plando.Domain.Enums;
+using Plando.Domain.Exceptions;
 
 namespace Plando.Domain.Entities;
 
@@ -20,11 +20,7 @@ public sealed class TaskList
     /// <exception cref="DomainException"></exception>
     public static TaskList Create(string name, TaskListColor color, User user)
     {
-        if (string.IsNullOrWhiteSpace(name))
-            throw new DomainException("TaskList.Create: name can not be empty!");
-
-        if (user is null)
-            throw new DomainException("TaskList.Create: user can not be null!");
+        Validate("Create", name, user);
 
         return new TaskList
         {
@@ -37,12 +33,29 @@ public sealed class TaskList
         };
     }
 
+    public void Update(string name, TaskListColor color)
+    {
+        Validate("Update", name, User);
+
+        Name = name;
+        Color = color;
+    }
+
+    private static void Validate(string methodName, string name, User user)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+            throw new DomainException($"TaskList.{methodName}: name can not be empty!");
+
+        if (user is null)
+            throw new DomainException($"TaskList.{methodName}: user can not be null!");
+    }
+
     public Guid Id { get; init; }
-    public required string Name { get; init; }
-    public TaskListColor Color { get; init; }
+    public string Name { get; private set; } = null!;
+    public TaskListColor Color { get; private set; }
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
-    public required User User { get; init; }
+    public User User { get; private set; } = null!;
     public ICollection<TaskItem> TaskItems { get; init; } = [];
 
 }
