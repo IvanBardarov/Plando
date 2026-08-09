@@ -1,6 +1,31 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { getTaskListByUserId, getTaskListById, updateTaskList, deleteTaskList } from '../services/taskListService';
 import { TaskListDetailPage } from './TaskListDetailPage';
+
+jest.mock('../services/taskListService');
+
+beforeEach(() => {
+    (getTaskListByUserId as jest.Mock).mockResolvedValue([]);
+    (getTaskListById as jest.Mock).mockResolvedValue({
+        id: 'test-list-id',
+        name: 'Test List',
+        color: 0,
+        createdAt: new Date(),
+        userId: '1',
+        taskItems: []
+    });
+    (updateTaskList as jest.Mock).mockResolvedValue({
+        id: 'test-list-id',
+        name: 'Test List',
+        color: 0,
+        createdAt: new Date(),
+        userId: '1',
+        taskItems: []
+    });
+    (deleteTaskList as jest.Mock).mockResolvedValue({});
+});
+
 
 jest.mock('../services/taskItemService', () => ({
     getTaskItemByUserId: jest.fn().mockResolvedValue({
@@ -8,10 +33,6 @@ jest.mock('../services/taskItemService', () => ({
     }),
     completeTaskItem: jest.fn().mockResolvedValue({}),
     deleteTaskItem: jest.fn().mockResolvedValue({})
-}));
-
-jest.mock('../services/taskListService', () => ({
-    getTaskListByUserId: jest.fn().mockResolvedValue([])
 }));
 
 jest.mock('react-router', () => ({
@@ -50,6 +71,35 @@ describe('TaskListDetailPage', () => {
             fireEvent.click(screen.getByRole('button', { name: '▼ Show Filter' }));
         });
         expect(screen.getByRole('button', { name: 'Filter' }));
+    });
+
+    it('should render update task list form correctly', async () => {
+        await act(async () => {
+            render(<TaskListDetailPage />);
+        });
+        expect(screen.getByRole('button', { name: 'Update Task List' })).toBeInTheDocument();
+    });
+
+    it('should call updateTaskList correctly', async () => {
+        const updateTaskListMock = updateTaskList;
+        await act(async () => {
+            render(<TaskListDetailPage />);
+        });
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Update Task List' }));
+        });
+        expect(updateTaskListMock).toHaveBeenCalled();
+    });
+
+    it('should call deleteTaskList correctly', async () => {
+        const deleteTaskListMock = deleteTaskList;
+        await act(async () => {
+            render(<TaskListDetailPage />);
+        });
+        await act(async () => {
+            fireEvent.click(screen.getByRole('button', { name: 'Delete Task List' }));
+        });
+        expect(deleteTaskListMock).toHaveBeenCalled();
     });
 
 });

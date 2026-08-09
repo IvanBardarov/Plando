@@ -34,7 +34,9 @@ jest.mock('../services/taskListService', () => ({
 }));
 
 jest.mock('react-router-dom', () => ({
-    useParams: () => ({ id: 'test-list-id' })
+    useParams: () => ({ id: 'test-list-id' }),
+    Link: ({ children, to }: { children: React.ReactNode, to: string }) => 
+        <a href={to}>{children}</a>
 }));
 
 describe('TaskItemDetailPage', () => {

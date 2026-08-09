@@ -35,7 +35,7 @@ export const TaskListDetailPage = () => {
     });
 
     const [name, setName] = useState('');
-    const [color, setColor] = useState<TaskListColor>();
+    const [color, setColor] = useState<TaskListColor>(0);
 
     useEffect(() => {
         const fetchDate = async () => {
@@ -91,7 +91,7 @@ export const TaskListDetailPage = () => {
                 <button
                     className="bg-red-500 text-white px-4 py-2 rounded"
                     onClick={() => handleTaskListDelete(id!)}>
-                    Delete
+                    Delete Task List
                 </button>
 
             </form>
