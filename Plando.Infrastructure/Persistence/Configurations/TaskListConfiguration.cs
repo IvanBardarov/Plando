@@ -20,7 +20,6 @@ public class TaskListConfiguration : IEntityTypeConfiguration<TaskList>
 
         // properties
         taskLists.Property(taskList => taskList.Name).IsRequired().HasMaxLength(255);
-        taskLists.Property(taskList => taskList.Color).HasConversion<short>();
         taskLists.Property(taskList => taskList.CreatedAt);
     }
 }

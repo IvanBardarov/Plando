@@ -3,7 +3,6 @@ using Moq;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Interfaces;
 using Plando.Domain.Entities;
-using Plando.Domain.Enums;
 using Plando.Domain.Exceptions;
 
 namespace Plando.Tests.Handlers;
@@ -37,8 +36,7 @@ public class CreateTaskListCommandHandlerTests
 
         var command = new CreateTaskListCommand(
             "My Task List",
-            user.Id, 
-            TaskListColor.Gray);
+            user.Id);
 
         var result = await _handler.HandleAsync(command);
 
@@ -54,8 +52,7 @@ public class CreateTaskListCommandHandlerTests
 
         var command = new CreateTaskListCommand(
             "My Task List",
-            Guid.NewGuid(),
-            TaskListColor.Gray);
+            Guid.NewGuid());
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
     }

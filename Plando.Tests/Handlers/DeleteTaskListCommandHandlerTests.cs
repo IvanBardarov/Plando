@@ -3,7 +3,6 @@ using Moq;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Interfaces;
 using Plando.Domain.Entities;
-using Plando.Domain.Enums;
 using Plando.Domain.Exceptions;
 
 namespace Plando.Tests.Handlers;
@@ -29,9 +28,7 @@ public class DeleteTaskListCommandHandlerTests
 
         var taskList = TaskList.Create(
             "My Task List",
-            TaskListColor.Gray,
-            user
-            );
+            user);
 
         _taskListRepositoryMock
             .Setup(s => s.GetByIdAsync(taskList.Id))

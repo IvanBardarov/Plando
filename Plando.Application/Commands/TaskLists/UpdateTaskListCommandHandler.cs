@@ -21,7 +21,7 @@ public class UpdateTaskListCommandHandler
             throw new DomainException($"There is no such a task list" +
                 $" with id: {command.Id}");
 
-        taskList.Update(command.Name, command.Color);
+        taskList.Update(command.Name);
         await _taskListRepository.SaveChangesAsync();
 
         return TaskListDto.FromEntity(taskList);

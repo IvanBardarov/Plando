@@ -1,5 +1,4 @@
-﻿using Plando.Domain.Enums;
-using Plando.Domain.Exceptions;
+﻿using Plando.Domain.Exceptions;
 
 namespace Plando.Domain.Entities;
 
@@ -10,15 +9,14 @@ public sealed class TaskList
     /// <summary>
     /// Factory method - a static method that encapsulates the creation and validation of an object,
     /// returning a fully initialized instance.
-    /// Creates a new TaskList with the given name, color and user.
+    /// Creates a new TaskList with the given name and user.
     /// Throws <see cref="DomainException"/> if any argument is invalid.
     /// </summary>
     /// <param name="name"></param>
-    /// <param name="color"></param>
     /// <param name="user"></param>
     /// <returns></returns>
     /// <exception cref="DomainException"></exception>
-    public static TaskList Create(string name, TaskListColor color, User user)
+    public static TaskList Create(string name, User user)
     {
         Validate("Create", name, user);
 
@@ -26,19 +24,17 @@ public sealed class TaskList
         {
             Id = Guid.NewGuid(),
             Name = name,
-            Color = color,
             CreatedAt = DateTime.UtcNow,
             UserId = user.Id,
             User = user
         };
     }
 
-    public void Update(string name, TaskListColor color)
+    public void Update(string name)
     {
         Validate("Update", name);
 
         Name = name;
-        Color = color;
     }
 
     private static void Validate(string methodName, string name)
@@ -58,7 +54,6 @@ public sealed class TaskList
 
     public Guid Id { get; init; }
     public string Name { get; private set; } = null!;
-    public TaskListColor Color { get; private set; }
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
     public User User { get; private set; } = null!;

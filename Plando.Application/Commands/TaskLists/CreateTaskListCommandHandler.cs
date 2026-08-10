@@ -24,7 +24,7 @@ public class CreateTaskListCommandHandler
         if (user is null)
             throw new DomainException("There is not such an user!");
 
-        var taskList = TaskList.Create(command.Name, command.Color, user);
+        var taskList = TaskList.Create(command.Name, user);
 
         await _taskListRepository.AddAsync(taskList);
         await _taskListRepository.SaveChangesAsync();

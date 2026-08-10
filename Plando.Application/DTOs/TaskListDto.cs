@@ -1,5 +1,4 @@
 ﻿using Plando.Domain.Entities;
-using Plando.Domain.Enums;
 
 namespace Plando.Application.DTOs;
 
@@ -12,7 +11,6 @@ public class TaskListDto
 
         this.Id = taskList.Id;
         this.Name = taskList.Name;
-        this.Color = taskList.Color;
         this.CreatedAt = taskList.CreatedAt;
         this.UserId = taskList.UserId;
         this.TaskItems = taskList.TaskItems?
@@ -27,7 +25,6 @@ public class TaskListDto
 
     public Guid Id { get; init; }
     public string? Name { get; init; }
-    public TaskListColor Color { get; init; }
     public DateTime CreatedAt { get; init; }
     public Guid UserId { get; init; }
     public ICollection<TaskItemDto> TaskItems { get; init; } = [];

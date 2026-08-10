@@ -3,7 +3,6 @@ using Moq;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.Interfaces;
 using Plando.Domain.Entities;
-using Plando.Domain.Enums;
 using Plando.Domain.Exceptions;
 
 namespace Plando.Tests.Handlers;
@@ -33,7 +32,6 @@ public class UpdateTaskItemCommandHandlerTests
 
         var taskList = TaskList.Create(
             "List 55",
-            TaskListColor.Green,
             user);
 
         var now = DateTime.UtcNow;

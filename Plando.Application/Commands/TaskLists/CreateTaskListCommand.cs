@@ -1,5 +1,3 @@
-﻿using Plando.Domain.Enums;
+﻿namespace Plando.Application.Commands.TaskLists;
 
-namespace Plando.Application.Commands.TaskLists;
-
-public record CreateTaskListCommand(string Name, Guid UserId, TaskListColor Color);
+public record CreateTaskListCommand(string Name, Guid UserId);
