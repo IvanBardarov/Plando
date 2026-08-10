@@ -4,7 +4,7 @@ import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
 import { getItemClassName } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
-import { FilterValues, TaskListColor } from '../types';
+import { FilterValues } from '../types';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
 import { FilterTaskItemsForm } from '../components/FilterTaskItemsForm';
 import { Pagination } from '../components/Pagination';
@@ -35,7 +35,6 @@ export const TaskListDetailPage = () => {
     });
 
     const [name, setName] = useState('');
-    const [color, setColor] = useState<TaskListColor>(0);
 
     useEffect(() => {
         const fetchDate = async () => {
@@ -44,16 +43,14 @@ export const TaskListDetailPage = () => {
             setTaskItems(items);
             const taskList = await getTaskListById(id!);
             setName(taskList.name);
-            setColor(taskList.color);
         };
         fetchDate();
     }, []);
 
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        const taskList = await updateTaskList(id!, name, color!);
+        const taskList = await updateTaskList(id!, name);
         setName(taskList.name);
-        setColor(taskList.color);
     };
 
     const handleTaskListDelete = async (id: string) => {
@@ -74,15 +71,6 @@ export const TaskListDetailPage = () => {
                     type="text"
                     value={name}
                     onChange={e => setName(e.target.value)} />
-
-                <label>Task List Color</label>
-                <select
-                    value={color}
-                    onChange={e => setColor(Number(e.target.value))}>
-                    {Object.entries(TaskListColor).map(([key, value]) => (
-                        <option key={value} value={value}>{key}</option>
-                    ))}
-                </select>
                 <button
                     type="submit"
                     className="bg-blue-500 text-white px-4 py-2 rounded">

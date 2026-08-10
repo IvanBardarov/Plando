@@ -5,7 +5,7 @@ import {
     createTaskList,
     deleteTaskList
 } from '../services/taskListService';
-import { TaskList, TaskListColor } from '../types';
+import { TaskList } from '../types';
 
 export const TaskListsPage = () => {
 
@@ -25,11 +25,10 @@ export const TaskListsPage = () => {
 
     // for Create form
     const [createName, setCreateName] = useState('');
-    const [createColor, setCreateColor] = useState<TaskListColor>(0);
-
+  
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
-        await createTaskList(createName, userId!, createColor);
+        await createTaskList(createName, userId!);
         const lists = await getTaskListByUserId();
         setTaskLists(lists);
     };
@@ -39,27 +38,6 @@ export const TaskListsPage = () => {
         setTaskLists(
             prev => prev ? prev.filter(item => item.id !== id) : null
         );
-    };
-
-    const getTaskListColor = (list: TaskList) : string => {
-        if(list.color === 1)
-            return "border p-4 rounded bg-red-400";
-        if(list.color === 2)
-            return "border p-4 rounded bg-orange-400";
-        if(list.color === 3)
-            return "border p-4 rounded bg-yellow-400";
-        if(list.color === 4)
-            return "border p-4 rounded bg-green-400";
-        if(list.color === 5)
-            return "border p-4 rounded bg-blue-400";
-        if(list.color === 6)
-            return "border p-4 rounded bg-purple-400";
-        if(list.color === 7)
-            return "border p-4 rounded bg-pink-400";
-        if(list.color === 8)
-            return "border p-4 rounded bg-gray-400";        
-
-        return "border p-4 rounded bg-gray-200";
     };
 
     return (
@@ -86,20 +64,6 @@ export const TaskListsPage = () => {
                             type="text" onChange={e => setCreateName(e.target.value)}
                             value={createName}/>
 
-                        <label>Color</label>
-                        <select className="border rounded p-2"
-                            onChange={e => setCreateColor(Number(e.target.value))}>
-                            <option value="0">None</option>
-                            <option value="1">Red</option>
-                            <option value="2">Orange</option>
-                            <option value="3">Yellow</option>
-                            <option value="4">Green</option>
-                            <option value="5">Blue</option>
-                            <option value="6">Purple</option>
-                            <option value="7">Pink</option>
-                            <option value="8">Gray</option>
-                        </select>
-
                         <button className="bg-blue-500 text-white px-4 py-2 rounded">Create</button>
 
                     </form>
@@ -118,8 +82,8 @@ export const TaskListsPage = () => {
 
                 {taskLists?.map(item => (
                     <div key={item.id} 
-                        className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center ${getTaskListColor(item)}`}
+                        className='flex flex-col md:flex-row gap-4 
+                            items-start md:items-center'
                         onClick={ () => navigate(`/tasklists/${item.id}`)}>
 
                         <div className="flex-1 justify-center text-center">

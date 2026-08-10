@@ -1,5 +1,5 @@
 import instance from "./api";
-import { TaskList, Guid, TaskListColor } from "../types";
+import { TaskList, Guid } from "../types";
 
 export const getTaskListByUserId = async (): Promise<TaskList[]> => {
     const response = await instance.get(`/TaskLists`);
@@ -11,15 +11,15 @@ export const getTaskListById = async (id: Guid): Promise<TaskList> => {
     return response.data;
 }
 
-export const createTaskList = async (name: string, userId: Guid, color: TaskListColor):
+export const createTaskList = async (name: string, userId: Guid):
     Promise<TaskList> => {
-    const response = await instance.post('/TaskLists', { name, userId, color });
+    const response = await instance.post('/TaskLists', { name, userId });
     return response.data;
 };
 
-export const updateTaskList = async (id: Guid, name: string, color: TaskListColor):
+export const updateTaskList = async (id: Guid, name: string):
     Promise<TaskList> => {
-    const response = await instance.put('/TaskLists', { id, name, color })
+    const response = await instance.put('/TaskLists', { id, name })
     return response.data;
 };
 
