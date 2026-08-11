@@ -7,7 +7,8 @@ namespace Plando.Infrastructure.Persistence.Configurations;
 public class TaskItemConfiguration :IEntityTypeConfiguration<TaskItem>
 {
     /// <summary>
-    /// Configures the entity mapping for <see cref="TaskItem"/> to the database table,
+    /// Configures the entity mapping for <see cref="TaskItem"/>
+    /// to the database table,
     /// including properties, indexes and relationships.
     /// </summary>
     public void Configure(EntityTypeBuilder<TaskItem> taskItems)

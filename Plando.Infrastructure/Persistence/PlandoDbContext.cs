@@ -13,6 +13,7 @@ public class PlandoDbContext : DbContext
     public required DbSet<TaskItem> TaskItems { get; set; }
     public required DbSet<TaskList> TaskLists { get; set; }
     public required DbSet<Note> Notes { get; set; }
+    public required DbSet<TaskCategory> TaskCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

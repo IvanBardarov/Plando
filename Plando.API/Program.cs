@@ -4,11 +4,13 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Plando.API.Middleware;
 using Plando.Application.Commands.Notes;
+using Plando.Application.Commands.TaskCategories;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Commands.Users;
 using Plando.Application.Interfaces;
 using Plando.Application.Queries.Notes;
+using Plando.Application.Queries.TaskCategories;
 using Plando.Application.Queries.TaskItems;
 using Plando.Application.Queries.TaskLists;
 using Plando.Application.Queries.Users;
@@ -27,6 +29,7 @@ builder.Services.AddDbContext<PlandoDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
+builder.Services.AddScoped<ITaskCategoryRepository, TaskCategoryRepository>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 
@@ -51,6 +54,13 @@ builder.Services.AddScoped<UpdateTaskListCommandHandler>();
 builder.Services.AddScoped<DeleteTaskListCommandHandler>();
 builder.Services.AddScoped<GetTaskListsByUserIdQueryHandler>();
 builder.Services.AddScoped<GetTaskListByIdQueryHandler>();
+
+// TaskCategory handlers
+builder.Services.AddScoped<GetTaskCategoryByIdQueryHandler>();
+builder.Services.AddScoped<GetTaskCategoriesByUserIdQueryHandler>();
+builder.Services.AddScoped<CreateTaskCategoryCommandHandler>();
+builder.Services.AddScoped<UpdateTaskCategoryCommandHandler>();
+builder.Services.AddScoped<DeleteTaskCategoryCommandHandler>();
 
 // Note handlers
 builder.Services.AddScoped<CreateNoteCommandHandler>();
