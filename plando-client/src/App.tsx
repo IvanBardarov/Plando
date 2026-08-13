@@ -4,6 +4,8 @@ import { RegisterPage } from './pages/RegisterPage';
 import { Layout } from './components/Layout';
 import { TasksPage } from './pages/TasksPage';
 import { TaskListsPage } from './pages/TaskListsPage';
+import { SettingsPage } from './pages/SettingsPage';
+import { TaskCategoriesPage } from './pages/TaskCategoriesPage';
 import { TaskListDetailPage } from './pages/TaskListDetailPage';
 import { TaskItemDetailPage } from './pages/TaskItemDetailPage';
 import { NoteDetailPage } from './pages/NoteDetailPage';
@@ -18,10 +20,12 @@ function App() {
         <Route path="" element={<Layout />}>
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasklists" element={<TaskListsPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/taskcategories" element={<TaskCategoriesPage />} />
+          <Route path="/tasklists/:id" element={<TaskListDetailPage />} />
+          <Route path="/tasks/:id/details" element={<TaskItemDetailPage />} />
+          <Route path="/notes/:id" element={<NoteDetailPage />} />
         </Route>
-        <Route path="/tasklists/:id" element={<TaskListDetailPage />} />
-        <Route path="/tasks/:id/details" element={<TaskItemDetailPage />} />
-        <Route path="/notes/:id" element={<NoteDetailPage />} />
       </Routes>
     </BrowserRouter>
   );
