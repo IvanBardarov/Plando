@@ -61,6 +61,14 @@ export interface FilterValues {
   pageSize: number | null;
 }
 
+export interface TaskCategory {
+  id: Guid;
+  name: string;
+  description: string;
+  userId: Guid;
+  createdAt: Date;
+}
+
 export interface Note {
   id: Guid;
   content: string;
