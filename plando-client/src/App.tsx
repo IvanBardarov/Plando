@@ -8,6 +8,7 @@ import { SettingsPage } from './pages/SettingsPage';
 import { TaskCategoriesPage } from './pages/TaskCategoriesPage';
 import { TaskListDetailPage } from './pages/TaskListDetailPage';
 import { TaskItemDetailPage } from './pages/TaskItemDetailPage';
+import { TaskCategoryDetailPage } from './pages/TaskCategoryDetailPage';
 import { NoteDetailPage } from './pages/NoteDetailPage';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/tasklists" element={<TaskListsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/taskcategories" element={<TaskCategoriesPage />} />
+          <Route path="/taskcategories/:id" element={<TaskCategoryDetailPage />} />
           <Route path="/tasklists/:id" element={<TaskListDetailPage />} />
           <Route path="/tasks/:id/details" element={<TaskItemDetailPage />} />
           <Route path="/notes/:id" element={<NoteDetailPage />} />

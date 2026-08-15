@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
-import { getTaskCategoriesByUserId, createTaskCategory } from '../services/taskCategoryService';
+import { useNavigate } from 'react-router-dom';
+import {
+    getTaskCategoriesByUserId,
+    createTaskCategory,
+    deleteTaskCategory
+} from '../services/taskCategoryService';
 import { TaskCategory } from '../types';
 
 export const TaskCategoriesPage = () => {
+
+    const navigate = useNavigate();
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -25,6 +32,11 @@ export const TaskCategoriesPage = () => {
         setTaskCategoryList(prev => [...(prev ?? []), newTaskCategory]);
         setName('');
         setDescription('');
+    };
+
+    const handleDelete = async (id: string) => {
+        await deleteTaskCategory(id);
+        setTaskCategoryList(prev => (prev ?? []).filter(tc => tc.id !== id));
     };
 
     return (
@@ -65,7 +77,8 @@ export const TaskCategoriesPage = () => {
                 {taskCategoryList?.map(taskCategory => (
                     <div key={taskCategory.id}
                         className='flex flex-col md:flex-row gap-4 
-                            items-start md:items-center'>
+                            items-start md:items-center'
+                        onClick={() => navigate(`/TaskCategories/${taskCategory.id}`)}>
 
                         <div className="flex-1 justify-center text-center">
                             {taskCategory.name}
@@ -75,7 +88,15 @@ export const TaskCategoriesPage = () => {
                             {taskCategory.description}
                         </div>
 
+                        <button
+                            className="bg-red-500 text-white px-4 py-2 rounded"
+                            onClick={(e) => { e.stopPropagation(); handleDelete(taskCategory.id); }}>
+                            Delete
+                        </button>
+
                     </div>
+
+
                 ))}
 
             </div>
