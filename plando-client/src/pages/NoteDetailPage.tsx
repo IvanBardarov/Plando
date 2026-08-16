@@ -32,28 +32,32 @@ export const NoteDetailPage = () => {
         e.preventDefault();
         const note = await updateNote(id!, content);
         setNote(note);
+        navigate(`/tasks/${taskItemId}/details`);
     };
 
     const handleNoteDelete = async (id: Guid) => {
         await deleteNote(id);
-        navigate(`/Tasks/${taskItemId}/Details`);
+        navigate(`/tasks/${taskItemId}/details`);
     };
 
     return (
         <section
-            className="flex items-center gap-2">
-            <form onSubmit={handleSubmit}>
+            className="p-2">
+
+            <div className="border p-2 mt-4 flex flex-col md:flex-row items-center gap-2">
                 <textarea
+                    className="border rounded p-2 flex-1 w-full"
                     value={content}
                     onChange={e => setContent(e.target.value)}></textarea>
-                <button
-                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                    type="submit">Update Note</button>
-            </form>
-
-            <button
-                className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => handleNoteDelete(id!)}>Delete Note</button>
+                <div className="flex gap-2 md:self-end ml-auto">
+                    <button
+                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                        onClick={handleSubmit}>Update Note</button>
+                    <button
+                        className="bg-red-500 text-white px-4 py-2 rounded"
+                        onClick={() => handleNoteDelete(id!)}>Delete Note</button>
+                </div>
+            </div>
 
         </section>);
 };
