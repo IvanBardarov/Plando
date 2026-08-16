@@ -29,9 +29,10 @@ export const getTaskItemByUserId = async (
 };
 
 export const createTaskItem = async (title: string, description: string, userId: Guid,
-    dueDate: Date, taskListId: Guid | null, startDate: Date | null): Promise<TaskItem> => {
+    dueDate: Date, taskListId: Guid | null, startDate: Date | null, categoryId: Guid | null):
+    Promise<TaskItem> => {
     const response = await instance.post('/TaskItems',
-        { title, description, userId, dueDate, taskListId, startDate });
+        { title, description, userId, dueDate, taskListId, startDate, categoryId });
     return response.data;
 };
 
@@ -51,9 +52,10 @@ export const getTaskItemById = async (id: Guid): Promise<TaskItem> => {
 };
 
 export const updateTaskItem = async (id: Guid, title: string, description: string,
-    startDate: Date | null, dueDate: Date, taskListId: Guid | null): Promise<TaskItem> => {
+    startDate: Date | null, dueDate: Date, taskListId: Guid | null, categoryId: Guid | null):
+    Promise<TaskItem> => {
     const response = await instance.put(`/TaskItems/${id}`,
-        { id, title, description, startDate, dueDate, taskListId }
+        { id, title, description, startDate, dueDate, taskListId, categoryId }
     );
     return response.data;
 };

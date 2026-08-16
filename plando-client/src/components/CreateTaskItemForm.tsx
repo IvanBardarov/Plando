@@ -1,7 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { createTaskItem } from '../services/taskItemService';
 import { getTaskListByUserId } from '../services/taskListService';
-import { Guid, TaskItem, TaskList } from '../types';
+import { Guid, TaskItem, TaskList, TaskCategory } from '../types';
+import { getTaskCategoriesByUserId } from '../services/taskCategoryService';
 
 interface CreateTaskItemFormProps {
     onCreate: (item: TaskItem) => void;
@@ -22,11 +23,15 @@ export const CreateTaskItemForm = ({ onCreate, defaultTaskListId }: CreateTaskIt
     const [createTaskListId, setCreateTaskListId] =
         useState<Guid | null>(defaultTaskListId ?? null);
     const [pageSize] = useState<number | null>(null);
+    const [categoryId, setCategoryId] = useState<Guid | null>(null);
+    const [categoriesList, setCategoriesList] = useState<TaskCategory[] | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
             const lists = await getTaskListByUserId();
             setTaskLists(lists);
+            const categories = await getTaskCategoriesByUserId();
+            setCategoriesList(categories);
         };
         fetchData();
     }, []);
@@ -39,7 +44,8 @@ export const CreateTaskItemForm = ({ onCreate, defaultTaskListId }: CreateTaskIt
             userId!,
             new Date(createDueDate),
             createTaskListId || null,
-            createStartDate ? new Date(createStartDate) : null);
+            createStartDate ? new Date(createStartDate) : null,
+            categoryId || null);
 
         onCreate(item);
     };
@@ -128,6 +134,16 @@ export const CreateTaskItemForm = ({ onCreate, defaultTaskListId }: CreateTaskIt
                         onChange={e => setCreateTaskListId(e.target.value)}>
                         <option value="">None</option>
                         {taskLists?.map(list => (
+                            <option key={list.id} value={list.id}>{list.name}</option>
+                        ))}
+                    </select>
+
+                    <label>Task Category</label>
+                    <select className="border rounded p-2 w-56 shrink-0"
+                        value={categoryId || ''}
+                        onChange={e => setCategoryId(e.target.value)}>
+                        <option value="">None</option>
+                        {categoriesList?.map(list => (
                             <option key={list.id} value={list.id}>{list.name}</option>
                         ))}
                     </select>
