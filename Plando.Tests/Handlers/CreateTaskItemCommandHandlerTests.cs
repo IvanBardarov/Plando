@@ -45,6 +45,7 @@ public class CreateTaskItemCommandHandlerTests
             user.Id,
             DateTime.UtcNow.AddDays(1),
             null,
+            null,
             null);
 
         var result = await _handler.HandleAsync(command);
@@ -64,6 +65,7 @@ public class CreateTaskItemCommandHandlerTests
             "Description",
             Guid.NewGuid(),
             DateTime.UtcNow.AddDays(1),
+            null,
             null,
             null);
 

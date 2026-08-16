@@ -35,7 +35,8 @@ public class UpdateTaskItemCommandHandler
             command.StartDate,
             command.DueDate,
             command.TaskListId,
-            taskList);
+            taskList,
+            command.CategoryId);
 
         await _taskItemRepository.SaveChangesAsync();
 

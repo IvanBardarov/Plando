@@ -31,7 +31,7 @@ public class CreateTaskItemCommandHandler
             throw new DomainException("There is not such an user!");
 
         var taskItem = TaskItem.Create(command.Title, command.Description,
-            command.DueDate, user, command.StartDate, taskList);
+            command.DueDate, user, command.StartDate, taskList, command.CategoryId);
 
         await _taskItemRepository.AddAsync(taskItem);
         await _taskItemRepository.SaveChangesAsync();

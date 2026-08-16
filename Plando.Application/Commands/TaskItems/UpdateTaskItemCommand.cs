@@ -6,4 +6,5 @@ public record UpdateTaskItemCommand(
     string Description, 
     DateTime? StartDate,
     DateTime DueDate,
-    Guid? TaskListId);
+    Guid? TaskListId,
+    Guid? CategoryId);

@@ -4,7 +4,7 @@ using Plando.Domain.Entities;
 
 namespace Plando.Infrastructure.Persistence.Configurations;
 
-public class TaskItemConfiguration :IEntityTypeConfiguration<TaskItem>
+public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
 {
     /// <summary>
     /// Configures the entity mapping for <see cref="TaskItem"/>
@@ -25,11 +25,17 @@ public class TaskItemConfiguration :IEntityTypeConfiguration<TaskItem>
         taskItems.Property(taskItem => taskItem.DueDate);
         taskItems.Property(taskItem => taskItem.IsCompleted);
         taskItems.Property(taskItem => taskItem.CreatedAt);
+        taskItems.Property(taskItem => taskItem.CategoryId);
 
         // relations one-to-many
         taskItems.HasOne(taskItem => taskItem.TaskList)
             .WithMany(taskList => taskList.TaskItems)
             .HasForeignKey(taskItem => taskItem.TaskListId)
+            .OnDelete(DeleteBehavior.SetNull);
+
+        taskItems.HasOne<TaskCategory>()
+            .WithMany()
+            .HasForeignKey(taskItem => taskItem.CategoryId)
             .OnDelete(DeleteBehavior.SetNull);
     }
 }

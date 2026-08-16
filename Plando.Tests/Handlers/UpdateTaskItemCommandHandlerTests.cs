@@ -56,7 +56,8 @@ public class UpdateTaskItemCommandHandlerTests
             taskItem.Description,
             taskItem.StartDate,
             taskItem.DueDate,
-            taskList.Id);
+            taskList.Id,
+            taskItem.CategoryId);
 
         var result = await _handler.HandleAsync(command);
 
@@ -77,6 +78,7 @@ public class UpdateTaskItemCommandHandlerTests
             "Description",
             now.AddDays(20),
             now.AddDays(10),
+            Guid.NewGuid(),
             Guid.NewGuid());
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
@@ -96,6 +98,7 @@ public class UpdateTaskItemCommandHandlerTests
             "Description",
             now.AddDays(20),
             now.AddDays(10),
+            Guid.NewGuid(),
             Guid.NewGuid());
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
