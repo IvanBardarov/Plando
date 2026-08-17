@@ -10,6 +10,10 @@ jest.mock('../services/taskListService', () => ({
     getTaskListByUserId: jest.fn().mockResolvedValue([])
 }));
 
+jest.mock('../services/taskCategoryService', () => ({
+    getTaskCategoriesByUserId: jest.fn().mockResolvedValue([])
+}));
+
 describe('CreateTaskItemForm', () => {
 
     it('should render the toggle button', async () => {

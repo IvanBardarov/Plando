@@ -39,6 +39,10 @@ jest.mock('react-router', () => ({
     useParams: () => ({ id: 'test-list-id' })
 }));
 
+jest.mock('../services/taskCategoryService', () => ({
+    getTaskCategoriesByUserId: jest.fn().mockResolvedValue([])
+}));
+
 const mockNavigate = jest.fn();
 jest.mock('react-router-dom', () => ({
     useNavigate: () => mockNavigate

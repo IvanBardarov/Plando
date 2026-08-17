@@ -33,6 +33,10 @@ jest.mock('../services/taskListService', () => ({
     getTaskListByUserId: jest.fn().mockResolvedValue([])
 }));
 
+jest.mock('../services/taskCategoryService', () => ({
+    getTaskCategoriesByUserId: jest.fn().mockResolvedValue([])
+}));
+
 jest.mock('react-router-dom', () => ({
     useParams: () => ({ id: 'test-list-id' }),
     Link: ({ children, to }: { children: React.ReactNode, to: string }) => 
