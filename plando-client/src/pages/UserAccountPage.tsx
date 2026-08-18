@@ -9,7 +9,8 @@ export const UserAccountPage = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [error, setError] = useState('');
+    const [message, setMessage] = useState('');
+    const [messageBgColor, setMessageBgColor] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,6 +25,11 @@ export const UserAccountPage = () => {
         if (checkNewPassword(newPassword, confirmNewPassword)) {
             try {
                 await changePassword(id!, oldPassword, newPassword);
+                setMessage('Password changed successfully!');
+                setMessageBgColor('bg-green-500');
+                setOldPassword('');
+                setNewPassword('');
+                setConfirmNewPassword('');
             }
             catch (e) {
                 console.error(e);
@@ -34,51 +40,69 @@ export const UserAccountPage = () => {
     const checkNewPassword = (newPassword: string, confirmNewPassword: string):
         boolean => {
         if (newPassword !== confirmNewPassword) {
-            setError(`'Confirm New Password' must equal to 'New Password'! Try again!`);
+            setMessage(`'Confirm New Password' must equal to 'New Password'! Try again!`);
+            setMessageBgColor('bg-red-500');
             return false;
         }
         return true;
     }
 
     return (
-        <section>
+        <section className="p-8 flex flex-col gap-4">
 
-            <div>
-                <label>Email</label>
-                <input
-                    type="text"
-                    value={email}
-                    readOnly />
+            <div className="border p-4 flex flex-col gap-2 items-center text-center">
+                <div className="flex flex-col w-full md:w-1/2">
+                    <label>Email</label>
+                    <input
+                        className="border rounded bg-gray-50 p-2 text-center"
+                        type="text"
+                        value={email}
+                        readOnly />
+                </div>
 
-                <label>User Id</label>
-                <input
-                    type="text"
-                    value={id}
-                    readOnly />
+                <div className="flex flex-col w-full md:w-1/2">
+                    <label>User Id</label>
+                    <input
+                        className="border rounded bg-gray-50 p-2 text-center"
+                        type="text"
+                        value={id}
+                        readOnly />
+                </div>
             </div>
 
-            <form onSubmit={handleSubmit}>
-                <label>Old Password</label>
-                <input
-                    type="password"
-                    value={oldPassword}
-                    onChange={e => setOldPassword(e.target.value)} />
+            <form onSubmit={handleSubmit}
+                className="border p-4 flex flex-col gap-2 items-center text-center">
+                <div className="flex flex-col w-full md:w-1/2">
+                    <label>Old Password</label>
+                    <input
+                        className="border rounded p-2 text-center"
+                        type="password"
+                        value={oldPassword}
+                        onChange={e => setOldPassword(e.target.value)} />
+                </div>
 
-                <label>New Password</label>
-                <input
-                    type="password"
-                    value={newPassword}
-                    onChange={e => setNewPassword(e.target.value)} />
+                <div className="flex flex-col w-full md:w-1/2">
+                    <label>New Password</label>
+                    <input
+                        className="border rounded p-2 text-center"
+                        type="password"
+                        value={newPassword}
+                        onChange={e => setNewPassword(e.target.value)} />
+                </div>
 
-                <label>Confirm New Password</label>
-                <input
-                    type="password"
-                    value={confirmNewPassword}
-                    onChange={e => setConfirmNewPassword(e.target.value)} />
+                <div className="flex flex-col w-full md:w-1/2">
+                    <label>Confirm New Password</label>
+                    <input
+                        className="border rounded p-2 text-center"
+                        type="password"
+                        value={confirmNewPassword}
+                        onChange={e => setConfirmNewPassword(e.target.value)} />
+                </div>
 
-                <span>{error}</span>
+                <span className={`${messageBgColor} text-white p-2`}>{message}</span>
 
-                <button type="submit">
+                <button type="submit"
+                    className="bg-blue-500 text-white px-4 py-2 rounded">
                     Change Password
                 </button>
             </form>

@@ -30,11 +30,11 @@ export const LoginPage = () => {
             <h1>Login</h1>
             <label>User</label>
             <input 
-                className="border rounded p-2 w-full"
+                className="border rounded p-2 w-1/2"
                 type="email" onChange={e => setEmail(e.target.value)}/>
             <label>Password</label>
             <input 
-                className="border rounded p-2 w-full"
+                className="border rounded p-2 w-1/2"
                 type="password" onChange={e => setPassword(e.target.value)}/>
             <button 
                 className="bg-blue-500 text-white px-4 py-2 rounded"
