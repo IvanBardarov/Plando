@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.Users;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.Users;
+using System.Security.Claims;
 
 namespace Plando.API.Controllers;
 
@@ -37,6 +38,16 @@ public class UsersController : ControllerBase
 
     [HttpGet]
     [Route("{id}")]
-    public async Task<ActionResult<UserDto>> GetById(Guid id) =>
-        await _getUserByIdHandler.HandleAsync(new GetUserByIdQuery(id));
+    public async Task<ActionResult<UserDto>> GetById(Guid id)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        if (id != userId)
+            return Forbid();
+
+
+        return await _getUserByIdHandler.HandleAsync(new GetUserByIdQuery(id));
+    }        
 }
