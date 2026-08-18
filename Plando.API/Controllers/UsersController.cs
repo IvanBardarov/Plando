@@ -15,13 +15,16 @@ public class UsersController : ControllerBase
     private readonly RegisterUserCommandHandler _registerHandler;
     private readonly LoginUserCommandHandler _loginHandler;
     private readonly GetUserByIdQueryHandler _getUserByIdHandler;
+    private readonly ChangePasswordCommandHandler _changePasswordHandler;
 
     public UsersController(RegisterUserCommandHandler registerHandler,
-        LoginUserCommandHandler loginHandler, GetUserByIdQueryHandler getUserByIdHandler)
+        LoginUserCommandHandler loginHandler, GetUserByIdQueryHandler getUserByIdHandler,
+        ChangePasswordCommandHandler changePasswordHandler)
     {
         _registerHandler = registerHandler;
         _loginHandler = loginHandler;
         _getUserByIdHandler = getUserByIdHandler;
+        _changePasswordHandler = changePasswordHandler;
     }
 
     [HttpPost]
@@ -47,7 +50,20 @@ public class UsersController : ControllerBase
         if (id != userId)
             return Forbid();
 
-
         return await _getUserByIdHandler.HandleAsync(new GetUserByIdQuery(id));
-    }        
+    }
+
+    [HttpPut]
+    [Route("{id}")]
+    public async Task<ActionResult<UserDto>> ChangePassword([FromBody] ChangePasswordCommand command)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        if (command.Id != userId)
+            return Forbid();
+
+        return await _changePasswordHandler.HandleAsync(command);
+    }
 }

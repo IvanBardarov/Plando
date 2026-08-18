@@ -39,6 +39,7 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<RegisterUserCommandHandler>();
 builder.Services.AddScoped<LoginUserCommandHandler>();
 builder.Services.AddScoped<GetUserByIdQueryHandler>();
+builder.Services.AddScoped<ChangePasswordCommandHandler>();
 
 // TaskItem handlers
 builder.Services.AddScoped<CreateTaskItemCommandHandler>();

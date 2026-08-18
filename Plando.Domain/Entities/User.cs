@@ -33,9 +33,14 @@ public sealed class User
         };
     }
 
+    public void Update(string newPassword)
+    {
+        PasswordHash = newPassword;
+    }
+
     public Guid Id { get; init; }
     public required string Email { get; init; }
-    public required string PasswordHash { get; init; }
+    public string PasswordHash { get; private set; }
     public DateTime CreatedAt { get; init; }
     public ICollection<TaskItem> TaskItems { get; init; } = [];
     public ICollection<TaskList> TaskLists { get; init; } = []; 
