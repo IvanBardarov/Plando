@@ -3,12 +3,14 @@ import { User, Calendar, CheckSquare, List, Settings } from 'lucide-react';
 
 export const Sidebar = () => {
 
+    const id = localStorage.getItem('userId');
+
     return (
         <section
             className="flex flex-col h-screen w-16 bg-gray-800 items-center py-4 gap-6 sticky top-0">
             <ul className="flex flex-col gap-6">
                 <li>
-                    <Link title='Account' to='/Account' className="text-white hover:text-blue-400">
+                    <Link title='Account' to={`/users/${id}`} className="text-white hover:text-blue-400">
                         <User />
                     </Link>
                 </li>
