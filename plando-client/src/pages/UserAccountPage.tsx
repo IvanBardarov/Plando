@@ -31,7 +31,9 @@ export const UserAccountPage = () => {
                 setNewPassword('');
                 setConfirmNewPassword('');
             }
-            catch (e) {
+            catch (e: any) {
+                setMessage(e?.response?.data?.error ?? 'Something went wrong! Try again!');
+                setMessageBgColor('bg-red-500');
                 console.error(e);
             }
         }
