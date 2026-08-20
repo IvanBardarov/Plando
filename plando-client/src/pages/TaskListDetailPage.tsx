@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router';
 import { getTaskItemByUserId } from '../services/taskItemService';
-import { getItemClassName } from '../utils/taskItemUtils';
+import { getTaskItemColor } from '../utils/taskItemUtils';
 import { useTaskItems } from '../hooks/useTaskItems';
 import { FilterValues } from '../types';
 import { CreateTaskItemForm } from '../components/CreateTaskItemForm';
@@ -98,7 +98,7 @@ export const TaskListDetailPage = () => {
                 onFilter={async (items) => setTaskItems(items)}
                 onFiltersChange={setCurrentFilters} />
 
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-1">
 
                 <div className="hidden md:flex gap-4 items-center border-b pb-2
                      font-bold text-center">
@@ -115,8 +115,8 @@ export const TaskListDetailPage = () => {
 
                 {taskItems?.items.map(item => (
                     <div key={item.id}
-                        className={`flex flex-col md:flex-row gap-4 
-                            items-start md:items-center ${getItemClassName(item)}`}
+                        className={`flex flex-col md:flex-row p-1 
+                            items-start md:items-center ${getTaskItemColor(item)}`}
                         onClick={() => navigate(`/tasks/${item.id}/details`)}>
 
                         <div className="flex-1 justify-center text-center">
@@ -148,11 +148,11 @@ export const TaskListDetailPage = () => {
                         <div className="flex gap-2">
 
                             <button
-                                className="bg-blue-500 text-white px-4 py-2 rounded"
+                                className="bg-blue-500 text-white px-4 py-1 rounded"
                                 onClick={() => handleComplete(item.id)}>Complete</button>
 
                             <button
-                                className="bg-red-500 text-white px-4 py-2 rounded"
+                                className="bg-red-500 text-white px-4 py-1 rounded"
                                 onClick={() => handleDelete(item.id)}>Delete</button>
 
                         </div>

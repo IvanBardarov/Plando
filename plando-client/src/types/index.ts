@@ -22,6 +22,8 @@ export interface TaskItem {
   completedAt: Date | null;
   startDate: Date | null;
   categoryId: Guid | null;
+  isImportant: boolean;
+  isUrgent: boolean;
 }
 
 export interface TaskList {

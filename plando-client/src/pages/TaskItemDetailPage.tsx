@@ -24,6 +24,9 @@ export const TaskItemDetailPage = () => {
     const [categoryId, setCategoryId] = useState<Guid | null>(null);
     const [categoriesList, setCategoriesList] = useState<TaskCategory[] | null>(null);
 
+    const [isImportant, setIsImportant] = useState<boolean>(false);
+    const [isUrgent, setIsUrgent] = useState<boolean>(false);
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -41,6 +44,8 @@ export const TaskItemDetailPage = () => {
                 const categories = await getTaskCategoriesByUserId();
                 setCategoriesList(categories);
                 setCategoryId(taskItem?.categoryId ?? null);
+                setIsImportant(taskItem?.isImportant);
+                setIsUrgent(taskItem?.isUrgent);
             }
             catch (e) {
                 console.error('fetchData error:', e);
@@ -52,7 +57,7 @@ export const TaskItemDetailPage = () => {
     const handleSubmit = async (e: React.SyntheticEvent) => {
         e.preventDefault();
         const item = await updateTaskItem(
-            id!, title, description, startDate, dueDate!, taskListId, categoryId);
+            id!, title, description, startDate, dueDate!, taskListId, categoryId, isImportant, isUrgent);
 
         setTaskItem(item);
     };
@@ -80,24 +85,29 @@ export const TaskItemDetailPage = () => {
             <div className="border p-2">
 
                 <div className="flex flex-col md:flex-row items-center gap-2 mt-2">
+
                     <label>Title</label>
                     <input
                         className="border rounded p-2 w-full md:flex-1"
                         type="text"
                         value={title}
                         onChange={e => setTitle(e.target.value)} />
+
                 </div>
 
                 <div className="flex flex-col md:flex-row items-center gap-2 mt-2">
+
                     <label>Description</label>
                     <textarea
                         rows={1}
                         className="border rounded p-2 w-full md:flex-1"
                         value={description}
                         onChange={e => setDescription(e.target.value)}></textarea>
+
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-0">
+
                     <div className="flex flex-col md:flex-row items-center gap-2 mt-2 w-full md:w-1/2 pr-2">
                         <label className="whitespace-nowrap">Start Date</label>
                         <input
@@ -106,6 +116,7 @@ export const TaskItemDetailPage = () => {
                             value={startDate ? new Date(startDate).toISOString().split('T')[0] : ''}
                             onChange={e => setStartDate(e.target.value ? new Date(e.target.value) : null)} />
                     </div>
+
                     <div className="flex flex-col md:flex-row items-center gap-2 mt-2 w-full md:w-1/2 pr-2">
                         <label className="whitespace-nowrap">Due Date</label>
                         <input
@@ -114,9 +125,11 @@ export const TaskItemDetailPage = () => {
                             value={dueDate ? dueDate.toISOString().split('T')[0] : ''}
                             onChange={e => setDueDate(e.target.value ? new Date(e.target.value) : null)} />
                     </div>
+
                 </div>
 
                 <div className="flex flex-row flex-wrap gap-0">
+
                     <div className="flex flex-col md:flex-row items-center gap-2 mt-2 w-full md:w-1/2 pr-2">
                         <label className="whitespace-nowrap">Task List</label>
                         <select className="border rounded p-2 w-full md:flex-1"
@@ -128,6 +141,7 @@ export const TaskItemDetailPage = () => {
                             ))}
                         </select>
                     </div>
+
                     <div className="flex flex-col md:flex-row items-center gap-2 mt-2 w-full md:w-1/2 pr-2">
                         <label className="whitespace-nowrap">Task Category</label>
                         <select className="border rounded p-2 w-full md:flex-1"
@@ -139,6 +153,33 @@ export const TaskItemDetailPage = () => {
                             ))}
                         </select>
                     </div>
+
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2 p-2">
+
+                    <div className="flex items-center justify-center h-full border bg-gray-50 p-2">
+
+                        <label>Is Important</label>
+                        <input
+                            className="ml-2 mt-1 align-middle"
+                            type="checkbox"
+                            checked={isImportant}
+                            onChange={e => setIsImportant(e.target.checked)} />
+
+                    </div>
+
+                    <div className="flex items-center justify-center h-full border bg-gray-50 p-2">
+
+                        <label>Is Urgent</label>
+                        <input
+                            className="ml-2 mt-1 align-middle"
+                            type="checkbox"
+                            checked={isUrgent}
+                            onChange={e => setIsUrgent(e.target.checked)} />
+
+                    </div>
+
                 </div>
 
                 <button

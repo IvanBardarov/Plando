@@ -81,7 +81,7 @@ export const FilterTaskItemsForm =
     };
 
     return (
-        <div>
+        <section className="p-2">
             <button onClick={() => setShowFilter(!showFilter)}>
                 ▼ Show Filter
             </button>
@@ -213,6 +213,6 @@ export const FilterTaskItemsForm =
 
                 </form>
             }
-        </div>
+        </section>
     );
 };
