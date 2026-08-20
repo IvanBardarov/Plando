@@ -20,6 +20,8 @@ namespace Plando.Application.DTOs
             this.CompletedAt = taskItem.CompletedAt;
             this.StartDate = taskItem.StartDate;
             this.CategoryId = taskItem.CategoryId;
+            this.IsImportant = taskItem.IsImportant;
+            this.IsUrgent = taskItem.IsUrgent;
         }
 
         public static TaskItemDto FromEntity(TaskItem taskItem)
@@ -38,5 +40,7 @@ namespace Plando.Application.DTOs
         public DateTime? CompletedAt { get; init; }
         public DateTime? StartDate { get; init; }
         public Guid? CategoryId { get; init; }
+        public bool IsImportant { get; init; }
+        public bool IsUrgent { get; init; }
     }
 }

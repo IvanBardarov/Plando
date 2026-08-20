@@ -34,6 +34,8 @@ public class UpdateTaskItemCommandHandler
             command.Description,
             command.StartDate,
             command.DueDate,
+            command.IsImportant,
+            command.IsUrgent,
             command.TaskListId,
             taskList,
             command.CategoryId);

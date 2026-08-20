@@ -37,7 +37,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             var taskItemDto = TaskItemDto.FromEntity(taskItem);
 
@@ -81,7 +83,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             var taskItemDto = TaskItemDto.FromEntity(taskItem);
 
@@ -123,7 +127,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             if (i % 2 == 0)
                 taskItem.Complete();
@@ -186,7 +192,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             var taskItemDto = TaskItemDto.FromEntity(taskItem);
 
@@ -229,7 +237,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             taskItemsList.Add(taskItem);
         }
@@ -263,7 +273,9 @@ public class GetTaskItemsByUserIdQueryHandlerTests
                 $"Description{i}",
                 DateTime.UtcNow,
                 user,
-                null);
+                null,
+                false,
+                false);
 
             taskItemsList.Add(taskItem);
         }

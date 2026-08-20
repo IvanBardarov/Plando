@@ -7,4 +7,6 @@ public record CreateTaskItemCommand(
     DateTime DueDate,
     Guid? TaskListId,
     DateTime? StartDate,
-    Guid? CategoryId);
+    Guid? CategoryId,
+    bool IsImportant,
+    bool IsUrgent);

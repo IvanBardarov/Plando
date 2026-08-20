@@ -42,6 +42,8 @@ public class UpdateTaskItemCommandHandlerTests
             now.AddDays(20),
             user,
             now.AddDays(10),
+            false,
+            false,
             taskList);
 
         _taskListRepositoryMock.Setup(o => o.GetByIdAsync(taskList.Id))
@@ -57,7 +59,9 @@ public class UpdateTaskItemCommandHandlerTests
             taskItem.StartDate,
             taskItem.DueDate,
             taskList.Id,
-            taskItem.CategoryId);
+            taskItem.CategoryId,
+            taskItem.IsImportant,
+            taskItem.IsUrgent);
 
         var result = await _handler.HandleAsync(command);
 
@@ -79,7 +83,9 @@ public class UpdateTaskItemCommandHandlerTests
             now.AddDays(20),
             now.AddDays(10),
             Guid.NewGuid(),
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            false,
+            false);
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
     }
@@ -99,7 +105,9 @@ public class UpdateTaskItemCommandHandlerTests
             now.AddDays(20),
             now.AddDays(10),
             Guid.NewGuid(),
-            Guid.NewGuid());
+            Guid.NewGuid(),
+            false,
+            false);
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
     }

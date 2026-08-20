@@ -39,6 +39,8 @@ public class CreateNoteCommandHandlerTests
             new DateTime(2026, 1, 1),
             user,
             null,
+            false,
+            false,
             null);
 
         _userRepositoryMock.Setup(o => o.GetByIdAsync(user.Id))
@@ -67,6 +69,8 @@ public class CreateNoteCommandHandlerTests
             new DateTime(2026, 1, 1),
             user,
             null,
+            false,
+            false,
             null
         );
 
@@ -97,6 +101,8 @@ public class CreateNoteCommandHandlerTests
             new DateTime(2026, 1, 1),
             user,
             null,
+            false,
+            false,
             null
         );
 

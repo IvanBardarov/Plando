@@ -21,7 +21,8 @@ public sealed class TaskItem
     /// <exception cref="DomainException"></exception>
     public static TaskItem Create(
         string title, string description, DateTime dueDate, User user, 
-        DateTime? startDate, TaskList? taskList = null, Guid? categoryId = null)
+        DateTime? startDate, bool isImportant, bool isUrgent, 
+        TaskList? taskList = null, Guid? categoryId = null)
     {
         if (user is null)
             throw new DomainException("TaskItem.Create: User can not be null!");
@@ -44,7 +45,9 @@ public sealed class TaskItem
             TaskListId = taskList?.Id,
             TaskList = taskList,
             StartDate = startDate,
-            CategoryId = categoryId
+            CategoryId = categoryId,
+            IsImportant = isImportant,
+            IsUrgent = isUrgent
         };
     }
 
@@ -55,7 +58,8 @@ public sealed class TaskItem
     }
 
     public void Update(string title, string description, DateTime? startDate,
-        DateTime dueDate, Guid? taskListId, TaskList? taskList, Guid? categoryId)
+        DateTime dueDate, bool isImportant, bool isUrgent, Guid? taskListId, 
+        TaskList? taskList, Guid? categoryId)
     {
         Validate("Update", title, description, dueDate, startDate, CreatedAt);
 
@@ -66,6 +70,8 @@ public sealed class TaskItem
         TaskListId = taskListId;
         TaskList = taskList;
         CategoryId = categoryId;
+        IsImportant = isImportant;
+        IsUrgent = isUrgent;
     }
 
     private static void Validate(string methodName, string title, string description, 
@@ -102,4 +108,6 @@ public sealed class TaskItem
     public DateTime? CompletedAt { get; private set; }
     public DateTime? StartDate { get; private set; }
     public Guid? CategoryId { get; private set; }
+    public bool IsImportant { get; private set; }
+    public bool IsUrgent { get; private set; }
 }

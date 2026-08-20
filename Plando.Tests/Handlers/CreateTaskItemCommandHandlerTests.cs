@@ -46,7 +46,9 @@ public class CreateTaskItemCommandHandlerTests
             DateTime.UtcNow.AddDays(1),
             null,
             null,
-            null);
+            null,
+            false,
+            false);
 
         var result = await _handler.HandleAsync(command);
 
@@ -67,7 +69,9 @@ public class CreateTaskItemCommandHandlerTests
             DateTime.UtcNow.AddDays(1),
             null,
             null,
-            null);
+            null,
+            false,
+            false);
 
         await Assert.ThrowsAsync<DomainException>(() => _handler.HandleAsync(command));
     }

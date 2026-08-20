@@ -7,4 +7,6 @@ public record UpdateTaskItemCommand(
     DateTime? StartDate,
     DateTime DueDate,
     Guid? TaskListId,
-    Guid? CategoryId);
+    Guid? CategoryId,
+    bool IsImportant,
+    bool IsUrgent);

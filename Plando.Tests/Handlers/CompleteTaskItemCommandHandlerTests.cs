@@ -31,7 +31,9 @@ public class CompleteTaskItemCommandHandlerTests
             "Description",
             DateTime.UtcNow,
             user,
-            null);
+            null,
+            false,
+            false);
 
         _taskItemRepositoryMock
             .Setup(s => s.GetByIdAsync(taskItem.Id))

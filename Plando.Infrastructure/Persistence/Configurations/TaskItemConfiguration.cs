@@ -26,6 +26,8 @@ public class TaskItemConfiguration : IEntityTypeConfiguration<TaskItem>
         taskItems.Property(taskItem => taskItem.IsCompleted);
         taskItems.Property(taskItem => taskItem.CreatedAt);
         taskItems.Property(taskItem => taskItem.CategoryId);
+        taskItems.Property(taskItem => taskItem.IsImportant);
+        taskItems.Property(taskItem => taskItem.IsUrgent);
 
         // relations one-to-many
         taskItems.HasOne(taskItem => taskItem.TaskList)
