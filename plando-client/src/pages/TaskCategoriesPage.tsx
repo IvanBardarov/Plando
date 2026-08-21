@@ -76,8 +76,9 @@ export const TaskCategoriesPage = () => {
 
                 {taskCategoryList?.map(taskCategory => (
                     <div key={taskCategory.id}
-                        className='flex flex-col md:flex-row gap-4 
-                            items-start md:items-center'
+                        className='flex flex-col md:flex-row gap-4 p-2
+                            items-start md:items-center
+                            border bg-gray-50 cursor-pointer'
                         onClick={() => navigate(`/TaskCategories/${taskCategory.id}`)}>
 
                         <div className="flex-1 justify-center text-center">
