@@ -78,7 +78,7 @@ public class TaskItemsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("/WithoutPagination")]
+    [Route("WithoutPagination")]
     public async Task<ActionResult<IEnumerable<TaskItemDto>>> 
         GetWithoutPaginationByUserId()
     {
