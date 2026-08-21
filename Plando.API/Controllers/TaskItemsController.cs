@@ -14,6 +14,8 @@ namespace Plando.API.Controllers;
 public class TaskItemsController : ControllerBase
 {
     private readonly GetTaskItemsByUserIdQueryHandler _getTaskByUserIdQuery;
+    private readonly GetTaskItemsWithoutPaginationByUserIdQueryHandler
+        _getTasksWithoutPaginationByUserIdQuery;
     private readonly CreateTaskItemCommandHandler _createHandler;
     private readonly CompleteTaskItemCommandHandler _completeHandler;
     private readonly DeleteTaskItemCommandHandler _deleteHandler;
@@ -21,6 +23,8 @@ public class TaskItemsController : ControllerBase
     private readonly UpdateTaskItemCommandHandler _updateHandler;
 
     public TaskItemsController(GetTaskItemsByUserIdQueryHandler getTaskByUserIdQuery,
+        GetTaskItemsWithoutPaginationByUserIdQueryHandler
+        getTasksWithoutPaginationByUserIdQuery,
         CreateTaskItemCommandHandler createHandler,
         CompleteTaskItemCommandHandler completeHandler,
         DeleteTaskItemCommandHandler deleteHandler,
@@ -28,6 +32,7 @@ public class TaskItemsController : ControllerBase
         UpdateTaskItemCommandHandler updateHandler)
     {
         _getTaskByUserIdQuery = getTaskByUserIdQuery;
+        _getTasksWithoutPaginationByUserIdQuery = getTasksWithoutPaginationByUserIdQuery;
         _createHandler = createHandler;
         _completeHandler = completeHandler;
         _deleteHandler = deleteHandler;
@@ -70,6 +75,19 @@ public class TaskItemsController : ControllerBase
         page,
         pageSize
         )));
+    }
+
+    [HttpGet]
+    [Route("/WithoutPagination")]
+    public async Task<ActionResult<IEnumerable<TaskItemDto>>> 
+        GetWithoutPaginationByUserId()
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out var userId))
+            return Unauthorized();
+
+        return Ok(await _getTasksWithoutPaginationByUserIdQuery.HandleAsync(
+            new GetTaskItemsWithoutPaginationByUserIdQuery(userId)));
     }
 
     [HttpPost]
