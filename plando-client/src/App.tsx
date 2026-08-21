@@ -4,6 +4,7 @@ import { RegisterPage } from './pages/RegisterPage';
 import { UserAccountPage } from './pages/UserAccountPage';
 import { Layout } from './components/Layout';
 import { TasksPage } from './pages/TasksPage';
+import { EisenhowerMatrixPage } from './pages/EisenhowerMatrixPage';
 import { TaskListsPage } from './pages/TaskListsPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { TaskCategoriesPage } from './pages/TaskCategoriesPage';
@@ -22,6 +23,7 @@ function App() {
         <Route path="" element={<Layout />}>
           <Route path="/users/:id" element={<UserAccountPage />} />
           <Route path="/tasks" element={<TasksPage />} />
+          <Route path="/tasks/eisenhowermatrix" element={<EisenhowerMatrixPage />} />
           <Route path="/tasklists" element={<TaskListsPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/taskcategories" element={<TaskCategoriesPage />} />

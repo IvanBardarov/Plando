@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { User, Calendar, CheckSquare, List, Settings } from 'lucide-react';
+import { User, Calendar, CheckSquare, List, Settings, Grid2X2 } from 'lucide-react';
 
 export const Sidebar = () => {
 
@@ -22,6 +22,11 @@ export const Sidebar = () => {
                 <li>
                     <Link title='Tasks' to='/tasks' className="text-white hover:text-blue-400">
                         <CheckSquare />
+                    </Link>
+                </li>
+                <li>
+                    <Link title='Eisenhower Matrix' to='/tasks/eisenhowermatrix' className="text-white hover:text-blue-400">
+                        <Grid2X2 />
                     </Link>
                 </li>
                 <li>
