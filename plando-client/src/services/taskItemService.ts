@@ -1,6 +1,12 @@
 import instance from "./api";
 import { TaskItem, Guid, PagedResultDto } from "../types";
 
+export const getTaskItemsWithoutPaginationByUserId = async ():
+Promise<TaskItem[] | null> => {
+    const response = await instance.get(`/TaskItems/WithoutPagination`);
+    return response.data;
+}
+
 export const getTaskItemByUserId = async (
     taskListId: Guid | null,
     title: string | null, description: string | null,

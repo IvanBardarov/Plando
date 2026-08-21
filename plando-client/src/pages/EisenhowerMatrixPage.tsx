@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
-import { getTaskItemByUserId, updateTaskItem } from '../services/taskItemService';
+import { 
+    getTaskItemsWithoutPaginationByUserId, 
+    getTaskItemByUserId, 
+    updateTaskItem } from '../services/taskItemService';
 import { TaskItem } from '../types';
 
 export const EisenhowerMatrixPage = () => {
@@ -12,24 +15,26 @@ export const EisenhowerMatrixPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const firstPageOfTaskItems = await getTaskItemByUserId(
-                null, null, null, null, null, null, null, null, null, false, 1, 1
-            );
+            // const firstPageOfTaskItems = await getTaskItemByUserId(
+            //     null, null, null, null, null, null, null, null, null, false, 1, 1
+            // );
 
-            const totalCount = firstPageOfTaskItems.totalCount;
+            // const totalCount = firstPageOfTaskItems.totalCount;
 
-            if(totalCount === 0){
-                setTaskItems([]);
-                return;
-            }
+            // if(totalCount === 0){
+            //     setTaskItems([]);
+            //     return;
+            // }
 
-            const allPageseOfTaskItems = await getTaskItemByUserId(
-                null, null, null, null, null, null, null, null, null, false, 1, totalCount
-            );
+            // const allPageseOfTaskItems = await getTaskItemByUserId(
+            //     null, null, null, null, null, null, null, null, null, false, 1, totalCount
+            // );
 
-            const allTaskItems = [
-                ...allPageseOfTaskItems.items
-            ];
+            const allTaskItems = await getTaskItemsWithoutPaginationByUserId();
+
+            // const allTaskItems = [
+            //     ...allPageseOfTaskItems.items
+            // ];
 
             setTaskItems(allTaskItems);
         };
