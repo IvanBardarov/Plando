@@ -82,8 +82,9 @@ export const TaskListsPage = () => {
 
                 {taskLists?.map(item => (
                     <div key={item.id} 
-                        className='flex flex-col md:flex-row gap-4 
-                            items-start md:items-center'
+                        className='border flex flex-col md:flex-row gap-4 p-2
+                            bg-gray-50
+                            items-start md:items-center cursor-pointer'
                         onClick={ () => navigate(`/tasklists/${item.id}`)}>
 
                         <div className="flex-1 justify-center text-center">

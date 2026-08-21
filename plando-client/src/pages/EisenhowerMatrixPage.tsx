@@ -1,10 +1,14 @@
 import { useState, useEffect } from 'react';
-import { 
+import { useNavigate } from 'react-router-dom';
+import {
     getTaskItemsWithoutPaginationByUserId,
-    updateTaskItem } from '../services/taskItemService';
+    updateTaskItem
+} from '../services/taskItemService';
 import { TaskItem } from '../types';
 
 export const EisenhowerMatrixPage = () => {
+
+    const navigate = useNavigate();
 
     const [taskItems, setTaskItems] = useState<TaskItem[] | null>(null);
     const q1 = taskItems?.filter(t => t.isImportant && t.isUrgent) ?? [];
@@ -50,9 +54,13 @@ export const EisenhowerMatrixPage = () => {
                     <span className="text-red-900 p-2">Important + Urgent</span>
                     {q1?.map(t => (
                         <div key={t.id}
-                            className="border bg-white rounded p-2 m-2"
+                            className="border bg-white rounded p-2 m-2 cursor-pointer"
+                            onClick={e => navigate(`/tasks/${t.id}/details`)}
                             draggable={true}
-                            onDragStart={e => e.dataTransfer.setData('taskId', t.id)}>
+                            onDragStart={e => {
+                                e.stopPropagation();
+                                e.dataTransfer.setData('taskId', t.id);
+                            }}>
                             {t.title}
                         </div>
                     ))}
@@ -64,9 +72,13 @@ export const EisenhowerMatrixPage = () => {
                     <span className="text-orange-800 p-2">Important + Not Urgent</span>
                     {q2?.map(t => (
                         <div key={t.id}
-                            className="border bg-white rounded p-2 m-2"
+                            className="border bg-white rounded p-2 m-2 cursor-pointer"
+                            onClick={e => navigate(`/tasks/${t.id}/details`)}
                             draggable={true}
-                            onDragStart={e => e.dataTransfer.setData('taskId', t.id)}>
+                            onDragStart={e => {
+                                e.stopPropagation();
+                                e.dataTransfer.setData('taskId', t.id);
+                            }}>
                             {t.title}
                         </div>
                     ))}
@@ -78,9 +90,13 @@ export const EisenhowerMatrixPage = () => {
                     <span className="text-blue-600 p-2">Not Important + Urgent</span>
                     {q3?.map(t => (
                         <div key={t.id}
-                            className="border bg-white rounded p-2 m-2"
+                            className="border bg-white rounded p-2 m-2 cursor-pointer"
+                            onClick={e => navigate(`/tasks/${t.id}/details`)}
                             draggable={true}
-                            onDragStart={e => e.dataTransfer.setData('taskId', t.id)}>
+                            onDragStart={e => {
+                                e.stopPropagation();
+                                e.dataTransfer.setData('taskId', t.id);
+                            }}>
                             {t.title}
                         </div>
                     ))}
@@ -92,9 +108,13 @@ export const EisenhowerMatrixPage = () => {
                     <span className="text-gray-600 p-2">Not Important + Not Urgent</span>
                     {q4?.map(t => (
                         <div key={t.id}
-                            className="border bg-white rounded p-2 m-2"
+                            className="border bg-white rounded p-2 m-2 cursor-pointer"
+                            onClick={e => navigate(`/tasks/${t.id}/details`)}
                             draggable={true}
-                            onDragStart={e => e.dataTransfer.setData('taskId', t.id)}>
+                            onDragStart={e => {
+                                e.stopPropagation();
+                                e.dataTransfer.setData('taskId', t.id);
+                            }}>
                             {t.title}
                         </div>
                     ))}

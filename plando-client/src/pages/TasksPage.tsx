@@ -66,7 +66,8 @@ export const TasksPage = () => {
                 {taskItems?.items.map(item => (
                     <div key={item.id}
                         className={`flex flex-col md:flex-row
-                            items-start md:items-center border p-1 rounded ${getTaskItemColor(item)}`}
+                            items-start md:items-center border p-1 rounded ${getTaskItemColor(item)}
+                            cursor-pointer`}
                         onClick={async () => navigate(`/tasks/${item.id}/details`)}>
 
                         <div className="flex-1 justify-center text-center">
