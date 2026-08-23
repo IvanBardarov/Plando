@@ -60,6 +60,14 @@ export const TaskItemDetailPage = () => {
             id!, title, description, startDate, dueDate!, taskListId, categoryId, isImportant, isUrgent);
 
         setTaskItem(item);
+        setTitle(item.title ?? '');
+        setDescription(item.description ?? '');
+        setStartDate(item.startDate ? new Date(item.startDate) : null);
+        setDueDate(item.dueDate ? new Date(item.dueDate) : null);
+        setTaskListId(item.taskListId ?? null);
+        setCategoryId(item.categoryId ?? null);
+        setIsImportant(item.isImportant);
+        setIsUrgent(item.isUrgent);
     };
 
     const [noteContent, setNoteContent] = useState('');

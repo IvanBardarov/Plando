@@ -1,12 +1,32 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom';
 import { TaskItemDetailPage } from './TaskItemDetailPage';
-import { updateTaskItem } from '../services/taskItemService';
+import { getTaskItemById, updateTaskItem } from '../services/taskItemService';
 import { getNotesByTaskItemId, createNote, deleteNote, getNoteById } from '../services/noteService';
 
+jest.mock('../services/taskItemService');
 jest.mock('../services/noteService');
 
 beforeEach(() => {
+
+    (getTaskItemById as jest.Mock).mockResolvedValue(
+        {
+            id: "1", title: "Title", description: "Description",
+            startDate: new Date("2026-01-01"), dueDate: new Date("2026-01-15"),
+            taskListId: "1", categoryId: "1", isImportant: false, isUrgent: false,
+            isCompleted: false, completedAt: null, createdAt: new Date(), userId: "1"
+        }
+    );
+
+    (updateTaskItem as jest.Mock).mockResolvedValue(
+        {
+        id: "1", title: "Title", description: "Description",
+        startDate: new Date("2026-01-01"), dueDate: new Date("2026-01-15"),
+        taskListId: "1", categoryId: "1", isImportant: true, isUrgent: true,
+        isCompleted: false, completedAt: null, createdAt: new Date(), userId: "1"
+        }
+    );
+
     (getNotesByTaskItemId as jest.Mock).mockResolvedValue([
         {
             id: '1',
@@ -21,14 +41,6 @@ beforeEach(() => {
     (getNoteById as jest.Mock).mockResolvedValue({});
 });
 
-jest.mock('../services/taskItemService', () => ({
-    getTaskItemById: jest.fn().mockResolvedValue({}),
-    updateTaskItem: jest.fn().mockResolvedValue({
-        id: "1", title: "Titel", description: "Description", startDate: new Date("2026-01-01"),
-        dueDate: new Date("2026-01-15"), taskListId: "1"
-    })
-}));
-
 jest.mock('../services/taskListService', () => ({
     getTaskListByUserId: jest.fn().mockResolvedValue([])
 }));
@@ -39,7 +51,7 @@ jest.mock('../services/taskCategoryService', () => ({
 
 jest.mock('react-router-dom', () => ({
     useParams: () => ({ id: 'test-list-id' }),
-    Link: ({ children, to }: { children: React.ReactNode, to: string }) => 
+    Link: ({ children, to }: { children: React.ReactNode, to: string }) =>
         <a href={to}>{children}</a>
 }));
 

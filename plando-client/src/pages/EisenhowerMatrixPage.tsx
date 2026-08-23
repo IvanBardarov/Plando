@@ -48,7 +48,7 @@ export const EisenhowerMatrixPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
 
-                <div className="bg-red-400 min-h-64 overflow-y-auto max-h-96"
+                <div data-testid="q1" className="bg-red-400 min-h-64 overflow-y-auto max-h-96"
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => handleDrop(e, true, true)}>
                     <span className="text-red-900 p-2">Important + Urgent</span>
@@ -66,7 +66,7 @@ export const EisenhowerMatrixPage = () => {
                     ))}
                 </div>
 
-                <div className="bg-orange-300 min-h-64 overflow-y-auto max-h-96"
+                <div data-testid="q2" className="bg-orange-300 min-h-64 overflow-y-auto max-h-96"
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => handleDrop(e, true, false)}>
                     <span className="text-orange-800 p-2">Important + Not Urgent</span>
@@ -84,7 +84,7 @@ export const EisenhowerMatrixPage = () => {
                     ))}
                 </div>
 
-                <div className="bg-blue-200 min-h-64 overflow-y-auto max-h-96"
+                <div data-testid="q3" className="bg-blue-200 min-h-64 overflow-y-auto max-h-96"
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => handleDrop(e, false, true)}>
                     <span className="text-blue-600 p-2">Not Important + Urgent</span>
@@ -102,7 +102,7 @@ export const EisenhowerMatrixPage = () => {
                     ))}
                 </div>
 
-                <div className="bg-gray-100 min-h-64 overflow-y-auto max-h-96"
+                <div data-testid="q4" className="bg-gray-100 min-h-64 overflow-y-auto max-h-96"
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => handleDrop(e, false, false)}>
                     <span className="text-gray-600 p-2">Not Important + Not Urgent</span>
