@@ -79,15 +79,17 @@ public class TaskItemsController : ControllerBase
 
     [HttpGet]
     [Route("WithoutPagination")]
-    public async Task<ActionResult<IEnumerable<TaskItemDto>>> 
-        GetWithoutPaginationByUserId()
+    public async Task<ActionResult<IEnumerable<TaskItemDto>>>
+        GetWithoutPaginationByUserId(
+        [FromQuery] GetTaskItemsWithoutPaginationByUserIdQuery query)
     {
         var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         if (!Guid.TryParse(userIdString, out var userId))
             return Unauthorized();
 
-        return Ok(await _getTasksWithoutPaginationByUserIdQuery.HandleAsync(
-            new GetTaskItemsWithoutPaginationByUserIdQuery(userId)));
+        var newQuery = query with { UserId = userId };
+        return Ok(await _getTasksWithoutPaginationByUserIdQuery
+            .HandleAsync(newQuery));
     }
 
     [HttpPost]
