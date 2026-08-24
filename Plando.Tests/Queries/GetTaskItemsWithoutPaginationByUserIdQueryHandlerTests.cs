@@ -50,10 +50,11 @@ public class GetTaskItemsWithoutPaginationByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
-        var query = new GetTaskItemsWithoutPaginationByUserIdQuery(user.Id);
+        var query = 
+            new GetTaskItemsWithoutPaginationByUserIdQuery(user.Id, null, null);
 
         var result = await _handler.HandleAsync(query);
 
@@ -67,10 +68,11 @@ public class GetTaskItemsWithoutPaginationByUserIdQueryHandlerTests
     public async Task ReturnsEmptyList()
     {
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(It.IsAny<Guid>()))
+            .Setup(s => s.GetAllByUserIdAsync(It.IsAny<Guid>(), null, null))
             .ReturnsAsync(new List<TaskItem>());
 
-        var query = new GetTaskItemsWithoutPaginationByUserIdQuery(Guid.NewGuid());
+        var query = 
+            new GetTaskItemsWithoutPaginationByUserIdQuery(Guid.NewGuid(), null, null);
 
         var result = await _handler.HandleAsync(query);
 

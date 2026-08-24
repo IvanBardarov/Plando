@@ -17,10 +17,19 @@ public class TaskItemRepository : ITaskItemRepository
     public async Task<TaskItem?> GetByIdAsync(Guid id) =>
         await _db.TaskItems.FindAsync(id);
 
-    public async Task<IEnumerable<TaskItem>> GetAllByUserIdAsync(Guid userId) =>
-        await _db.TaskItems
-            .Where(o => o.UserId == userId)
-            .ToListAsync();
+    public async Task<IEnumerable<TaskItem>>
+        GetAllByUserIdAsync(
+            Guid userId, DateTime? dateFrom = null, DateTime? dateTo = null)
+    {
+        var query = _db.TaskItems.Where(o => o.UserId == userId);
+
+        if (dateFrom is not null)
+            query = query.Where(o => o.StartDate >= dateFrom);
+        if (dateTo is not null)
+            query = query.Where(o => o.StartDate <= dateTo);
+
+        return await query.ToListAsync();
+    }
 
     public Task AddAsync(TaskItem taskItem)
     {

@@ -48,7 +48,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -96,7 +96,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -143,7 +143,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -163,7 +163,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
     public async Task ReturnsEmptyList()
     {
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(It.IsAny<Guid>()))
+            .Setup(s => s.GetAllByUserIdAsync(It.IsAny<Guid>(), null, null))
             .ReturnsAsync(new List<TaskItem>());
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -205,7 +205,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -245,7 +245,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
@@ -281,7 +281,7 @@ public class GetTaskItemsByUserIdQueryHandlerTests
         }
 
         _taskItemRepositoryMock
-            .Setup(s => s.GetAllByUserIdAsync(user.Id))
+            .Setup(s => s.GetAllByUserIdAsync(user.Id, null, null))
             .ReturnsAsync(taskItemsList);
 
         var query = new GetTaskItemsByUserIdQuery(
