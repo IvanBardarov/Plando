@@ -142,8 +142,15 @@ export const CalendarPage = () => {
 
                 <div className="flex grid-cols-1 gap-4 p-2 justify-center">
 
-                    <div className="border h-auto">
-                        {calendarView === CalendarView.Year && <YearView />}
+                    <div className="h-auto">
+                        {calendarView === CalendarView.Year &&
+                            <YearView
+                                currentMonth={currentMonth}
+                                currentYear={currentYear}
+                                year={selectedYear}
+                                currentDateOfTheMonth={currentDateOfTheMonth}
+                                vh={30}
+                                calendarView={calendarView} />}
                         {calendarView === CalendarView.Month &&
                             <MonthView
                                 currentMonth={currentMonth}
@@ -152,7 +159,9 @@ export const CalendarPage = () => {
                                 month={selectedMonth}
                                 currentDateOfTheMonth={currentDateOfTheMonth}
                                 firstWeekDayOfTheMonth={firstWeekDayOfTheMonth}
-                                lastDayOfTheMonth={lastDateOfTheMonth} />}
+                                lastDayOfTheMonth={lastDateOfTheMonth}
+                                vh={80}
+                                calendarView={calendarView} />}
                         {calendarView === CalendarView.Week && <WeekView />}
                         {calendarView === CalendarView.Day && <DayView />}
                     </div>
