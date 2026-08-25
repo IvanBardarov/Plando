@@ -18,7 +18,7 @@ export const EisenhowerMatrixPage = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const allTaskItems = await getTaskItemsWithoutPaginationByUserId();
+            const allTaskItems = await getTaskItemsWithoutPaginationByUserId(null, null);
 
             setTaskItems(allTaskItems);
         };

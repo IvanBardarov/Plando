@@ -15,7 +15,7 @@ export const Sidebar = () => {
                     </Link>
                 </li>
                 <li>
-                    <Link title='Calendar' to='/Calendar' className="text-white hover:text-blue-400">
+                    <Link title='Calendar' to='/calendar' className="text-white hover:text-blue-400">
                         <Calendar />
                     </Link>
                 </li>

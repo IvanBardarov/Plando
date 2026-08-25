@@ -8,7 +8,16 @@ export interface User {
   createdAt: Date;
   taskItems: TaskItem[];
   taskLists: TaskList[]
-}
+};
+
+export const CalendarView = {
+  Year: 'year',
+  Month: 'month',
+  Week: 'week',
+  Day: 'day'
+} as const;
+
+export type CalendarView = typeof CalendarView[keyof typeof CalendarView];
 
 export interface TaskItem {
   id: Guid;
@@ -24,7 +33,7 @@ export interface TaskItem {
   categoryId: Guid | null;
   isImportant: boolean;
   isUrgent: boolean;
-}
+};
 
 export interface TaskList {
   id: Guid;
@@ -32,7 +41,7 @@ export interface TaskList {
   createdAt: Date;
   userId: Guid;
   taskItems: TaskItem[];
-}
+};
 
 export interface PagedResultDto<T> {
   items: T[];
@@ -40,14 +49,14 @@ export interface PagedResultDto<T> {
   page: number;
   pageSize: number;
   totalPages: number;
-}
+};
 
 export interface UseTaskItemsReturn {
   taskItems: PagedResultDto<TaskItem> | null;
   setTaskItems: React.Dispatch<React.SetStateAction<PagedResultDto<TaskItem> | null>>;
   handleComplete: (id: string) => Promise<void>;
   handleDelete: (id: string) => Promise<void>;
-}
+};
 
 export interface FilterValues {
   taskListId: Guid | null;
@@ -62,7 +71,7 @@ export interface FilterValues {
   isCompleted: boolean | null;
   page: number | null;
   pageSize: number | null;
-}
+};
 
 export interface TaskCategory {
   id: Guid;
@@ -70,7 +79,7 @@ export interface TaskCategory {
   description: string;
   userId: Guid;
   createdAt: Date;
-}
+};
 
 export interface Note {
   id: Guid;
@@ -78,4 +87,4 @@ export interface Note {
   createdAt: Date;
   taskItemId: Guid;
   userId: Guid;
-}
+};

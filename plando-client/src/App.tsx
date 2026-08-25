@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { UserAccountPage } from './pages/UserAccountPage';
 import { Layout } from './components/Layout';
+import { CalendarPage } from './pages/CalendarPage';
 import { TasksPage } from './pages/TasksPage';
 import { EisenhowerMatrixPage } from './pages/EisenhowerMatrixPage';
 import { TaskListsPage } from './pages/TaskListsPage';
@@ -22,6 +23,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="" element={<Layout />}>
           <Route path="/users/:id" element={<UserAccountPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
           <Route path="/tasks" element={<TasksPage />} />
           <Route path="/tasks/eisenhowermatrix" element={<EisenhowerMatrixPage />} />
           <Route path="/tasklists" element={<TaskListsPage />} />
