@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { DateSquare } from './DateSquare';
 
 export const MonthView = (
-    { year, month, currentDateOfTheMonth, firstWeekDayOfTheMonth, lastDayOfTheMonth }:
+    { currentYear, currentMonth, year, month, currentDateOfTheMonth,
+        firstWeekDayOfTheMonth, lastDayOfTheMonth }:
         {
+            currentYear: number; currentMonth: number;
             year: number; month: number; currentDateOfTheMonth: number;
             firstWeekDayOfTheMonth: number; lastDayOfTheMonth: number
         }) => {
@@ -49,7 +51,13 @@ export const MonthView = (
                     <div key={`empty-${i}`} />
                 ))}
                 {Array.from({ length: lastDayOfTheMonth }, (_, i) => (
-                    <DateSquare key={i + 1} currentDateOfTheMonth={currentDateOfTheMonth} dayOfTheMonth={i + 1} />
+                    <DateSquare key={i + 1}
+                        currentYear={currentYear}
+                        currentMonth={currentMonth}
+                        selectedMonth={month}
+                        selectedYear={year}
+                        currentDateOfTheMonth={currentDateOfTheMonth}
+                        dayOfTheMonth={i + 1} />
                 ))}
 
             </div>
