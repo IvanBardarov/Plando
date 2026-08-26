@@ -18,9 +18,10 @@ public class TaskItemScheduleRepository : ITaskItemScheduleRepository
         await _db.TaskItemSchedules.FindAsync(id);
 
     public async Task<IEnumerable<TaskItemSchedule>>
-        GetAllByTaskItemIdAsync(Guid taskItemId, DateTime date) =>
+        GetAllByDateAsync(Guid userId, DateTime date) =>
         await _db.TaskItemSchedules
-            .Where(o => o.TaskItemId == taskItemId && o.Date == date)
+            .Where(o => o.Date == date && o.TaskItem!.UserId == userId)
+            .Include(o => o.TaskItem)
             .ToListAsync();
 
     public Task AddAsync(TaskItemSchedule taskItemSchedule)
