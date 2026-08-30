@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Plando.Application.Commands.TaskItems;
 using Plando.Application.DTOs;
 using Plando.Application.Queries.TaskItems;
-using Plando.Domain.Exceptions;
 using System.Security.Claims;
 
 namespace Plando.API.Controllers;

@@ -6,12 +6,14 @@ using Plando.API.Middleware;
 using Plando.Application.Commands.Notes;
 using Plando.Application.Commands.TaskCategories;
 using Plando.Application.Commands.TaskItems;
+using Plando.Application.Commands.TaskItemSchedules;
 using Plando.Application.Commands.TaskLists;
 using Plando.Application.Commands.Users;
 using Plando.Application.Interfaces;
 using Plando.Application.Queries.Notes;
 using Plando.Application.Queries.TaskCategories;
 using Plando.Application.Queries.TaskItems;
+using Plando.Application.Queries.TaskItemSchedules;
 using Plando.Application.Queries.TaskLists;
 using Plando.Application.Queries.Users;
 using Plando.Infrastructure.Persistence;
@@ -28,6 +30,8 @@ builder.Services.AddDbContext<PlandoDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITaskItemRepository, TaskItemRepository>();
+builder.Services
+    .AddScoped<ITaskItemScheduleRepository, TaskItemScheduleRepository>();
 builder.Services.AddScoped<ITaskListRepository, TaskListRepository>();
 builder.Services.AddScoped<ITaskCategoryRepository, TaskCategoryRepository>();
 builder.Services.AddScoped<INoteRepository, NoteRepository>();
@@ -49,6 +53,13 @@ builder.Services.AddScoped<DeleteTaskItemCommandHandler>();
 builder.Services.AddScoped<GetTaskItemsByUserIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemByIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemsWithoutPaginationByUserIdQueryHandler>();
+
+// TaskItemSchedule handlers
+builder.Services.AddScoped<CreateTaskItemScheduleCommandHandler>();
+builder.Services.AddScoped<DeleteTaskItemScheduleCommandHandler>();
+builder.Services.AddScoped<UpdateTaskItemScheduleCommandHandler>();
+builder.Services.AddScoped<GetTaskItemScheduleByIdQueryHandler>();
+builder.Services.AddScoped<GetTaskItemSchedulesByDateQueryHandler>();
 
 // TaskList handlers
 builder.Services.AddScoped<CreateTaskListCommandHandler>();
