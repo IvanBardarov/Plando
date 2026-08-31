@@ -1,6 +1,7 @@
 import React from 'react';
 
 export type Guid = string;
+export type TimeSpan = string;
 
 export interface User {
   id: Guid;
@@ -34,6 +35,14 @@ export interface TaskItem {
   isImportant: boolean;
   isUrgent: boolean;
 };
+
+export interface TaskItemSchedule {
+  id: Guid;
+  taskItemId: Guid;
+  date: Date;
+  startTime: TimeSpan;
+  endTime: TimeSpan;
+}
 
 export interface TaskList {
   id: Guid;
