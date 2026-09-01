@@ -11,7 +11,7 @@ export const CalendarPage = () => {
     const [calendarView, setCalendarView] = useState<CalendarView>(CalendarView.Month);
 
     const [selectedWeek, setSelectedWeek] = useState(0);
-    const [selectedYDay, setSelectedDay] = useState(0);
+    const [selectedDay, setSelectedDay] = useState(0);
 
     const bgColor = "bg-gray-50";
 
@@ -163,7 +163,7 @@ export const CalendarPage = () => {
                                 vh={80}
                                 calendarView={calendarView} />}
                         {calendarView === CalendarView.Week && <WeekView />}
-                        {calendarView === CalendarView.Day && <DayView />}
+                        {calendarView === CalendarView.Day && <DayView date={new Date(currentYear, currentMonth + 1, currentDateOfTheMonth)}/>}
                     </div>
 
                 </div>
