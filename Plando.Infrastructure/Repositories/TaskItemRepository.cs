@@ -24,11 +24,32 @@ public class TaskItemRepository : ITaskItemRepository
         var query = _db.TaskItems.Where(o => o.UserId == userId);
 
         if (dateFrom is not null)
-            query = query.Where(o => o.StartDate >= dateFrom);
+            query = query
+                .Where(o => (o.StartDate != null && o.StartDate!.Value.Date >= dateFrom.Value.Date) ||
+                    (o.StartDate == null && o.CreatedAt.Date >= dateFrom.Value.Date));
         if (dateTo is not null)
-            query = query.Where(o => o.StartDate <= dateTo);
+            query = query
+                .Where(o => (o.StartDate != null && o.StartDate!.Value.Date <= dateTo.Value.Date) ||
+                    (o.StartDate == null && o.CreatedAt.Date <= dateTo.Value.Date));
 
-        return await query.ToListAsync();
+        var result = await query.ToListAsync();
+        return result;
+    }
+
+    public async Task<IEnumerable<TaskItem>> GetAllByUserUpToDateAsync(
+    Guid userId, DateTime date, bool? isCompleted = null)
+    {
+        var query = _db.TaskItems.Where(o => o.UserId == userId);
+
+        query = query
+            .Where(o => (o.StartDate != null && o.StartDate!.Value.Date <= date.Date) ||
+                (o.StartDate == null && o.CreatedAt.Date <= date.Date));
+
+        if (isCompleted is not null)
+            query = query.Where(o => o.IsCompleted == isCompleted);
+
+        var result = await query.ToListAsync();
+        return result;
     }
 
     public Task AddAsync(TaskItem taskItem)

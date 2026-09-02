@@ -7,6 +7,8 @@ public interface ITaskItemRepository
     Task<TaskItem?> GetByIdAsync(Guid id);
     Task<IEnumerable<TaskItem>> GetAllByUserIdAsync(
         Guid userId, DateTime? DateFrom = null, DateTime? DateTo = null);
+    Task<IEnumerable<TaskItem>> GetAllByUserUpToDateAsync(
+        Guid userId, DateTime date, bool? isCompleted = null);
     Task AddAsync(TaskItem taskItem);
     Task DeleteAsync(TaskItem taskItem);
     Task SaveChangesAsync();
