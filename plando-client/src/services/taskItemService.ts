@@ -9,6 +9,14 @@ Promise<TaskItem[] | null> => {
     return response.data;
 }
 
+export const getTaskItemsUpToDateByUserId = async (date: Date | null, isCompleted: boolean | null):
+Promise<TaskItem[] | null> => {
+    const response = await instance.get(`/TaskItems/UpToDate`, {
+        params: { date, isCompleted }
+    });
+    return response.data;
+}
+
 export const getTaskItemByUserId = async (
     taskListId: Guid | null,
     title: string | null, description: string | null,

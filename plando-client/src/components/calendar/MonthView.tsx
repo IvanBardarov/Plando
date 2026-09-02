@@ -11,7 +11,7 @@ export const MonthView = (
             vh: number; calendarView: CalendarView;
         }) => {
 
-    const monthName = new Date(Date.UTC(year, month)).toLocaleString("en-US", { month: "long" });
+    const monthName = new Date(year, month).toLocaleString("en-US", { month: "long" });
     const textSize = calendarView === CalendarView.Year ? 'text-[0.6vw]' : 'text-[0.9vw]';
 
     return (

@@ -8,29 +8,38 @@ import { CalendarView, TaskItem } from '../types';
 
 export const CalendarPage = () => {
 
+    const now = new Date();
     const [calendarView, setCalendarView] = useState<CalendarView>(CalendarView.Month);
 
     const [selectedWeek, setSelectedWeek] = useState(0);
-    const [selectedDay, setSelectedDay] = useState(0);
+    const [selectedDay, setSelectedDay] = useState(now.getDate());
 
     const bgColor = "bg-gray-50";
 
-    const now = new Date();
-    const currentYear = now.getUTCFullYear();
-    const currentMonth = now.getUTCMonth();
-    const [selectedYear, setSelectedYear] = useState(now.getUTCFullYear());
-    const [selectedMonth, setSelectedMonth] = useState(now.getUTCMonth());
-    const currentDateOfTheMonth = now.getUTCDate();
-    const lastDateOfTheMonth = useMemo(() =>
-        new Date(Date.UTC(selectedYear, selectedMonth + 1, 0)).getUTCDate(),
+
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth();
+    const [selectedYear, setSelectedYear] = useState(now.getFullYear());
+    const [selectedMonth, setSelectedMonth] = useState(now.getMonth());
+    const currentDateOfTheMonth = now.getDate();
+
+    const prevMonth = selectedMonth === 0 ? 11 : selectedMonth - 1;
+    const prevYear = selectedMonth === 0 ? selectedYear - 1 : selectedYear;
+    const lastDateOfPrevMonth = useMemo(() =>
+        new Date(prevYear, prevMonth + 1, 0).getDate(),
         [selectedYear, selectedMonth]);
+
+    const lastDateOfTheMonth = useMemo(() => 
+        new Date(selectedYear, selectedMonth + 1, 0).getDate(),
+        [selectedYear, selectedMonth]);
+
     const tmpFirstWeekDay = useMemo(() =>
-        new Date(Date.UTC(selectedYear, selectedMonth, 1)).getUTCDay(),
+        new Date(selectedYear, selectedMonth, 1).getDay(),
         [selectedYear, selectedMonth]);
     const firstWeekDayOfTheMonth = tmpFirstWeekDay === 0 ? 7 : tmpFirstWeekDay;
-    const tmpCurrentDayOfTheWeek = now.getUTCDay();
+    const tmpCurrentDayOfTheWeek = now.getDay();
     const currentDayOfTheWeek = tmpCurrentDayOfTheWeek === 0 ? 7 : tmpCurrentDayOfTheWeek;
-    const firstDateOfTheWeek = now.getUTCDate() - (currentDayOfTheWeek - 1);
+    const firstDateOfTheWeek = now.getDate() - (currentDayOfTheWeek - 1);
     const lastDateOfTheWeek = firstDateOfTheWeek + 6;
 
     const [taskItems, setTaskItems] = useState<TaskItem[] | null>(null);
@@ -63,7 +72,7 @@ export const CalendarPage = () => {
             setTaskItems(allTaskItems);
         };
         fetchData();
-    }, [calendarView, selectedYear, selectedMonth]);
+    }, [calendarView, selectedYear, selectedMonth, selectedWeek, selectedDay]);
 
     const handlePreviousView = () => {
         switch (calendarView) {
@@ -78,20 +87,41 @@ export const CalendarPage = () => {
                     setSelectedMonth(prev => prev - 1);
                 }
                 break;
+            case CalendarView.Day:
+                if (selectedDay === 1) {
+                    setSelectedMonth(prev => prev - 1)
+                    setSelectedDay(lastDateOfPrevMonth);
+                }
+                else {
+                    setSelectedDay(prev => prev - 1);
+                }
+                break;
         }
     };
 
     const handleNextView = () => {
         switch (calendarView) {
             case CalendarView.Year:
-                setSelectedYear(prev => prev + 1);
+                setSelectedYear(next => next + 1);
                 break;
             case CalendarView.Month:
                 if (selectedMonth === 11) {
                     setSelectedMonth(0);
-                    setSelectedYear(prev => prev + 1);
+                    setSelectedYear(next => next + 1);
                 } else {
-                    setSelectedMonth(prev => prev + 1);
+                    setSelectedMonth(next => next + 1);
+                }
+                break;
+            case CalendarView.Day:
+                if (selectedDay === lastDateOfTheMonth) {
+                    const nextMonth = selectedMonth === 11 ? 0 : selectedMonth + 1;
+                    const nextYear = selectedMonth === 11 ? selectedYear + 1 : selectedYear;
+                    setSelectedYear(nextYear);
+                    setSelectedMonth(nextMonth);
+                    setSelectedDay(1);
+                }
+                else {
+                    setSelectedDay(next => next + 1);
                 }
                 break;
         }
@@ -141,7 +171,6 @@ export const CalendarPage = () => {
                 </div>
 
                 <div className="flex grid-cols-1 gap-4 p-2 justify-center">
-
                     <div className="h-auto">
                         {calendarView === CalendarView.Year &&
                             <YearView
@@ -163,7 +192,9 @@ export const CalendarPage = () => {
                                 vh={80}
                                 calendarView={calendarView} />}
                         {calendarView === CalendarView.Week && <WeekView />}
-                        {calendarView === CalendarView.Day && <DayView date={new Date(currentYear, currentMonth + 1, currentDateOfTheMonth)}/>}
+                        {calendarView === CalendarView.Day &&
+                            <DayView
+                                date={new Date(selectedYear, selectedMonth, selectedDay)} />}
                     </div>
 
                 </div>

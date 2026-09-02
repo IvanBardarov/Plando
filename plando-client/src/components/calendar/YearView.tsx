@@ -9,11 +9,11 @@ export const YearView = (
         }) => {
     const months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
     const firstWeekDayOfTheMonth = (month: number) => {
-        const tmp = new Date(Date.UTC(year, month, 1)).getUTCDay();
+        const tmp = new Date(year, month, 1).getDay();
         return tmp === 0 ? 7 : tmp;
     };
     const lastDateOfTheMonth = (month: number) => {
-        return new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+        return new Date(year, month + 1, 0).getDate();
     };
 
     return (
