@@ -13,6 +13,8 @@ namespace Plando.API.Controllers;
 public class TaskItemsController : ControllerBase
 {
     private readonly GetTaskItemsByUserIdQueryHandler _getTaskByUserIdQuery;
+    private readonly GetTaskItemsUpToDateByUserIdQueryHandler
+        _getTasksUpToDateByUserIdQuery;
     private readonly GetTaskItemsWithoutPaginationByUserIdQueryHandler
         _getTasksWithoutPaginationByUserIdQuery;
     private readonly CreateTaskItemCommandHandler _createHandler;
@@ -22,6 +24,8 @@ public class TaskItemsController : ControllerBase
     private readonly UpdateTaskItemCommandHandler _updateHandler;
 
     public TaskItemsController(GetTaskItemsByUserIdQueryHandler getTaskByUserIdQuery,
+        GetTaskItemsUpToDateByUserIdQueryHandler
+        getTasksUpToDateByUserIdQuery,
         GetTaskItemsWithoutPaginationByUserIdQueryHandler
         getTasksWithoutPaginationByUserIdQuery,
         CreateTaskItemCommandHandler createHandler,
@@ -31,6 +35,7 @@ public class TaskItemsController : ControllerBase
         UpdateTaskItemCommandHandler updateHandler)
     {
         _getTaskByUserIdQuery = getTaskByUserIdQuery;
+        _getTasksUpToDateByUserIdQuery = getTasksUpToDateByUserIdQuery;
         _getTasksWithoutPaginationByUserIdQuery = getTasksWithoutPaginationByUserIdQuery;
         _createHandler = createHandler;
         _completeHandler = completeHandler;
@@ -89,6 +94,19 @@ public class TaskItemsController : ControllerBase
         var newQuery = query with { UserId = userId };
         return Ok(await _getTasksWithoutPaginationByUserIdQuery
             .HandleAsync(newQuery));
+    }
+
+    [HttpGet]
+    [Route("UpToDate")]
+    public async Task<ActionResult<IEnumerable<TaskItemDto>>>
+        GetUpToDateByUserId([FromQuery] GetTaskItemsUpToDateByUserIdQuery query)
+    {
+        var userIdString = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (!Guid.TryParse(userIdString, out Guid userId))
+            return Unauthorized();
+
+        var newQuery = query with { UserId = userId };
+        return Ok(await _getTasksUpToDateByUserIdQuery.HandleAsync(newQuery));
     }
 
     [HttpPost]

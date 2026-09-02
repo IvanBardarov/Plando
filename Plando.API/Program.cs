@@ -53,6 +53,7 @@ builder.Services.AddScoped<DeleteTaskItemCommandHandler>();
 builder.Services.AddScoped<GetTaskItemsByUserIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemByIdQueryHandler>();
 builder.Services.AddScoped<GetTaskItemsWithoutPaginationByUserIdQueryHandler>();
+builder.Services.AddScoped<GetTaskItemsUpToDateByUserIdQueryHandler>();
 
 // TaskItemSchedule handlers
 builder.Services.AddScoped<CreateTaskItemScheduleCommandHandler>();
