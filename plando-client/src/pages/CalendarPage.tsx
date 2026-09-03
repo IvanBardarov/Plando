@@ -29,7 +29,7 @@ export const CalendarPage = () => {
         new Date(prevYear, prevMonth + 1, 0).getDate(),
         [selectedYear, selectedMonth]);
 
-    const lastDateOfTheMonth = useMemo(() => 
+    const lastDateOfTheMonth = useMemo(() =>
         new Date(selectedYear, selectedMonth + 1, 0).getDate(),
         [selectedYear, selectedMonth]);
 
@@ -171,7 +171,7 @@ export const CalendarPage = () => {
                 </div>
 
                 <div className="flex grid-cols-1 gap-4 p-2 justify-center">
-                    <div className="h-auto">
+                    <div className="h-auto w-full">
                         {calendarView === CalendarView.Year &&
                             <YearView
                                 currentMonth={currentMonth}
@@ -194,7 +194,8 @@ export const CalendarPage = () => {
                         {calendarView === CalendarView.Week && <WeekView />}
                         {calendarView === CalendarView.Day &&
                             <DayView
-                                date={new Date(selectedYear, selectedMonth, selectedDay)} />}
+                                date={new Date(selectedYear, selectedMonth, selectedDay)} />
+                        }
                     </div>
 
                 </div>
