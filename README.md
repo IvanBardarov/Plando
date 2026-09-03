@@ -1,6 +1,6 @@
 # Plando - Personal Todo Web App
 
-Plando is a personal todo web application built for educational purposes, 
+Plando is a personal todo web application built as a self-learning project, 
 focusing on modern web development practices and clean architecture principles.
 
 ## Tech stack
