@@ -5,6 +5,7 @@ import { TaskItem, TaskItemSchedule } from '../../types';
 
 export const DayView = (
     { date }: { date: Date }) => {
+
     const y = date.getFullYear();
     const m = date.getMonth() + 1;
     const d = date.getDate();
@@ -43,6 +44,46 @@ export const DayView = (
         fetchedData();
     }, [date]);
 
+    const bgAndTextColor = (isImportant: boolean, isUrgent: boolean) => {
+
+        const importantUrgent = "bg-red-400 text-red-900";
+        const importantNotUrgent = "bg-orange-300 text-orange-800";
+        const notImportantUrgent = "bg-blue-200 text-blue-600";
+        const notImportantNotUrgent = "bg-gray-100 text-gray-600";
+
+        if (isImportant && isUrgent)
+            return importantUrgent;
+
+        if (isImportant && !isUrgent)
+            return importantNotUrgent;
+
+        if (!isImportant && isUrgent)
+            return notImportantUrgent;
+
+        if (!isImportant && !isUrgent)
+            return notImportantNotUrgent;
+    };
+
+    const titleAttr = (isImportant: boolean, isUrgent: boolean) => {
+
+        const importantUrgent = "Important + Urgent";
+        const importantNotUrgent = "Important + Not Urgent";
+        const notImportantUrgent = "Not Important + Urgent";
+        const notImportantNotUrgent = "Not Important + Not Urgent";
+
+        if (isImportant && isUrgent)
+            return importantUrgent;
+
+        if (isImportant && !isUrgent)
+            return importantNotUrgent;
+
+        if (!isImportant && isUrgent)
+            return notImportantUrgent;
+
+        if (!isImportant && !isUrgent)
+            return notImportantNotUrgent;
+    };
+
     return (
         <section className="p-2">
 
@@ -54,11 +95,18 @@ export const DayView = (
                 <div className="col-span-1 flex flex-col h-full">
 
                     <div className="border h-[42.5vh] overflow-hidden">
-                        <span className="m-1 p-1 bg-gray-600 text-white">Active Tasks</span>
+                        <div className="ml-1 mt-2">
+                            <span
+                                className="m-1 p-1 bg-gray-600 text-white rounded-full">
+                                Active Tasks
+                            </span>
+                        </div>
                         <div className="h-[40vh] overflow-y-scroll">
                             {activeTaskItems?.map(t => (
-                                <div className="border-2 border-gray-400 p-1 m-1"
-                                    key={t.id}>
+                                <div
+                                    className={`${bgAndTextColor(t.isImportant, t.isUrgent)} border-2 border-gray-400 rounded-full p-2 m-1`}
+                                    key={t.id}
+                                    title={titleAttr(t.isImportant, t.isUrgent)}>
                                     {t.title} - {t.startDate != null
                                         ? new Date(t.startDate).toLocaleDateString()
                                         : new Date(t.createdAt).toLocaleDateString()}
@@ -67,12 +115,19 @@ export const DayView = (
                         </div>
                     </div>
 
-                    <div className="border h-[42.5vh] overflow-hidden">
-                        <span className="m-1 p-1 bg-red-600 text-white">Overdue Tasks</span>
+                    <div className="mt-1 border h-[42.5vh] overflow-hidden">
+                        <div className="ml-1 mt-2">
+                            <span
+                                className="m-1 p-1 bg-red-600 text-white rounded-full">
+                                Overdue Tasks
+                            </span>
+                        </div>
                         <div className="h-[40vh] overflow-y-scroll">
                             {overdueTaskItems?.map(t => (
-                                <div className="border-2 border-red-400 p-1 m-1"
-                                    key={t.id}>
+                                <div
+                                    className={`${bgAndTextColor(t.isImportant, t.isUrgent)} border-2 border-red-400 rounded-full p-2 m-1`}
+                                    key={t.id}
+                                    title={titleAttr(t.isImportant, t.isUrgent)}>
                                     {t.title} - {t.startDate != null
                                         ? new Date(t.startDate).toLocaleDateString()
                                         : new Date(t.createdAt).toLocaleDateString()}
